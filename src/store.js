@@ -15,6 +15,22 @@ const MAX_VALUES = {
   max_cp: 3904,
 };
 
+const pokeFastCache = {};
+
+function getPokemonByName(name): Pokemon {
+  if (pokeFastCache[name]) {
+    return pokeFastCache[name];
+  }
+
+  const pokemon = pokemons.find(poke => (
+    poke.name.toUpperCase() === name
+  ));
+
+  pokeFastCache[name] = pokemon;
+
+  return pokemon;
+}
+
 function getPokemons(): Array<Pokemon> {
   return pokemons;
 }
@@ -40,6 +56,7 @@ function getMaxValues() {
 }
 
 export default {
+  getPokemonByName,
   getPokemons,
   getMoves,
   getTypeChart,

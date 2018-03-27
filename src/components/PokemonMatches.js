@@ -8,6 +8,11 @@ import getWeakAgainstPokemons from '../utils/getWeakAgainstPokemons';
 import getStrongAgainstPokemons from '../utils/getStrongAgainstPokemons';
 import findClosestMatch from '../utils/findClosestMatch';
 import type { Pokemon, PokemonID } from '../types';
+import store from '../store';
+import PokemonList from './PokemonList';
+
+import defenderProfile from 'pokemagic/defenderProfile';
+import findPokemon from 'pokemagic/lib/findPokemon';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,103 +44,37 @@ type Props = {
   navigation: Object,
 };
 
-type State = {
-  containerWidth: number,
-};
+export default function PokemonMatches(props: Props) {
+  const { navigation, pokemon } = props;
 
-export default class PokemonMatches extends PureComponent<Props, State> {
-  state: State = {
-    containerWidth: Dimensions.get('window').width,
-  };
+  const { counters } = defenderProfile(findPokemon(pokemon.name));
 
-  _goToPokemon = (pokemonId: PokemonID) => () => {
-    this.props.navigation.navigate('Info', {
-      pokemonId,
-    });
-  };
+  return (
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+    >
+      {Object.keys(counters).map(moveCombo => {
+        const [quickMove, chargeMove] = moveCombo.split('/');
 
-  _handleStrongPress = () => {
-    this.props.navigation.navigate('StrongAgainst', {
-      pokemonId: this.props.pokemon.id,
-    });
-  };
+        const pokemonData = counters[moveCombo].map(counter => (
+          store.getPokemonByName(counter[0].name)
+        )).filter(Boolean);
 
-  _handleWeakPress = () => {
-    this.props.navigation.navigate('WeakAgainst', {
-      pokemonId: this.props.pokemon.id,
-    });
-  };
-
-  _handleLayout = e => {
-    if (this.state.containerWidth === e.nativeEvent.layout.width) {
-      return;
-    }
-
-    this.setState({
-      containerWidth: e.nativeEvent.layout.width,
-    });
-  };
-
-  render() {
-    const { pokemon } = this.props;
-    const { containerWidth } = this.state;
-    const weakAgainstPokemons = getWeakAgainstPokemons(pokemon);
-    const strongAgainstPokemons = getStrongAgainstPokemons(pokemon);
-
-    const strongAgainstFirst: ?Pokemon = strongAgainstPokemons.length
-      ? findClosestMatch(strongAgainstPokemons, pokemon, false)
-      : null;
-
-    const weakAgainstFirst: ?Pokemon = weakAgainstPokemons.length
-      ? findClosestMatch(weakAgainstPokemons, pokemon)
-      : null;
-
-    const cardStyle = {
-      width: (containerWidth - 8) / Math.floor(containerWidth / 160) - 8,
-      margin: 4,
-    };
-
-    return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.content}
-      >
-        {strongAgainstFirst && (
-          <View>
+        return (
+          <View key={moveCombo}>
             <Text style={styles.heading}>
-              Strong against ({strongAgainstPokemons.length})
+              {quickMove} & {chargeMove}
             </Text>
             <View style={styles.row}>
-              <PokemonListCard
-                pokemon={strongAgainstFirst}
-                navigation={this.props.navigation}
-                style={cardStyle}
+              <PokemonList
+                data={pokemonData}
+                navigation={navigation}
               />
-              {strongAgainstPokemons.length > 1 && (
-                <More onPress={this._handleStrongPress} style={cardStyle} />
-              )}
             </View>
           </View>
-        )}
-
-        {weakAgainstFirst && (
-          <View>
-            <Text style={styles.heading}>
-              Weak against ({weakAgainstPokemons.length})
-            </Text>
-            <View style={styles.row}>
-              <PokemonListCard
-                pokemon={weakAgainstFirst}
-                navigation={this.props.navigation}
-                style={cardStyle}
-              />
-              {weakAgainstPokemons.length > 1 && (
-                <More onPress={this._handleWeakPress} style={cardStyle} />
-              )}
-            </View>
-          </View>
-        )}
-      </ScrollView>
-    );
-  }
+        )
+      })}
+    </ScrollView>
+  );
 }
