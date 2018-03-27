@@ -113,7 +113,6 @@ export default class GridView extends PureComponent<Props, State> {
       <ListView
         {...this.props}
         removeClippedSubviews={Platform.OS !== 'ios'}
-        enableEmptySections={false}
         dataSource={this.state.dataSource}
         onLayout={this._handleLayout}
         renderRow={this._renderRow}
