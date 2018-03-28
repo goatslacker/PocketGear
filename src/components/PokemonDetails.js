@@ -1,5 +1,7 @@
 /* @flow */
 
+import dex from 'pokemagic/dex';
+import getMaxCP from 'pokemagic/lib/getMaxCP';
 import difference from 'lodash/difference';
 import React, { PureComponent } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
@@ -110,7 +112,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
   _renderAttack = (move: Move) => {
     return (
       <Attack
-        key={move.name}
+        key={move.Name}
         style={styles.row}
         move={move}
         types={this.props.pokemon.types}
@@ -133,6 +135,11 @@ export default class PokemonDetails extends PureComponent<Props, void> {
       ...strongAgainst,
     ]);
 
+    // TODO this is less than ideal but it allows us to switch to dex's
+    // pokemon db incrementally
+    const magicPokemon = dex.findPokemon(pokemon.name);
+    const maxCP = getMaxCP(magicPokemon);
+
     return (
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
         <View style={styles.content}>
@@ -141,26 +148,26 @@ export default class PokemonDetails extends PureComponent<Props, void> {
             <Heading selectable>Stats</Heading>
             {this._renderStat(
               'Max CP',
-              pokemon.points.max_cp / maxValues.max_cp,
-              pokemon.points.max_cp,
+              maxCP / maxValues.max_cp,
+              maxCP,
               '#e57373'
             )}
             {this._renderStat(
               'Attack',
-              pokemon.stats.attack / maxValues.attack,
-              pokemon.stats.attack,
+              magicPokemon.stats.attack / maxValues.attack,
+              magicPokemon.stats.attack,
               '#ff8a65'
             )}
             {this._renderStat(
               'Defense',
-              pokemon.stats.defense / maxValues.defense,
-              pokemon.stats.defense,
+              magicPokemon.stats.defense / maxValues.defense,
+              magicPokemon.stats.defense,
               '#9575cd'
             )}
             {this._renderStat(
               'Stamina',
-              pokemon.stats.stamina / maxValues.stamina,
-              pokemon.stats.stamina,
+              magicPokemon.stats.stamina / maxValues.stamina,
+              magicPokemon.stats.stamina,
               '#5499c7'
             )}
           </View>
@@ -215,8 +222,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Height
               </Text>
               <Text selectable style={styles.text}>
-                {pokemon.measurements.height.amount}{' '}
-                {pokemon.measurements.height.unit}
+                {magicPokemon.height} m
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -227,8 +233,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Weight
               </Text>
               <Text selectable style={styles.text}>
-                {pokemon.measurements.weight.amount}{' '}
-                {pokemon.measurements.weight.unit}
+                {magicPokemon.weight} kg
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -239,7 +244,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Capture Rate
               </Text>
               <Text selectable style={styles.text}>
-                {pokemon.encounter.capture_rate || 0}
+                {(magicPokemon.captureRate * 100)}%
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -250,10 +255,10 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Flee Rate
               </Text>
               <Text selectable style={styles.text}>
-                {pokemon.encounter.flee_rate || 0}
+                {(magicPokemon.fleeRate * 100)}%
               </Text>
             </View>
-            {pokemon.buddy_distance ? (
+            {magicPokemon.kmBuddyDistance ? (
               <View style={[styles.row, styles.center]}>
                 <Text
                   selectable
@@ -262,34 +267,19 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                   Buddy Distance
                 </Text>
                 <Text selectable style={styles.text}>
-                  {pokemon.buddy_distance.amount}{' '}
-                  {pokemon.buddy_distance.unit}
+                  {magicPokemon.kmBuddyDistance} km
                 </Text>
               </View>
             ) : null}
           </View>
 
-          {pokemon.evolution ? (
+          {magicPokemon.evolutionBranch ? (
             <View style={styles.item}>
               <Evolution
                 style={styles.item}
                 pokemon={pokemon}
                 navigation={this.props.navigation}
               />
-            </View>
-          ) : null}
-
-          {pokemon.easter_eggs ? (
-            <View style={styles.item}>
-              <Heading>
-                {pokemon.easter_eggs.length > 1 ? 'Tips' : 'Tip'}
-              </Heading>
-
-              {pokemon.easter_eggs.map(tip => (
-                <View key={tip}>
-                  <Paragraph>{tip}</Paragraph>
-                </View>
-              ))}
             </View>
           ) : null}
         </View>
