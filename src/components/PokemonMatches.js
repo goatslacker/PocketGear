@@ -20,15 +20,17 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 4,
+    marginTop: 4,
   },
 
   heading: {
     color: '#000',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 11,
-    opacity: 0.5,
-    margin: 4,
-    marginTop: 16,
+    fontSize: 14,
+    textAlign: 'center',
+    opacity: 0.75,
+    marginTop: 8,
+    marginBottom: 8,
     backgroundColor: 'transparent',
   },
 
