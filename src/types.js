@@ -98,13 +98,9 @@ export type TypeChart = {|
 |};
 
 export type Move = {|
-  name: string,
-  type: PokemonType,
-  power?: number,
-  duration: number,
-  energy_delta: number,
-  accuracy_chance: number,
-  critical_chance?: number,
-  stamina_loss: number,
-  quick: boolean,
+  Name: string,
+  Type: PokemonType,
+  Power?: number,
+  DurationMs: number,
+  Energy: number,
 |};

@@ -1,7 +1,6 @@
 /* @flow */
 
 import pokemons from './data/pokemons.json';
-import moves from './data/moves.json';
 import typeChart from './data/type_chart.json';
 import colors from './colors.json';
 import sprites from './sprites';
@@ -35,10 +34,6 @@ function getPokemons(): Array<Pokemon> {
   return pokemons;
 }
 
-function getMoves(): Array<Move> {
-  return moves;
-}
-
 function getTypeChart(): Array<TypeChart> {
   return typeChart;
 }
@@ -58,7 +53,6 @@ function getMaxValues() {
 export default {
   getPokemonByName,
   getPokemons,
-  getMoves,
   getTypeChart,
   getSprite,
   getColor,

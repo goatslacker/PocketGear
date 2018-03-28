@@ -10,6 +10,7 @@ import findClosestMatch from '../utils/findClosestMatch';
 import type { Pokemon, PokemonID } from '../types';
 import store from '../store';
 import PokemonList from './PokemonList';
+import formatMove from '../utils/formatMove';
 
 import defenderProfile from 'pokemagic/defenderProfile';
 
@@ -44,15 +45,6 @@ type Props = {
   style?: any,
   navigation: Object,
 };
-
-function ucFirst(text) {
-  if (!text) return text;
-  return text[0].toUpperCase() + text.slice(1);
-}
-
-function formatMove(moveName) {
-  return ucFirst(moveName.replace(/_FAST$/, '').replace(/_/g, ' '));
-}
 
 export default function PokemonMatches(props: Props) {
   const { navigation, pokemon } = props;

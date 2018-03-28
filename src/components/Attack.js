@@ -3,6 +3,8 @@
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { Move } from '../types';
+import ucFirst from '../utils/ucFirst';
+import formatMove from '../utils/formatMove';
 
 const styles = StyleSheet.create({
   spacer: {
@@ -60,41 +62,47 @@ type Props = {
   types: Array<*>,
 };
 
-export default class Attack extends PureComponent<Props, void> {
-  render() {
-    const { move, types } = this.props;
-    const power = move.power || 0;
-    const multiplier = types.includes(move.type) ? 1.25 : 1;
-    const stab = power * (multiplier - 1);
+const quickMoveRx = /_FAST$/;
+function isQuickMove(move) {
+  return quickMoveRx.test(move.Name);
+}
 
-    return (
-      <View style={styles.row}>
-        <View style={styles.type}>
-          <Text style={styles.text}>{move.name}</Text>
-          <Text style={styles.subtitle}>{move.type}</Text>
-        </View>
-        {!move.quick && move.energy_delta ? (
-          Array.from({
-            length: Math.abs(Math.round(100 / move.energy_delta)),
-          }).map((_, i) => {
-            return <View key={i} style={styles.energy} />;
-          })
-        ) : (
-          <View style={styles.spacer}>
-            <Text style={[styles.text, styles.energyQuick]}>
-              +{move.energy_delta} energy
-            </Text>
-          </View>
-        )}
-        <View style={styles.damage}>
-          <Text style={styles.text}>
-            {power} {stab ? <Text style={styles.stab}>+{stab} </Text> : ''}
-          </Text>
-          <Text style={styles.subtitle}>
-            {move.duration / 1000}s
-          </Text>
-        </View>
+export default function Attack(props: Props) {
+  const { move, types } = props;
+
+  const prettyType = ucFirst(move.Type.toLowerCase());
+
+  const power = move.Power || 0;
+  const multiplier = types.includes(prettyType) ? 1.25 : 1;
+  const stab = power * (multiplier - 1);
+
+  return (
+    <View style={styles.row}>
+      <View style={styles.type}>
+        <Text style={styles.text}>{formatMove(move.Name)}</Text>
+        <Text style={styles.subtitle}>{prettyType}</Text>
       </View>
-    );
-  }
+      {!isQuickMove(move) && move.Energy ? (
+        Array.from({
+          length: Math.abs(Math.round(100 / move.Energy)),
+        }).map((_, i) => {
+          return <View key={i} style={styles.energy} />;
+        })
+      ) : (
+        <View style={styles.spacer}>
+          <Text style={[styles.text, styles.energyQuick]}>
+            +{move.Energy} energy
+          </Text>
+        </View>
+      )}
+      <View style={styles.damage}>
+        <Text style={styles.text}>
+          {power} {stab ? <Text style={styles.stab}>+{stab} </Text> : ''}
+        </Text>
+        <Text style={styles.subtitle}>
+          {move.DurationMs / 1000}s
+        </Text>
+      </View>
+    </View>
+  );
 }
