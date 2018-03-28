@@ -91,7 +91,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
         case 'defense':
           return b.stats.defense - a.stats.defense;
         case 'max_cp':
-          return b.points.max_cp - a.points.max_cp;
+          return store.getMaxCP(b) - store.getMaxCP(a);
         default:
           return 0;
       }

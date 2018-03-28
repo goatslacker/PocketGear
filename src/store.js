@@ -1,10 +1,13 @@
 /* @flow */
 
-import pokemons from './data/pokemons.json';
 import typeChart from './data/type_chart.json';
 import colors from './colors.json';
 import sprites from './sprites';
 import type { Pokemon, PokemonID, PokemonType, Move, TypeChart } from './types';
+
+import dex from 'pokemagic/dex';
+import ucFirst from './utils/ucFirst';
+import getMaxCP from 'pokemagic/lib/getMaxCP';
 
 const CP_VALUES = {
   max_hp: 414,
@@ -18,6 +21,12 @@ const CP_VALUES = {
   stamina: 250, // 510 (Blissey)
 };
 
+const allPokemon = dex.getAllPokemon().map(pokemon => {
+  return Object.assign({}, pokemon, {
+    types: [ucFirst(pokemon.type1), ucFirst(pokemon.type2 || '')].filter(Boolean),
+  });
+});
+
 const pokeFastCache = {};
 
 function getPokemonByName(name): Pokemon {
@@ -25,7 +34,7 @@ function getPokemonByName(name): Pokemon {
     return pokeFastCache[name];
   }
 
-  const pokemon = pokemons.find(poke => (
+  const pokemon = allPokemon.find(poke => (
     poke.name.toUpperCase() === name
   ));
 
@@ -35,7 +44,7 @@ function getPokemonByName(name): Pokemon {
 }
 
 function getPokemons(): Array<Pokemon> {
-  return pokemons;
+  return allPokemon;
 }
 
 function getTypeChart(): Array<TypeChart> {
@@ -55,10 +64,11 @@ function getCPValues() {
 }
 
 export default {
+  getCPValues,
+  getColor,
+  getMaxCP,
   getPokemonByName,
   getPokemons,
-  getTypeChart,
   getSprite,
-  getColor,
-  getCPValues,
+  getTypeChart,
 };

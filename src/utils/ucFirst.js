@@ -1,4 +1,5 @@
+import capitalize from './capitalize';
+
 export default function ucFirst(text) {
-  if (!text) return text;
-  return text[0].toUpperCase() + text.slice(1);
+  return capitalize(text.toLowerCase());
 }

@@ -1,7 +1,6 @@
 /* @flow */
 
 import dex from 'pokemagic/dex';
-import getMaxCP from 'pokemagic/lib/getMaxCP';
 import difference from 'lodash/difference';
 import React, { PureComponent } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
@@ -122,6 +121,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
 
   render() {
     const { pokemon } = this.props;
+    const maxCP = store.getMaxCP(pokemon);
     const maxValues = store.getCPValues();
     const quickAttacks = getQuickAttacks(pokemon);
     const specialAttacks = getSpecialAttacks(pokemon);
@@ -134,11 +134,6 @@ export default class PokemonDetails extends PureComponent<Props, void> {
       ...weakAgainst,
       ...strongAgainst,
     ]);
-
-    // TODO this is less than ideal but it allows us to switch to dex's
-    // pokemon db incrementally
-    const magicPokemon = dex.findPokemon(pokemon.name);
-    const maxCP = getMaxCP(magicPokemon);
 
     return (
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
@@ -154,20 +149,20 @@ export default class PokemonDetails extends PureComponent<Props, void> {
             )}
             {this._renderStat(
               'Attack',
-              magicPokemon.stats.attack / maxValues.attack,
-              magicPokemon.stats.attack,
+              pokemon.stats.attack / maxValues.attack,
+              pokemon.stats.attack,
               '#ff8a65'
             )}
             {this._renderStat(
               'Defense',
-              magicPokemon.stats.defense / maxValues.defense,
-              magicPokemon.stats.defense,
+              pokemon.stats.defense / maxValues.defense,
+              pokemon.stats.defense,
               '#9575cd'
             )}
             {this._renderStat(
               'Stamina',
-              magicPokemon.stats.stamina / maxValues.stamina,
-              magicPokemon.stats.stamina,
+              pokemon.stats.stamina / maxValues.stamina,
+              pokemon.stats.stamina,
               '#5499c7'
             )}
           </View>
@@ -222,7 +217,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Height
               </Text>
               <Text selectable style={styles.text}>
-                {magicPokemon.height} m
+                {pokemon.height} m
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -233,7 +228,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Weight
               </Text>
               <Text selectable style={styles.text}>
-                {magicPokemon.weight} kg
+                {pokemon.weight} kg
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -244,7 +239,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Capture Rate
               </Text>
               <Text selectable style={styles.text}>
-                {(magicPokemon.captureRate * 100)}%
+                {(pokemon.captureRate * 100)}%
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -255,10 +250,10 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Flee Rate
               </Text>
               <Text selectable style={styles.text}>
-                {(magicPokemon.fleeRate * 100)}%
+                {(pokemon.fleeRate * 100)}%
               </Text>
             </View>
-            {magicPokemon.kmBuddyDistance ? (
+            {pokemon.kmBuddyDistance ? (
               <View style={[styles.row, styles.center]}>
                 <Text
                   selectable
@@ -267,13 +262,13 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                   Buddy Distance
                 </Text>
                 <Text selectable style={styles.text}>
-                  {magicPokemon.kmBuddyDistance} km
+                  {pokemon.kmBuddyDistance} km
                 </Text>
               </View>
             ) : null}
           </View>
 
-          {magicPokemon.evolutionBranch ? (
+          {pokemon.evolutionBranch ? (
             <View style={styles.item}>
               <Evolution
                 style={styles.item}

@@ -32,63 +32,26 @@ export type PokemonID = number;
 export type Pokemon = {|
   id: PokemonID,
   name: string,
-  types: Array<PokemonType>,
-  category: string,
-  description: string,
-  name_origin: Array<{
-    term: string,
-    meaning: string,
-  }>,
+  type1: PokemonType,
+  type2: PokemonType,
   moves: {
     quick: Array<string>,
-    cinematic: Array<string>,
-  },
-  measurements: {
-    height: {
-      amount: number,
-      unit: 'm' | 'cm',
-    },
-    weight: {
-      amount: number,
-      unit: 'g' | 'kg',
-    },
+    charge: Array<string>,
   },
   stats: {
     stamina: number,
     attack: number,
     defense: number,
   },
-  points: {
-    max_cp: number,
-  },
-  evolution?: {
-    parent?: PokemonID,
-    branch?: Array<{
-      id: PokemonID,
-      candy_cost: number,
-      item_requirement?: EvolutionItem,
-    }>,
-  },
-  evolution_cp_multipliers?: Array<{
-    id: PokemonID,
-    multipliers: {
-      minimum: number,
-      maximum: number,
-    },
+  evolutionBranch?: Array<{
+    evolution: string,
+    candyCost: number,
   }>,
-  egg_distance?: {
-    amount: number,
-    unit: 'km',
-  },
-  buddy_distance?: {
-    amount: number,
-    unit: 'km',
-  },
-  encounter: {
-    capture_rate?: number,
-    flee_rate: number,
-  },
-  easter_eggs?: Array<string>,
+  kmBuddyDistance?: number,
+  captureRate: number,
+  fleeRate: number,
+  height: number,
+  weight: number,
 |};
 
 export type TypeChart = {|

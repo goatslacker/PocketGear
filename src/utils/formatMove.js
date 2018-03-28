@@ -1,11 +1,11 @@
-import ucFirst from './ucFirst';
+import capitalize from './capitalize';
 
 export default function formatMove(moveName) {
-  return ucFirst(
+  return capitalize(
     moveName
       .replace(/_FAST$/, '')
       .toLowerCase()
       .replace(/_([a-z])/g, (_, b) => ` ${b.toUpperCase()}`)
-  )
+  );
 }
 
