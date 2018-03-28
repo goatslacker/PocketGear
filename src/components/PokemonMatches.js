@@ -12,7 +12,6 @@ import store from '../store';
 import PokemonList from './PokemonList';
 
 import defenderProfile from 'pokemagic/defenderProfile';
-import findPokemon from 'pokemagic/lib/findPokemon';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,27 +43,43 @@ type Props = {
   navigation: Object,
 };
 
+function ucFirst(text) {
+  if (!text) return text;
+  return text[0].toUpperCase() + text.slice(1);
+}
+
+function formatMove(moveName) {
+  return ucFirst(moveName.replace(/_FAST$/, '').replace(/_/g, ' '));
+}
+
 export default function PokemonMatches(props: Props) {
   const { navigation, pokemon } = props;
 
-  const { counters } = defenderProfile(findPokemon(pokemon.name));
+  const { counters } = defenderProfile(pokemon.name, null, null, {
+    numPokemon: 4,
+
+    // TODO have switches for these settings
+    raid: true,
+    pvp: false,
+    weather: 'EXTREME',
+  });
 
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
     >
-      {Object.keys(counters).map(moveCombo => {
-        const [quickMove, chargeMove] = moveCombo.split('/');
-
-        const pokemonData = counters[moveCombo].map(counter => (
-          store.getPokemonByName(counter[0].name)
+      {counters.map(moveset => {
+        const pokemonData = moveset.results.map(result => (
+          store.getPokemonByName(result.name)
         )).filter(Boolean);
 
+        const key = `${moveset.quick}/${moveset.charge}`;
+
         return (
-          <View key={moveCombo}>
+          <View key={key}>
             <Text style={styles.heading}>
-              {quickMove} & {chargeMove}
+              {formatMove(moveset.quick)} & {formatMove(moveset.charge)}
             </Text>
             <View style={styles.row}>
               <PokemonList
