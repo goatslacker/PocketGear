@@ -1,8 +1,7 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import CPCalculator from './CPCalculator';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import type { Pokemon, PokemonID } from '../types';
 
 const styles = StyleSheet.create({
@@ -37,11 +36,9 @@ export default class PokemonTools extends PureComponent<Props, void> {
     return (
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
         <View style={styles.content}>
-          <CPCalculator
-            style={styles.item}
-            pokemon={this.props.pokemon}
-            navigation={this.props.navigation}
-          />
+          <Text>
+            Battle Simulator is under construction.
+          </Text>
         </View>
       </ScrollView>
     );
