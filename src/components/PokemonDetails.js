@@ -122,7 +122,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
 
   render() {
     const { pokemon } = this.props;
-    const maxValues = store.getMaxValues();
+    const maxValues = store.getCPValues();
     const quickAttacks = getQuickAttacks(pokemon);
     const specialAttacks = getSpecialAttacks(pokemon);
     const strongAgainstAll = getStrongAgainstTypes(pokemon);

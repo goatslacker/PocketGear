@@ -6,12 +6,16 @@ import colors from './colors.json';
 import sprites from './sprites';
 import type { Pokemon, PokemonID, PokemonType, Move, TypeChart } from './types';
 
-const MAX_VALUES = {
-  attack: 300,
-  defense: 200,
-  stamina: 320,
-  max_hp: 163,
-  max_cp: 3904,
+const CP_VALUES = {
+  max_hp: 414,
+  max_cp: 4548,
+
+  // These are intentionally not set at the maximum value but rather at an
+  // arbitrary level that is deemed "good enough" for that stat. This is
+  // for presentational purposes only.
+  attack: 300, // 300 (Mewtwo)
+  defense: 300, // 396 (Shuckle)
+  stamina: 250, // 510 (Blissey)
 };
 
 const pokeFastCache = {};
@@ -46,8 +50,8 @@ function getColor(type: PokemonType): string {
   return colors[type.toLowerCase()];
 }
 
-function getMaxValues() {
-  return MAX_VALUES;
+function getCPValues() {
+  return CP_VALUES;
 }
 
 export default {
@@ -56,5 +60,5 @@ export default {
   getTypeChart,
   getSprite,
   getColor,
-  getMaxValues,
+  getCPValues,
 };
