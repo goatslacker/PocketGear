@@ -47,7 +47,7 @@ type Props = {
 export default class PokemonChooser extends PureComponent<Props, State> {
   state: State = {
     query: '',
-    sort: '#',
+    sort: 'max_cp',
     results: {
       pokemons: store.getPokemons(),
     },
