@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
 
   subtitle: {
     fontFamily: 'Montserrat',
-    fontSize: 11,
+    fontSize: 12,
     color: '#999',
     marginVertical: 4,
   },
 
-  numbers: {
-    fontSize: 10,
+  energyQuick: {
+    color: '#999',
   },
 
   stab: {
@@ -80,15 +80,18 @@ export default class Attack extends PureComponent<Props, void> {
             return <View key={i} style={styles.energy} />;
           })
         ) : (
-          <View style={styles.spacer} />
+          <View style={styles.spacer}>
+            <Text style={[styles.text, styles.energyQuick]}>
+              +{move.energy_delta} energy
+            </Text>
+          </View>
         )}
         <View style={styles.damage}>
           <Text style={styles.text}>
-            {((power + stab) / (move.duration / 1000)).toFixed(2)} dps
+            {power} {stab ? <Text style={styles.stab}>+{stab} </Text> : ''}
           </Text>
-          <Text style={[styles.subtitle, styles.numbers]}>
-            {power} {stab ? <Text style={styles.stab}>+{stab} </Text> : ''}/{' '}
-            {move.duration / 1000} s
+          <Text style={styles.subtitle}>
+            {move.duration / 1000}s
           </Text>
         </View>
       </View>

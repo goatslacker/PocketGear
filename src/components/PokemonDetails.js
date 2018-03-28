@@ -136,81 +136,37 @@ export default class PokemonDetails extends PureComponent<Props, void> {
     return (
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
         <View style={styles.content}>
-          <View style={styles.item}>
-            <Heading selectable>{pokemon.category}</Heading>
-            <Paragraph>{pokemon.description}</Paragraph>
-          </View>
-
-          <View style={styles.origin}>
-            {pokemon.name_origin.map(({ term, meaning }) => (
-              <Paragraph style={styles.term} key={term}>
-                <Text style={[styles.text, styles.strong]}>{term}</Text>
-                <Text>{'    '}</Text>
-                <Text>{meaning}</Text>
-              </Paragraph>
-            ))}
-          </View>
-
-          {pokemon.egg_distance || pokemon.buddy_distance ? (
-            <View style={styles.item}>
-              {pokemon.egg_distance ? (
-                <View style={[styles.row, styles.center]}>
-                  <Text
-                    selectable
-                    style={[styles.text, styles.strong, styles.measurement]}
-                  >
-                    Egg Group
-                  </Text>
-                  <Text selectable style={styles.text}>
-                    {pokemon.egg_distance.amount} {pokemon.egg_distance.unit}
-                  </Text>
-                </View>
-              ) : null}
-              {pokemon.buddy_distance ? (
-                <View style={[styles.row, styles.center]}>
-                  <Text
-                    selectable
-                    style={[styles.text, styles.strong, styles.measurement]}
-                  >
-                    Buddy Distance
-                  </Text>
-                  <Text selectable style={styles.text}>
-                    {pokemon.buddy_distance.amount}{' '}
-                    {pokemon.buddy_distance.unit}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-          ) : null}
 
           <View style={styles.item}>
-            <View style={[styles.row, styles.center]}>
-              <Text
-                selectable
-                style={[styles.text, styles.strong, styles.measurement]}
-              >
-                Height
-              </Text>
-              <Text selectable style={styles.text}>
-                {pokemon.measurements.height.amount}{' '}
-                {pokemon.measurements.height.unit}
-              </Text>
-            </View>
-            <View style={[styles.row, styles.center]}>
-              <Text
-                selectable
-                style={[styles.text, styles.strong, styles.measurement]}
-              >
-                Weight
-              </Text>
-              <Text selectable style={styles.text}>
-                {pokemon.measurements.weight.amount}{' '}
-                {pokemon.measurements.weight.unit}
-              </Text>
-            </View>
+            <Heading selectable>Stats</Heading>
+            {this._renderStat(
+              'Max CP',
+              pokemon.points.max_cp / maxValues.max_cp,
+              pokemon.points.max_cp,
+              '#e57373'
+            )}
+            {this._renderStat(
+              'Attack',
+              pokemon.stats.attack / maxValues.attack,
+              pokemon.stats.attack,
+              '#ff8a65'
+            )}
+            {this._renderStat(
+              'Defense',
+              pokemon.stats.defense / maxValues.defense,
+              pokemon.stats.defense,
+              '#9575cd'
+            )}
+            {this._renderStat(
+              'Stamina',
+              pokemon.stats.stamina / maxValues.stamina,
+              pokemon.stats.stamina,
+              '#5499c7'
+            )}
           </View>
 
           <View style={styles.item}>
+            <Heading selectable>Types</Heading>
             {strongAgainst.length ? (
               <View style={[styles.row, styles.item]}>
                 <Text style={[styles.text, styles.label]}>Strong against</Text>
@@ -244,47 +200,73 @@ export default class PokemonDetails extends PureComponent<Props, void> {
           </View>
 
           <View style={styles.item}>
+            <Heading selectable>Moves</Heading>
             {quickAttacks.map(this._renderAttack)}
             {specialAttacks.map(this._renderAttack)}
           </View>
 
           <View style={styles.item}>
-            {this._renderStat(
-              'Attack',
-              pokemon.stats.attack / maxValues.attack,
-              pokemon.stats.attack,
-              '#ff8a65'
-            )}
-            {this._renderStat(
-              'Defense',
-              pokemon.stats.defense / maxValues.defense,
-              pokemon.stats.defense,
-              '#9575cd'
-            )}
-            {this._renderStat(
-              'Stamina',
-              pokemon.stats.stamina / maxValues.stamina,
-              pokemon.stats.stamina,
-              '#5499c7'
-            )}
-            {this._renderStat(
-              'Capture Rate',
-              pokemon.encounter.capture_rate || 0,
-              ((pokemon.encounter.capture_rate || 0) * 100).toFixed(2) + '%',
-              '#f06292'
-            )}
-            {this._renderStat(
-              'Flee Rate',
-              pokemon.encounter.flee_rate,
-              (pokemon.encounter.flee_rate * 100).toFixed(2) + '%',
-              '#ffd54f'
-            )}
-            {this._renderStat(
-              'Max CP',
-              pokemon.points.max_cp / maxValues.max_cp,
-              pokemon.points.max_cp,
-              '#e57373'
-            )}
+            <Heading selectable>Vitals</Heading>
+            <View style={[styles.row, styles.center]}>
+              <Text
+                selectable
+                style={[styles.text, styles.strong, styles.measurement]}
+              >
+                Height
+              </Text>
+              <Text selectable style={styles.text}>
+                {pokemon.measurements.height.amount}{' '}
+                {pokemon.measurements.height.unit}
+              </Text>
+            </View>
+            <View style={[styles.row, styles.center]}>
+              <Text
+                selectable
+                style={[styles.text, styles.strong, styles.measurement]}
+              >
+                Weight
+              </Text>
+              <Text selectable style={styles.text}>
+                {pokemon.measurements.weight.amount}{' '}
+                {pokemon.measurements.weight.unit}
+              </Text>
+            </View>
+            <View style={[styles.row, styles.center]}>
+              <Text
+                selectable
+                style={[styles.text, styles.strong, styles.measurement]}
+              >
+                Capture Rate
+              </Text>
+              <Text selectable style={styles.text}>
+                {pokemon.encounter.capture_rate || 0}
+              </Text>
+            </View>
+            <View style={[styles.row, styles.center]}>
+              <Text
+                selectable
+                style={[styles.text, styles.strong, styles.measurement]}
+              >
+                Flee Rate
+              </Text>
+              <Text selectable style={styles.text}>
+                {pokemon.encounter.flee_rate || 0}
+              </Text>
+            </View>
+            {pokemon.buddy_distance ? (
+              <View style={[styles.row, styles.center]}>
+                <Text
+                  selectable
+                  style={[styles.text, styles.strong, styles.measurement]}
+                >
+                  Buddy Distance
+                </Text>
+                <Text selectable style={styles.text}>
+                  {pokemon.buddy_distance.amount}{' '}
+                  {pokemon.buddy_distance.unit}
+                </Text>
+              </View>
+            ) : null}
           </View>
 
           {pokemon.evolution ? (
