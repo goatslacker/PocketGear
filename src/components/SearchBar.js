@@ -3,7 +3,6 @@
 import React, { PureComponent } from 'react';
 import {
   Animated,
-  Keyboard,
   View,
   Platform,
   TextInput,
@@ -18,7 +17,6 @@ const LOLLIPOP = 21;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: Platform.OS === 'ios' ? 0 : 8,
-    marginTop: Platform.OS === 'ios' ? 20 : 8,
     marginBottom: 0,
   },
 
@@ -118,46 +116,12 @@ type Props<T> = {
   style?: any,
 };
 
-type State = {
-  toggles: boolean,
-  focused: Animated.Value,
-};
-
 export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
   static HEIGHT = Platform.OS === 'ios' ? 64 : 56;
-
-  state = {
-    toggles: false,
-    focused: new Animated.Value(0),
-  };
-
-  componentDidMount() {
-    Keyboard.addListener('keyboardDidShow', this._handleFocus);
-    Keyboard.addListener('keyboardDidHide', this._handleBlur);
-  }
-
-  componentWillUnmount() {
-    Keyboard.removeListener('keyboardDidShow', this._handleFocus);
-    Keyboard.removeListener('keyboardDidHide', this._handleBlur);
-  }
 
   _handleClearPress = () => {
     this.props.onChangeText('');
   };
-
-  _handleFocus = () =>
-    Animated.spring(this.state.focused, {
-      toValue: 1,
-      tension: 300,
-      friction: 35,
-    }).start(() => this.setState({ toggles: true }));
-
-  _handleBlur = () =>
-    Animated.spring(this.state.focused, {
-      toValue: 0,
-      tension: 300,
-      friction: 35,
-    }).start(() => this.setState({ toggles: false }));
 
   render() {
     const {
@@ -170,20 +134,16 @@ export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
       ...rest
     } = this.props;
 
-    const radius = this.state.focused.interpolate({
-      inputRange: [0, 1],
-      outputRange: [2, 0],
-    });
-
     const bar = Platform.OS === 'android' && {
-      borderBottomLeftRadius: radius,
-      borderBottomRightRadius: radius,
+      borderBottomLeftRadius: 2,
+      borderBottomRightRadius: 2,
     };
 
     return (
       <View {...rest} style={[styles.container, style]}>
         <Animated.View style={[styles.bar, bar]}>
           <TextInput
+            autoCorrect={false}
             style={styles.input}
             placeholder={placeholder}
             value={value}
@@ -213,22 +173,24 @@ export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
             </TouchableOpacity>
           ) : null}
         </Animated.View>
-        <Animated.View
-          style={[styles.bar, styles.toggles, { opacity: this.state.focused }]}
-          pointerEvents={this.state.toggles ? 'auto' : 'none'}
-        >
-          <Animated.View style={styles.separator} />
-          <Animated.View style={styles.row}>
-            {this.props.toggles.map(toggle => (
-              <FilterToggle
-                key={toggle.name}
-                active={toggle.active}
-                label={toggle.label}
-                onPress={() => this.props.onChangeToggle(toggle)}
-              />
-            ))}
+        {this.props.toggles && (
+          <Animated.View
+            style={[styles.bar, styles.toggles]}
+            pointerEvents={'auto'}
+          >
+            <Animated.View style={styles.separator} />
+            <Animated.View style={styles.row}>
+              {this.props.toggles.map(toggle => (
+                <FilterToggle
+                  key={toggle.name}
+                  active={toggle.active}
+                  label={toggle.label}
+                  onPress={() => this.props.onChangeToggle(toggle)}
+                />
+              ))}
+            </Animated.View>
           </Animated.View>
-        </Animated.View>
+        )}
       </View>
     );
   }
