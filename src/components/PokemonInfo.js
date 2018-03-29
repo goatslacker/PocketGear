@@ -10,7 +10,7 @@ import DelayedItem from './DelayedItem';
 import PokemonTypeLabel from './PokemonTypeLabel';
 import PokemonDetails from './PokemonDetails';
 import PokemonMatches from './PokemonMatches';
-import PokemonTools from './PokemonTools';
+import PokemonBattle from './PokemonBattle';
 import store from '../store';
 import type { PokemonID, Pokemon } from '../types';
 
@@ -97,14 +97,14 @@ const InfoTabs = TabNavigator(
         <PokemonDetails {...rest} {...screenProps} />
       ),
     },
-    Matches: {
+    Counters: {
       screen: ({ screenProps, ...rest }) => (
         <DelayedItem {...rest} {...screenProps} component={PokemonMatches} />
       ),
     },
-    Tools: {
+    Battle: {
       screen: ({ screenProps, ...rest }) => (
-        <DelayedItem {...rest} {...screenProps} component={PokemonTools} />
+        <DelayedItem {...rest} {...screenProps} component={PokemonBattle} />
       ),
     },
   },
@@ -119,7 +119,7 @@ const InfoTabs = TabNavigator(
     },
     backBehavior: 'none',
     initialRouteName: 'Details',
-    order: ['Details', 'Matches', 'Tools'],
+    order: ['Details', 'Counters', 'Battle'],
   }
 );
 

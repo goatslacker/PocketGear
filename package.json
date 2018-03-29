@@ -22,6 +22,7 @@
     "pokemagic": "^2.0.0",
     "react": "16.0.0-beta.5",
     "react-native": "~0.49.5",
+    "react-native-picker-select": "^2.0.1",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.19"
   },
