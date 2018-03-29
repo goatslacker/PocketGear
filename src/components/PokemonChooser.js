@@ -2,35 +2,39 @@
 
 import filter from 'lodash/filter';
 import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import React, { PureComponent } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import SearchBar from './SearchBar';
 import PokemonList from './PokemonList';
+import PokemonListCard from './PokemonListCard';
 import NoResults from './NoResults';
 import store from '../store';
 import type { Pokemon } from '../types';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
     flex: 1,
     backgroundColor: '#fff',
+    marginTop: -20,
   },
 
   content: {
     backgroundColor: '#fafafa',
-    paddingTop: SearchBar.HEIGHT + 4,
+    paddingTop: 154,
   },
 
   searchbar: {
+    backgroundColor: '#fff',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
+    paddingTop: 60,
   },
 });
 
-type SortKey = '#' | 'name' | 'attack' | 'defense' | 'max_cp';
+type SortKey = '#' | 'name' | 'attack' | 'defense' | 'max_cp' | 'stamina';
 
 type State = {
   query: string,
@@ -41,17 +45,24 @@ type State = {
 };
 
 type Props = {
+  onChosen?: func,
   navigation: Object,
 };
 
 export default class PokemonChooser extends PureComponent<Props, State> {
-  state: State = {
-    query: '',
-    sort: 'max_cp',
-    results: {
-      pokemons: store.getPokemons(),
-    },
-  };
+  constructor() {
+    super();
+
+    this.state = {
+      query: '',
+      sort: 'max_cp',
+      results: {
+        pokemons: store.getPokemons(),
+      },
+    };
+
+    this.handleRowPress = throttle(this.handleRowPress.bind(this), 300)
+  }
 
   _getResults = (text: string) => {
     const query = text.toLowerCase().trim();
@@ -82,16 +93,18 @@ export default class PokemonChooser extends PureComponent<Props, State> {
     const { sort } = this.state;
     return results.slice(0).sort((a, b) => {
       switch (sort) {
+        case 'max_cp':
+          return store.getMaxCP(b) - store.getMaxCP(a);
         case '#':
           return a.id - b.id;
-        case 'name':
-          return a.name.localeCompare(b.name);
         case 'attack':
           return b.stats.attack - a.stats.attack;
         case 'defense':
           return b.stats.defense - a.stats.defense;
-        case 'max_cp':
-          return store.getMaxCP(b) - store.getMaxCP(a);
+        case 'stamina':
+          return b.stats.stamina - a.stats.stamina;
+        case 'name':
+          return a.name.localeCompare(b.name);
         default:
           return 0;
       }
@@ -135,6 +148,27 @@ export default class PokemonChooser extends PureComponent<Props, State> {
 
   _unsetRef = () => (this._list = null);
 
+  handleRowPress(pokemon) {
+    if (this.props.onChosen) {
+      this.props.onChosen(pokemon);
+      return;
+    }
+
+    this.props.navigation.navigate('Info', {
+      pokemonId: pokemon.id,
+    });
+  }
+
+  renderRow(rowData) {
+    return (
+      <PokemonListCard
+        pokemon={rowData}
+        onPress={this.handleRowPress.bind(this)}
+        navigation={this.props.navigation}
+      />
+    );
+  }
+
   render() {
     return (
       <KeyboardAvoidingView style={styles.container}>
@@ -146,6 +180,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
             navigation={this.props.navigation}
             contentContainerStyle={styles.content}
             ref={this._setRef}
+            renderRow={this.renderRow.bind(this)}
           />
         ) : (
           <NoResults
@@ -160,22 +195,27 @@ export default class PokemonChooser extends PureComponent<Props, State> {
           value={this.state.query}
           onChangeText={this._handleSearchChange}
           toggles={[
-            { name: '#', label: '#', active: this.state.sort === '#' },
-            { name: 'name', label: 'Name', active: this.state.sort === 'name' },
-            {
-              name: 'attack',
-              label: 'Attack',
-              active: this.state.sort === 'attack',
-            },
-            {
-              name: 'defense',
-              label: 'Defense',
-              active: this.state.sort === 'defense',
-            },
             {
               name: 'max_cp',
               label: 'Max CP',
               active: this.state.sort === 'max_cp',
+            },
+            { name: '#', label: '#', active: this.state.sort === '#' },
+            { name: 'name', label: 'Name', active: this.state.sort === 'name' },
+            {
+              name: 'attack',
+              label: 'Atk',
+              active: this.state.sort === 'attack',
+            },
+            {
+              name: 'defense',
+              label: 'Def',
+              active: this.state.sort === 'defense',
+            },
+            {
+              name: 'stamina',
+              label: 'Sta',
+              active: this.state.sort === 'stamina',
             },
           ]}
           onChangeToggle={this._handleChangeToggle}

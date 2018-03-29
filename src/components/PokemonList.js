@@ -31,7 +31,10 @@ export default class PokemonList extends PureComponent<Props, void> {
 
   _renderRow = (rowData: any) => {
     return (
-      <PokemonListCard pokemon={rowData} navigation={this.props.navigation} />
+      <PokemonListCard
+        pokemon={rowData}
+        navigation={this.props.navigation}
+      />
     );
   };
 
@@ -48,7 +51,7 @@ export default class PokemonList extends PureComponent<Props, void> {
         pageSize={2}
         style={[styles.grid, this.props.style]}
         spacing={8}
-        renderRow={this._renderRow}
+        renderRow={this.props.renderRow || this._renderRow}
         getNumberOfColumns={this._getNumberOfColumns}
         ref={this._setRef}
       />

@@ -5,6 +5,8 @@ import { Image, Text, StyleSheet } from 'react-native';
 import TouchableItem from './TouchableItem';
 import store from '../store';
 import type { Pokemon } from '../types';
+import throttle from 'lodash/throttle';
+import formatMove from '../utils/formatMove';
 
 const styles = StyleSheet.create({
   block: {
@@ -15,8 +17,6 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    margin: 16,
-    height: 96,
     resizeMode: 'contain',
   },
 
@@ -45,23 +45,37 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+  height?: number,
   navigation: Object,
   pokemon: Pokemon,
+  onPress?: func,
+  subtitle?: string,
   style?: any,
+  title?: string,
+  toptext?: string,
 };
 
 export default class PokemonListCard extends PureComponent<Props, void> {
-  _handlePress = () => {
+  _handlePress = throttle(() => {
+    if (this.props.onPress) {
+      this.props.onPress(this.props.pokemon);
+      return;
+    }
+
     this.props.navigation.navigate('Info', {
       pokemonId: this.props.pokemon.id,
     });
-  };
+  }, 500);
 
   render() {
-    const { pokemon, style } = this.props;
-    const types = pokemon.types.join(', ');
-    const color = store.getColor(pokemon.types[0]);
+    const { height, pokemon, subtitle, style, title, toptext } = this.props;
+    const types = [pokemon.type1, pokemon.type2]
+      .filter(Boolean)
+      .map(formatMove)
+      .join(', ');
+    const color = store.getColor(pokemon.type1);
     const sprite = store.getSprite(pokemon.id);
+    const margin = Math.floor(height / 6);
 
     return (
       <TouchableItem
@@ -70,11 +84,18 @@ export default class PokemonListCard extends PureComponent<Props, void> {
         activeOpacity={0.7}
         style={[styles.block, { backgroundColor: color }, style]}
       >
-        <Text style={[styles.index, styles.subtitle]}>#{pokemon.id}</Text>
-        <Image source={sprite} style={styles.image} />
-        <Text style={styles.title}>{pokemon.name}</Text>
-        <Text style={styles.subtitle}>{types}</Text>
+        <Text style={[styles.index, styles.subtitle]}>{toptext || `#${pokemon.id}`}</Text>
+        <Image source={sprite} style={[styles.image, { height, margin }]} />
+        <Text style={styles.title}>{title || pokemon.name}</Text>
+        <Text style={styles.subtitle}>{subtitle || types}</Text>
       </TouchableItem>
     );
   }
 }
+
+PokemonListCard.defaultProps = {
+  height: 96,
+  subtitle: '',
+  title: '',
+  toptext: '',
+};
