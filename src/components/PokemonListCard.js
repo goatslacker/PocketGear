@@ -59,12 +59,7 @@ export default class PokemonListCard extends PureComponent<Props, void> {
   _handlePress = throttle(() => {
     if (this.props.onPress) {
       this.props.onPress(this.props.pokemon);
-      return;
     }
-
-    this.props.navigation.navigate('Info', {
-      pokemonId: this.props.pokemon.id,
-    });
   }, 500);
 
   render() {

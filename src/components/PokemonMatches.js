@@ -70,19 +70,15 @@ function getDefenderProfile(pokemon) {
   }));
 }
 
-function renderRow(rowData, navigation) {
+function getCardProps(rowData) {
   const pokemon = store.getPokemonByID(rowData[0]);
   const quick = pokemon.moves.quick[rowData[1]] || '?';
   const charge = pokemon.moves.charge[rowData[2]] || '?';
   const subtitle = [quick, charge].map(shortenMove).join('/')
 
-  return (
-    <PokemonListCard
-      pokemon={pokemon}
-      navigation={navigation}
-      subtitle={subtitle}
-    />
-  );
+  return {
+    subtitle,
+  }
 }
 
 export default function PokemonMatches(props: Props) {
@@ -107,7 +103,7 @@ export default function PokemonMatches(props: Props) {
               <PokemonList
                 data={moveset.p}
                 navigation={navigation}
-                renderRow={rowData => renderRow(rowData, navigation)}
+                getCardProps={getCardProps}
               />
             </View>
           </View>

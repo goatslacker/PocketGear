@@ -29,11 +29,25 @@ export default class PokemonList extends PureComponent<Props, void> {
 
   _root: Object;
 
+  _handlePress(pokemon) {
+    if (this.props.onPress) {
+      this.props.onPress(pokemon);
+      return;
+    }
+
+    this.props.navigation.navigate('Info', {
+      pokemonId: pokemon.id,
+    });
+  }
+
   _renderRow = (rowData: any) => {
+    const extraProps = this.props.getCardProps ? this.props.getCardProps(rowData) : {};
     return (
       <PokemonListCard
+        {...extraProps}
         pokemon={rowData}
         navigation={this.props.navigation}
+        onPress={this._handlePress.bind(this)}
       />
     );
   };
@@ -51,7 +65,7 @@ export default class PokemonList extends PureComponent<Props, void> {
         pageSize={2}
         style={[styles.grid, this.props.style]}
         spacing={8}
-        renderRow={this.props.renderRow || this._renderRow}
+        renderRow={this._renderRow}
         getNumberOfColumns={this._getNumberOfColumns}
         ref={this._setRef}
       />

@@ -2,7 +2,6 @@
 
 import filter from 'lodash/filter';
 import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
 import React, { PureComponent } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import SearchBar from './SearchBar';
@@ -60,8 +59,6 @@ export default class PokemonChooser extends PureComponent<Props, State> {
         pokemons: store.getPokemons(),
       },
     };
-
-    this.handleRowPress = throttle(this.handleRowPress.bind(this), 300)
   }
 
   _getResults = (text: string) => {
@@ -159,16 +156,6 @@ export default class PokemonChooser extends PureComponent<Props, State> {
     });
   }
 
-  renderRow(rowData) {
-    return (
-      <PokemonListCard
-        pokemon={rowData}
-        onPress={this.handleRowPress.bind(this)}
-        navigation={this.props.navigation}
-      />
-    );
-  }
-
   render() {
     return (
       <KeyboardAvoidingView style={styles.container}>
@@ -180,7 +167,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
             navigation={this.props.navigation}
             contentContainerStyle={styles.content}
             ref={this._setRef}
-            renderRow={this.renderRow.bind(this)}
+            onPress={this.handleRowPress.bind(this)}
           />
         ) : (
           <NoResults
