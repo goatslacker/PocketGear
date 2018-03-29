@@ -18,7 +18,7 @@ type State = {
   loading: boolean,
 };
 
-export default class StrongAgainstList<T: *> extends PureComponent<
+export default class DelayedItem<T: *> extends PureComponent<
   Props<T>,
   State
 > {
