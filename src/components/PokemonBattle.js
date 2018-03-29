@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import type { Pokemon } from '../types';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 
 import PokemonList from './PokemonList';
 import Heading from './Heading';
@@ -18,6 +18,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 16,
+  },
+
+  heading: {
+    color: '#000',
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 14,
+    textAlign: 'center',
+    opacity: 0.75,
+    marginTop: 8,
+    marginBottom: 8,
+    backgroundColor: 'transparent',
   },
 });
 
@@ -63,7 +74,7 @@ export default class PokemonBattle extends PureComponent {
 
     this.data = moveCombos.map(({ quick, charge }) => {
       return {
-        key: `${quick}/${charge}`,
+        key: `${quick.Name}/${charge.Name}`,
         quick,
         charge,
         results: topPokemon
@@ -94,7 +105,9 @@ export default class PokemonBattle extends PureComponent {
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
         {this.data.map(({ key, quick, charge, results }) => (
           <View key={key}>
-            <Heading>{formatMove(quick.Name)} & {formatMove(charge.Name)}</Heading>
+            <Text style={styles.heading}>
+              {formatMove(quick.Name)} & {formatMove(charge.Name)}
+            </Text>
             <PokemonList
               data={results}
               navigation={this.props.navigation}
