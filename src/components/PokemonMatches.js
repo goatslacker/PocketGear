@@ -4,13 +4,11 @@ import React, { PureComponent } from 'react';
 import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
 import More from './More';
 import PokemonListCard from './PokemonListCard';
-import getWeakAgainstPokemons from '../utils/getWeakAgainstPokemons';
-import getStrongAgainstPokemons from '../utils/getStrongAgainstPokemons';
-import findClosestMatch from '../utils/findClosestMatch';
 import type { Pokemon, PokemonID } from '../types';
 import store from '../store';
 import PokemonList from './PokemonList';
 import formatMove from '../utils/formatMove';
+import shortenMove from '../utils/shortenMove';
 
 import defenderProfile from 'pokemagic/defenderProfile';
 
@@ -46,17 +44,51 @@ type Props = {
   navigation: Object,
 };
 
+function getDefenderProfile(pokemon) {
+  // TODO let you configure and run your own
+  const { counters } = defenderProfile(pokemon.name, null, null, {
+    legacy: false,
+    numPokemon: 4,
+    raid: true,
+    tm: false,
+    weather: 'EXTREME',
+  });
+
+  return counters.map(moveset => ({
+    m1: moveset.quick,
+    m2: moveset.charge,
+    p: moveset.results.map(x => {
+      const pokemon = store.getPokemonByName(x.name)
+      const [quick, charge] = x.stats[0].moves
+
+      return [
+        pokemon.id,
+        pokemon.moves.quick.indexOf(quick),
+        pokemon.moves.charge.indexOf(charge),
+      ]
+    }),
+  }));
+}
+
+function renderRow(rowData, navigation) {
+  const pokemon = store.getPokemonByID(rowData[0]);
+  const quick = pokemon.moves.quick[rowData[1]] || '?';
+  const charge = pokemon.moves.charge[rowData[2]] || '?';
+  const subtitle = [quick, charge].map(shortenMove).join('/')
+
+  return (
+    <PokemonListCard
+      pokemon={pokemon}
+      navigation={navigation}
+      subtitle={subtitle}
+    />
+  );
+}
+
 export default function PokemonMatches(props: Props) {
   const { navigation, pokemon } = props;
 
-  const { counters } = defenderProfile(pokemon.name, null, null, {
-    numPokemon: 4,
-
-    // TODO have switches for these settings
-    raid: true,
-    pvp: false,
-    weather: 'EXTREME',
-  });
+  const counters = store.getCounters(pokemon.id) || getDefenderProfile(pokemon);
 
   return (
     <ScrollView
@@ -64,21 +96,18 @@ export default function PokemonMatches(props: Props) {
       contentContainerStyle={styles.content}
     >
       {counters.map(moveset => {
-        const pokemonData = moveset.results.map(result => (
-          store.getPokemonByName(result.name)
-        )).filter(Boolean);
-
-        const key = `${moveset.quick}/${moveset.charge}`;
+        const key = `${moveset.m1}/${moveset.m2}`;
 
         return (
           <View key={key}>
             <Text style={styles.heading}>
-              {formatMove(moveset.quick)} & {formatMove(moveset.charge)}
+              {formatMove(moveset.m1)} & {formatMove(moveset.m2)}
             </Text>
             <View style={styles.row}>
               <PokemonList
-                data={pokemonData}
+                data={moveset.p}
                 navigation={navigation}
+                renderRow={rowData => renderRow(rowData, navigation)}
               />
             </View>
           </View>

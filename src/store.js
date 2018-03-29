@@ -2,6 +2,7 @@
 
 import typeChart from './data/type_chart.json';
 import colors from './colors.json';
+import topCounters from './data/topCounters';
 import sprites from './sprites';
 import type { Pokemon, PokemonID, PokemonType, Move, TypeChart } from './types';
 
@@ -63,10 +64,20 @@ function getCPValues() {
   return CP_VALUES;
 }
 
+function getCounters(id) {
+  return topCounters[id];
+}
+
+function getPokemonByID(id) {
+  return allPokemon[id - 1];
+}
+
 export default {
   getCPValues,
   getColor,
+  getCounters,
   getMaxCP,
+  getPokemonByID,
   getPokemonByName,
   getPokemons,
   getSprite,
