@@ -82,6 +82,15 @@ function getCardProps(rowData) {
   }
 }
 
+function goToBattle(defender, navigation) {
+  return (attacker) => {
+    navigation.navigate('Arena', {
+      attackerId: attacker.id,
+      defenderId: defender.id,
+    });
+  }
+}
+
 export default function PokemonMatches(props: Props) {
   const { navigation, pokemon } = props;
 
@@ -105,6 +114,7 @@ export default function PokemonMatches(props: Props) {
                 data={moveset.p}
                 navigation={navigation}
                 getCardProps={getCardProps}
+                onPress={goToBattle(pokemon, navigation)}
               />
             </View>
           </View>
