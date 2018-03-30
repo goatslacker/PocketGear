@@ -77,6 +77,7 @@ function getCardProps(rowData) {
   const subtitle = [quick, charge].map(shortenMove).join('/')
 
   return {
+    pokemon,
     subtitle,
   }
 }
