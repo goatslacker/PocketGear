@@ -83,7 +83,7 @@ function getCardProps(rowData) {
 }
 
 function goToBattle(defender, navigation) {
-  return (attacker) => {
+  return (attacker, rowData) => {
     navigation.navigate('Arena', {
       attackerId: attacker.id,
       defenderId: defender.id,

@@ -196,25 +196,42 @@ export default class Arena extends PureComponent {
     return store.getPokemonByID(this.props.navigation.state.params.defenderId)
   }
 
+  clearResults() {
+    if (this.scrollView) {
+      this.scrollView.scrollTo({
+        x: 0,
+        y: 0,
+        animated: false,
+      });
+    }
+    this.setState({ results: null });
+  }
+
   runBattleSimulator(state) {
-    // TODO scroll the ScrollView up to the top!
+    if (this.scrollView) {
+      this.scrollView.scrollTo({
+        x: 0,
+        y: 0,
+        animated: false,
+      });
+    }
 
     this.setState({ isLoading: true }, () => {
       // TODO custom iv and level for atk and def
       const attacker = {
         iv: 0xfff,
         lvl: 40,
-        move1: state.atkMove1,
-        move2: state.atkMove2,
-        pokemon: state.atk,
+        quickMove: state.atk.quickMove,
+        chargeMove: state.atk.chargeMove,
+        pokemon: state.atk.pokemon,
       };
 
       const defender = {
         iv: 0xfff,
         lvl: 40,
-        move1: state.defMove1,
-        move2: state.defMove2,
-        pokemon: state.def,
+        quickMove: state.def.quickMove,
+        chargeMove: state.def.chargeMove,
+        pokemon: state.def.pokemon,
       };
 
       const options = {
@@ -239,7 +256,11 @@ export default class Arena extends PureComponent {
     const attacker = this.getAttacker();
     const defender = this.getDefender();
     return (
-      <ScrollView {...this.props} style={[styles.container, this.props.style]}>
+      <ScrollView
+        {...this.props}
+        ref={scrollView => this.scrollView = scrollView}
+        style={[styles.container, this.props.style]}
+      >
         <Appbar navigation={this.props.navigation}>
           Battle Simulator
         </Appbar>
@@ -248,15 +269,15 @@ export default class Arena extends PureComponent {
         )}
         {!this.state.results && (
           <BattleSimulatorOptions
-            navigation={this.props.navigation}
-            onSelect={this.runBattleSimulator.bind(this)}
             attacker={attacker}
             defender={defender}
+            navigation={this.props.navigation}
+            onBattle={state => this.runBattleSimulator(state)}
           />
         )}
         {this.state.results && (
           <BattleResults
-            onDone={() => this.setState({ results: null })}
+            onDone={() => this.clearResults()}
             results={this.state.results}
           />
         )}

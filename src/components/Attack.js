@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   },
 
   row: {
+    flex: 1,
     flexDirection: 'row',
     marginVertical: 4,
   },
