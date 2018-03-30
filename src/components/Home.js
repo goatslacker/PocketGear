@@ -5,6 +5,7 @@ import { StackNavigator } from 'react-navigation';
 import PokemonChooser from './PokemonChooser';
 import PokemonInfo from './PokemonInfo';
 import PokeModal from './PokeModal';
+import Arena from './Arena';
 
 const Home = StackNavigator(
   {
@@ -24,6 +25,9 @@ const Root = StackNavigator(
     },
     Modal: {
       screen: PokeModal,
+    },
+    Arena: {
+      screen: Arena,
     },
   },
   {

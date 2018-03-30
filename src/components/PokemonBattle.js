@@ -99,6 +99,13 @@ export default class PokemonBattle extends PureComponent {
     });
   }
 
+  handlePokePress(pokemon) {
+    this.props.navigation.navigate('Arena', {
+      attackerId: this.props.pokemon.id,
+      defenderId: pokemon.id,
+    });
+  }
+
   render() {
     // TODO when you tap on these take you to the battle screen
     return (
@@ -111,6 +118,7 @@ export default class PokemonBattle extends PureComponent {
             <PokemonList
               data={results}
               navigation={this.props.navigation}
+              onPress={this.handlePokePress.bind(this)}
             />
           </View>
         ))}
