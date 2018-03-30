@@ -74,7 +74,7 @@ export default function Attack(props: Props) {
 
   const power = move.Power || 0;
   const multiplier = types.includes(prettyType) ? 1.25 : 1;
-  const stab = power * (multiplier - 1);
+  const stab = Math.floor(power * (multiplier - 1));
 
   return (
     <View style={styles.row}>
