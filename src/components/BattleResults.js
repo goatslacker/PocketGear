@@ -196,7 +196,10 @@ export default function BattleResults({ onDone, results }) {
               {formatMove(results.atk.name)}
             </Heading>
             <Text style={styles.center}>
-              {results.atk.moves.map(formatMove).join(' & ')}
+              {formatMove(results.atk.moves[0])}
+            </Text>
+            <Text style={styles.center}>
+              {formatMove(results.atk.moves[1])}
             </Text>
             <Table
               rows={[
@@ -217,7 +220,10 @@ export default function BattleResults({ onDone, results }) {
               {formatMove(results.def.name)}
             </Heading>
             <Text style={styles.center}>
-              {results.def.moves.map(formatMove).join(' & ')}
+              {formatMove(results.def.moves[0])}
+            </Text>
+            <Text style={styles.center}>
+              {formatMove(results.def.moves[1])}
             </Text>
             <Table
               rows={[
