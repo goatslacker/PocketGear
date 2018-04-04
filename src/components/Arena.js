@@ -35,11 +35,29 @@ export default class Arena extends PureComponent {
   }
 
   getAttacker() {
-    return store.getPokemonByID(this.props.navigation.state.params.attackerId)
+    const {
+      attackerId,
+      atkm1idx,
+      atkm2idx,
+    } = this.props.navigation.state.params;
+
+    const pokemon = store.getPokemonByID(attackerId);
+    const moves = atkm1idx !== undefined && atkm2idx !== undefined ? [atkm1idx, atkm2idx] : [];
+
+    return { moves, pokemon };
   }
 
   getDefender() {
-    return store.getPokemonByID(this.props.navigation.state.params.defenderId)
+    const {
+      defenderId,
+      defm1idx,
+      defm2idx,
+    } = this.props.navigation.state.params;
+
+    const pokemon = store.getPokemonByID(defenderId);
+    const moves = defm1idx !== undefined && defm2idx !== undefined ? [defm1idx, defm2idx] : [];
+
+    return { moves, pokemon };
   }
 
   clearResults() {

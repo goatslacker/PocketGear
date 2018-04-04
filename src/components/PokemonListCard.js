@@ -58,7 +58,7 @@ type Props = {
 export default class PokemonListCard extends PureComponent<Props, void> {
   _handlePress = throttle((rowData) => {
     if (this.props.onPress) {
-      this.props.onPress(this.props.pokemon, rowData);
+      this.props.onPress(this.props.pokemon);
     }
   }, 500);
 

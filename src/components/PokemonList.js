@@ -29,7 +29,7 @@ export default class PokemonList extends PureComponent<Props, void> {
 
   _root: Object;
 
-  _handlePress(pokemon, rowData) {
+  handlePress(pokemon, rowData) {
     if (this.props.onPress) {
       this.props.onPress(pokemon, rowData);
       return;
@@ -47,7 +47,7 @@ export default class PokemonList extends PureComponent<Props, void> {
         pokemon={rowData}
         {...extraProps}
         navigation={this.props.navigation}
-        onPress={this._handlePress.bind(this)}
+        onPress={pokemon => this.handlePress(pokemon, rowData)}
       />
     );
   };

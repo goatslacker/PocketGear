@@ -93,16 +93,16 @@ export default class BattleSimulatorOptions  extends PureComponent {
     const { attacker, defender } = props
 
     this.state = {
-      atk: attacker,
-      atkIdx1: 0,
-      atkIdx2: 0,
+      atk: attacker.pokemon,
+      atkIdx1: attacker.moves[0] || 0,
+      atkIdx2: attacker.moves[1] || 0,
 
-      def: defender,
-      defIdx1: 0,
-      defIdx2: 0,
+      def: defender.pokemon,
+      defIdx1: defender.moves[0] || 0,
+      defIdx2: defender.moves[1] || 0,
 
       isPvP: false,
-      isRaid: isLegendary(defender.name),
+      isRaid: isLegendary(defender.pokemon.name),
       text: '',
       weather: 'EXTREME',
     };

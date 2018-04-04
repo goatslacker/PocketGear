@@ -66,12 +66,19 @@ function getCardProps(rowData) {
   }
 }
 
-function goToBattle(defender, navigation) {
-  // TODO pass the moves in!
+function goToBattle(defender, moveset, navigation) {
   return (attacker, rowData) => {
+    const [quick, charge] = moveset.split('/');
+    const defm1idx = defender.moves.quick.indexOf(quick);
+    const defm2idx = defender.moves.charge.indexOf(charge);
+
     navigation.navigate('Arena', {
       attackerId: attacker.id,
+      atkm1idx: rowData[1],
+      atkm2idx: rowData[2],
       defenderId: defender.id,
+      defm1idx,
+      defm2idx,
     });
   }
 }
@@ -131,7 +138,7 @@ export default class PokemonMatches extends React.Component {
               data={results}
               getCardProps={getCardProps}
               navigation={this.props.navigation}
-              onPress={goToBattle(pokemon, navigation)}
+              onPress={goToBattle(pokemon, this.state.moveset, navigation)}
             />
           </View>
         ))}

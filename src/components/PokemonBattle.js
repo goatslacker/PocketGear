@@ -81,10 +81,20 @@ export default class PokemonBattle extends PureComponent {
     });
   }
 
-  handlePokePress(pokemon) {
+  handlePokePress(defender, rowData) {
+    const { pokemon } = this.props;
+
+    const [quick, charge] = this.state.moveset.split('/');
+    const atkm1idx = pokemon.moves.quick.indexOf(quick);
+    const atkm2idx = pokemon.moves.charge.indexOf(charge);
+
     this.props.navigation.navigate('Arena', {
-      attackerId: this.props.pokemon.id,
-      defenderId: pokemon.id,
+      attackerId: pokemon.id,
+      atkm1idx,
+      atkm2idx,
+      defenderId: defender.id,
+      defm1idx: rowData[1],
+      defm2idx: rowData[2],
     });
   }
 
