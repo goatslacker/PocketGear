@@ -70,16 +70,49 @@ function renderItem({ item }, results) {
   const subtitle= `HP ${item.hp}`
   const sprite = store.getSprite(pokemon.id);
 
+  if (item.m === '@FAINT') {
+    return (
+      <View style={[styles.item, styles.row]}>
+        <Image
+          source={sprite}
+          style={[styles.image]}
+        />
+
+        <Text>Faints</Text>
+      </View>
+    );
+  }
+
+  if (item.m === '@SWITCH') {
+    return (
+      <View style={[styles.item, styles.row]}>
+        <Image
+          source={sprite}
+          style={[styles.image]}
+        />
+
+        <Text>Switches into Battle</Text>
+      </View>
+    );
+  }
+
+  if (item.m === '@TIME_OUT') {
+    return (
+      <View style={[styles.item, styles.row]}>
+        <Text style={[styles.dmg, styles.center]}>
+          Timed Out
+        </Text>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.item}>
-
       <View style={styles.row}>
-        <View>
-          <Image
-            source={sprite}
-            style={[styles.image]}
-          />
-        </View>
+        <Image
+          source={sprite}
+          style={[styles.image]}
+        />
 
         <View>
           <Text style={styles.dmg}>
@@ -141,7 +174,7 @@ export default function BattleResults({
       row.hp = atkHP
     }
 
-    row.key = row.p + row.ms
+    row.key = row.p + row.ms + row.m;
 
     return row
   })
