@@ -35,21 +35,21 @@ const Root = StackNavigator(
   {
     mode: 'modal',
     headerMode: 'none',
-  },
-)
+  }
+);
 
 // TODO remove the expo font loading before publish
 export default class extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       fontLoaded: false,
-    }
+    };
   }
 
   componentDidMount() {
     Font.loadAsync({
-      'EvilIcons': require('react-native-vector-icons/Fonts/EvilIcons.ttf'),
+      EvilIcons: require('react-native-vector-icons/Fonts/EvilIcons.ttf'),
       'Material Icons': require('react-native-vector-icons/Fonts/MaterialIcons.ttf'),
     }).then(() => this.setState({ fontLoaded: true }));
   }

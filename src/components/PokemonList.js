@@ -41,7 +41,9 @@ export default class PokemonList extends PureComponent<Props, void> {
   }
 
   _renderRow = (rowData: any) => {
-    const extraProps = this.props.getCardProps ? this.props.getCardProps(rowData) : {};
+    const extraProps = this.props.getCardProps
+      ? this.props.getCardProps(rowData)
+      : {};
     return (
       <PokemonListCard
         pokemon={rowData}

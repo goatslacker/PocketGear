@@ -25,11 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MovesetPicker({
-  onChange,
-  pokemon,
-  value,
-}) {
+export default function MovesetPicker({ onChange, pokemon, value }) {
   const moveCombos = getMoveCombinations(pokemon).map(move => ({
     key: `${move.quick.Name}/${move.charge.Name}`,
     label: `${formatMove(move.quick.Name)} & ${formatMove(move.charge.Name)}`,

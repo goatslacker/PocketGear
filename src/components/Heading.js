@@ -18,7 +18,7 @@ type Props = {
   children?: any,
 };
 
-const levels = [, 1, 1.25, 1.5, 2, 4]
+const levels = [, 1, 1.25, 1.5, 2, 4];
 
 function getLevelStyles(level) {
   if (!level) {
@@ -36,7 +36,10 @@ function getLevelStyles(level) {
 
 export default function Heading(props: Props) {
   return (
-    <Text {...props} style={[styles.heading, props.style, getLevelStyles(props.level)]}>
+    <Text
+      {...props}
+      style={[styles.heading, props.style, getLevelStyles(props.level)]}
+    >
       {props.children}
     </Text>
   );

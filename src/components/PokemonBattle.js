@@ -40,13 +40,13 @@ export default class PokemonBattle extends PureComponent {
         charge,
         results: topPokemon
           .reduce((acc, pokemon) => {
-            const fx = getTypeEffectiveness(pokemon, charge)
+            const fx = getTypeEffectiveness(pokemon, charge);
 
             if (fx >= 1) {
-              acc.push({ pokemon, fx })
+              acc.push({ pokemon, fx });
             }
 
-            return acc
+            return acc;
           }, [])
           .sort((a, b) => {
             if (a.fx === b.fx) {
@@ -65,7 +65,7 @@ export default class PokemonBattle extends PureComponent {
     this.state = {
       data: [this.data[0]],
       moveset,
-    }
+    };
   }
 
   changeMoveset(moveset) {

@@ -13,12 +13,12 @@ export default class PokeModal extends PureComponent {
   }
 
   render() {
-    const { navigation } = this.props
+    const { navigation } = this.props;
     return (
       <PokemonChooser
         navigation={navigation}
         onChosen={one => this.theChosen(one)}
       />
-    )
+    );
   }
 }

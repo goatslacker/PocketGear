@@ -100,9 +100,7 @@ export default function Attack(props: Props) {
         <Text style={styles.text}>
           {power} {stab ? <Text style={styles.stab}>+{stab} </Text> : ''}
         </Text>
-        <Text style={styles.subtitle}>
-          {move.DurationMs / 1000}s
-        </Text>
+        <Text style={styles.subtitle}>{move.DurationMs / 1000}s</Text>
       </View>
     </View>
   );

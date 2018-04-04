@@ -56,7 +56,7 @@ type Props = {
 };
 
 export default class PokemonListCard extends PureComponent<Props, void> {
-  _handlePress = throttle((rowData) => {
+  _handlePress = throttle(rowData => {
     if (this.props.onPress) {
       this.props.onPress(this.props.pokemon);
     }
@@ -79,7 +79,9 @@ export default class PokemonListCard extends PureComponent<Props, void> {
         activeOpacity={0.7}
         style={[styles.block, { backgroundColor: color }, style]}
       >
-        <Text style={[styles.index, styles.subtitle]}>{toptext || `#${pokemon.id}`}</Text>
+        <Text style={[styles.index, styles.subtitle]}>
+          {toptext || `#${pokemon.id}`}
+        </Text>
         <Image source={sprite} style={[styles.image, { height, margin }]} />
         <Text style={styles.title}>{title || formatMove(pokemon.name)}</Text>
         <Text style={styles.subtitle}>{subtitle || types}</Text>

@@ -19,7 +19,7 @@ function Icon() {
     <EvilIcons name="chevron-right" size={36} style={styles.icon} />
   ) : (
     <MaterialIcons name="chevron-right" size={24} style={styles.icon} />
-  )
+  );
 }
 
 export default function MovePicker({
@@ -45,10 +45,7 @@ export default function MovePicker({
         style={styles.row}
         onPress={() => onNextQuickMove(quickMoveIdx, pokemon)}
       >
-        <Attack
-          move={quick}
-          types={types}
-        />
+        <Attack move={quick} types={types} />
         <Icon />
       </TouchableOpacity>
 
@@ -58,12 +55,9 @@ export default function MovePicker({
         style={styles.row}
         onPress={() => onNextChargeMove(chargeMoveIdx, pokemon)}
       >
-        <Attack
-          move={charge}
-          types={types}
-        />
+        <Attack move={charge} types={types} />
         <Icon />
       </TouchableOpacity>
     </View>
-  )
+  );
 }

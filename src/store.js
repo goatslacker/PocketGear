@@ -23,7 +23,9 @@ const CP_VALUES = {
 
 const allPokemon = dex.getAllPokemon().map(pokemon => {
   return Object.assign({}, pokemon, {
-    types: [ucFirst(pokemon.type1), ucFirst(pokemon.type2 || '')].filter(Boolean),
+    types: [ucFirst(pokemon.type1), ucFirst(pokemon.type2 || '')].filter(
+      Boolean
+    ),
   });
 });
 
@@ -34,9 +36,7 @@ function getPokemonByName(name): Pokemon {
     return pokeFastCache[name];
   }
 
-  const pokemon = allPokemon.find(poke => (
-    poke.name.toUpperCase() === name
-  ));
+  const pokemon = allPokemon.find(poke => poke.name.toUpperCase() === name);
 
   pokeFastCache[name] = pokemon;
 

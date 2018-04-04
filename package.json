@@ -9,7 +9,7 @@
     "ios": "scripts/run.js react-native-scripts ios",
     "lint": "eslint .",
     "flow": "flow",
-    "pretty": "prettier --write '**/*.js'",
+    "pretty": "prettier --write 'src/**/*.js'",
     "test": "jest",
     "coverage": "cat ./coverage/lcov.info | coveralls"
   },
@@ -18,7 +18,8 @@
     "collectCoverage": true
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "trailingComma": "es5"
   },
   "dependencies": {
     "expo": "^26.0.0",

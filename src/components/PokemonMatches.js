@@ -42,14 +42,14 @@ function getDefenderProfile(pokemon, quickMove, chargeMove) {
     quick: moveset.quick,
     charge: moveset.charge,
     results: moveset.results.map(x => {
-      const pokemon = store.getPokemonByName(x.name)
-      const [quick, charge] = x.stats[0].moves
+      const pokemon = store.getPokemonByName(x.name);
+      const [quick, charge] = x.stats[0].moves;
 
       return [
         pokemon.id,
         pokemon.moves.quick.indexOf(quick),
         pokemon.moves.charge.indexOf(charge),
-      ]
+      ];
     }),
   }));
 }
@@ -58,12 +58,12 @@ function getCardProps(rowData) {
   const pokemon = store.getPokemonByID(rowData[0]);
   const quick = pokemon.moves.quick[rowData[1]] || '?';
   const charge = pokemon.moves.charge[rowData[2]] || '?';
-  const subtitle = [quick, charge].map(shortenMove).join('/')
+  const subtitle = [quick, charge].map(shortenMove).join('/');
 
   return {
     pokemon,
     subtitle,
-  }
+  };
 }
 
 function goToBattle(defender, moveset, navigation) {
@@ -80,12 +80,12 @@ function goToBattle(defender, moveset, navigation) {
       defm1idx,
       defm2idx,
     });
-  }
+  };
 }
 
 export default class PokemonMatches extends React.Component {
   constructor(props) {
-    super()
+    super();
 
     const { pokemon } = props;
 

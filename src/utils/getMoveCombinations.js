@@ -1,8 +1,10 @@
 import dex from 'pokemagic/dex';
 
 function moveDPS(pokemon, moves) {
-  const stabQuick = pokemon.type1 === moves.quick.Type || pokemon.type2 === moves.quick.Type;
-  const stabCharge = pokemon.type1 === moves.charge.Type || pokemon.type2 === moves.charge.Type;
+  const stabQuick =
+    pokemon.type1 === moves.quick.Type || pokemon.type2 === moves.quick.Type;
+  const stabCharge =
+    pokemon.type1 === moves.charge.Type || pokemon.type2 === moves.charge.Type;
 
   const quickDMG = (moves.quick.Power || 0) * stabQuick + 1;
   const chargeDMG = (moves.charge.Power || 0) * stabCharge + 1;
@@ -15,7 +17,10 @@ function moveDPS(pokemon, moves) {
   const totalChargeDMG = chargeDMG * charges;
   const totalChargeTime = moves.charge.DurationMs * charges;
 
-  return (totalQuickDMG + totalChargeDMG) / ((totalQuickTime + totalChargeTime) / 1000);
+  return (
+    (totalQuickDMG + totalChargeDMG) /
+    ((totalQuickTime + totalChargeTime) / 1000)
+  );
 }
 
 function comboDPS(pokemon) {
@@ -42,7 +47,7 @@ export default function getMoveCombinations(pokemon) {
         quick: dex.findMove(quick),
         charge: dex.findMove(charge),
       });
-    })
+    });
   });
 
   movesetCache[pokemon.name] = moveCombos.sort(comboDPS(pokemon));

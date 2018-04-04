@@ -148,7 +148,9 @@ class PokemonInfo extends PureComponent<Props, void> {
         </Appbar>
         <View style={[styles.row, styles.meta]}>
           <View style={styles.basic}>
-            <Text style={[styles.label, styles.name]}>{formatMove(pokemon.name)}</Text>
+            <Text style={[styles.label, styles.name]}>
+              {formatMove(pokemon.name)}
+            </Text>
             <View style={styles.types}>
               {pokemon.types.map(type => (
                 <PokemonTypeLabel key={type} type={type} />

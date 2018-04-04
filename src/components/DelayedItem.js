@@ -18,10 +18,7 @@ type State = {
   loading: boolean,
 };
 
-export default class DelayedItem<T: *> extends PureComponent<
-  Props<T>,
-  State
-> {
+export default class DelayedItem<T: *> extends PureComponent<Props<T>, State> {
   state: State = {
     loading: true,
   };

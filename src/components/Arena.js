@@ -4,7 +4,14 @@ import React, { PureComponent } from 'react';
 import getTypeEffectiveness from 'pokemagic/lib/getTypeEffectiveness';
 import simulateBattle from 'pokemagic/simulateBattle';
 import topPokemon from 'pokemagic/lib/topPokemon';
-import { Button, FlatList, Text, View, ScrollView, StyleSheet } from 'react-native';
+import {
+  Button,
+  FlatList,
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 
 import BattleResults from './BattleResults';
 import Appbar from './Appbar';
@@ -27,7 +34,7 @@ const styles = StyleSheet.create({
 
 export default class Arena extends PureComponent {
   constructor() {
-    super()
+    super();
     this.state = {
       isLoading: false,
       results: null,
@@ -42,7 +49,10 @@ export default class Arena extends PureComponent {
     } = this.props.navigation.state.params;
 
     const pokemon = store.getPokemonByID(attackerId);
-    const moves = atkm1idx !== undefined && atkm2idx !== undefined ? [atkm1idx, atkm2idx] : [];
+    const moves =
+      atkm1idx !== undefined && atkm2idx !== undefined
+        ? [atkm1idx, atkm2idx]
+        : [];
 
     return { moves, pokemon };
   }
@@ -55,7 +65,10 @@ export default class Arena extends PureComponent {
     } = this.props.navigation.state.params;
 
     const pokemon = store.getPokemonByID(defenderId);
-    const moves = defm1idx !== undefined && defm2idx !== undefined ? [defm1idx, defm2idx] : [];
+    const moves =
+      defm1idx !== undefined && defm2idx !== undefined
+        ? [defm1idx, defm2idx]
+        : [];
 
     return { moves, pokemon };
   }
@@ -119,15 +132,11 @@ export default class Arena extends PureComponent {
     return (
       <ScrollView
         {...this.props}
-        ref={scrollView => this.scrollView = scrollView}
+        ref={scrollView => (this.scrollView = scrollView)}
         style={[styles.container, this.props.style]}
       >
-        <Appbar navigation={this.props.navigation}>
-          Battle Simulator
-        </Appbar>
-        {this.state.isLoading && (
-          <Placeholder />
-        )}
+        <Appbar navigation={this.props.navigation}>Battle Simulator</Appbar>
+        {this.state.isLoading && <Placeholder />}
         {!this.state.results && (
           <BattleSimulatorOptions
             attacker={attacker}

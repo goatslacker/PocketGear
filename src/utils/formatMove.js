@@ -8,4 +8,3 @@ export default function formatMove(moveName) {
       .replace(/_([a-z])/g, (_, b) => ` ${b.toUpperCase()}`)
   );
 }
-

@@ -394,4 +394,4 @@ export default [
   require('../assets/sprites/deoxys.png'),
   require('../assets/sprites/deoxys.png'),
   require('../assets/sprites/deoxys.png'),
-]
+];

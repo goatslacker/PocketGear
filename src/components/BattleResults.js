@@ -67,16 +67,13 @@ const styles = StyleSheet.create({
 
 function renderItem({ item }, results) {
   const pokemon = store.getPokemonByName(results[item.p].name);
-  const subtitle= `HP ${item.hp}`
+  const subtitle = `HP ${item.hp}`;
   const sprite = store.getSprite(pokemon.id);
 
   if (item.m === '@FAINT') {
     return (
       <View style={[styles.item, styles.row]}>
-        <Image
-          source={sprite}
-          style={[styles.image]}
-        />
+        <Image source={sprite} style={[styles.image]} />
 
         <Text>Faints</Text>
       </View>
@@ -86,10 +83,7 @@ function renderItem({ item }, results) {
   if (item.m === '@SWITCH') {
     return (
       <View style={[styles.item, styles.row]}>
-        <Image
-          source={sprite}
-          style={[styles.image]}
-        />
+        <Image source={sprite} style={[styles.image]} />
 
         <Text>Switches into Battle</Text>
       </View>
@@ -99,28 +93,19 @@ function renderItem({ item }, results) {
   if (item.m === '@TIME_OUT') {
     return (
       <View style={[styles.item, styles.row]}>
-        <Text style={[styles.dmg, styles.center]}>
-          Timed Out
-        </Text>
+        <Text style={[styles.dmg, styles.center]}>Timed Out</Text>
       </View>
-    )
+    );
   }
 
   return (
     <View style={styles.item}>
       <View style={styles.row}>
-        <Image
-          source={sprite}
-          style={[styles.image]}
-        />
+        <Image source={sprite} style={[styles.image]} />
 
         <View>
-          <Text style={styles.dmg}>
-            {formatMove(item.m)}
-          </Text>
-          <Text style={styles.time}>
-            {item.ms / 1000}s
-          </Text>
+          <Text style={styles.dmg}>{formatMove(item.m)}</Text>
+          <Text style={styles.time}>{item.ms / 1000}s</Text>
         </View>
 
         <View>
@@ -132,14 +117,11 @@ function renderItem({ item }, results) {
           </Text>
         </View>
       </View>
-
     </View>
-  )
+  );
 }
 
-function Table({
-  rows,
-}) {
+function Table({ rows }) {
   return (
     <View>
       {rows.map(row => (
@@ -153,31 +135,28 @@ function Table({
         </View>
       ))}
     </View>
-  )
+  );
 }
 
-export default function BattleResults({
-  onDone,
-  results,
-}) {
-  const pokemon = store.getPokemonByName(results[results.winner].name)
+export default function BattleResults({ onDone, results }) {
+  const pokemon = store.getPokemonByName(results[results.winner].name);
 
-  let atkHP = results.atk.hp
-  let defHP = results.def.hp
+  let atkHP = results.atk.hp;
+  let defHP = results.def.hp;
   const log = results.log.map(row => {
     if (row.p === 'atk') {
-      defHP -= row.dmg
-      row.hp = defHP
+      defHP -= row.dmg;
+      row.hp = defHP;
     }
     if (row.p === 'def') {
-      atkHP -= row.dmg
-      row.hp = atkHP
+      atkHP -= row.dmg;
+      row.hp = atkHP;
     }
 
     row.key = row.p + row.ms + row.m;
 
-    return row
-  })
+    return row;
+  });
 
   return (
     <View style={styles.results}>
@@ -192,20 +171,22 @@ export default function BattleResults({
       <Heading level={1}>Battle Stats</Heading>
 
       <View>
-        <Table rows={[
-          {
-            label: 'Time Elapsed',
-            text: `${results.timeElapsed / 1000}s`,
-          },
-          {
-            label: 'Damage Taken',
-            text: `-${results.atk.dmgTaken}hp`,
-          },
-          {
-            label: 'Damage Dealt',
-            text: `${results.atk.dmgDealt}dmg`,
-          },
-        ]} />
+        <Table
+          rows={[
+            {
+              label: 'Time Elapsed',
+              text: `${results.timeElapsed / 1000}s`,
+            },
+            {
+              label: 'Damage Taken',
+              text: `-${results.atk.dmgTaken}hp`,
+            },
+            {
+              label: 'Damage Dealt',
+              text: `${results.atk.dmgDealt}dmg`,
+            },
+          ]}
+        />
       </View>
 
       <View>
@@ -217,16 +198,18 @@ export default function BattleResults({
             <Text style={styles.center}>
               {results.atk.moves.map(formatMove).join(' & ')}
             </Text>
-            <Table rows={[
-              {
-                label: 'CP',
-                text: results.atk.cp,
-              },
-              {
-                label: 'HP',
-                text: results.atk.hp,
-              },
-            ]} />
+            <Table
+              rows={[
+                {
+                  label: 'CP',
+                  text: results.atk.cp,
+                },
+                {
+                  label: 'HP',
+                  text: results.atk.hp,
+                },
+              ]}
+            />
           </View>
 
           <View>
@@ -236,26 +219,24 @@ export default function BattleResults({
             <Text style={styles.center}>
               {results.def.moves.map(formatMove).join(' & ')}
             </Text>
-            <Table rows={[
-              {
-                label: 'CP',
-                text: results.def.cp,
-              },
-              {
-                label: 'HP',
-                text: results.def.hp,
-              },
-            ]} />
+            <Table
+              rows={[
+                {
+                  label: 'CP',
+                  text: results.def.cp,
+                },
+                {
+                  label: 'HP',
+                  text: results.def.hp,
+                },
+              ]}
+            />
           </View>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Button
-          color="#df4848"
-          title="Battle Again?"
-          onPress={onDone}
-        />
+        <Button color="#df4848" title="Battle Again?" onPress={onDone} />
       </View>
 
       <Heading level={1}>Battle Log</Heading>
@@ -266,5 +247,5 @@ export default function BattleResults({
         renderItem={item => renderItem(item, results)}
       />
     </View>
-  )
+  );
 }

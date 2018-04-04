@@ -6,7 +6,14 @@ import PickerSelect from 'react-native-picker-select';
 import React, { PureComponent } from 'react';
 import dex from 'pokemagic/dex';
 import isLegendary from 'pokemagic/lib/isLegendary';
-import { Button, Switch, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import {
+  Button,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+} from 'react-native';
 
 import Heading from './Heading';
 import MovePicker from './MovePicker';
@@ -67,7 +74,7 @@ function createMoveItem(move) {
     label: formatMove(move),
     value: move,
     key: move,
-  }
+  };
 }
 
 const WEATHER = [
@@ -86,11 +93,11 @@ const WEATHER = [
   value: key,
 }));
 
-export default class BattleSimulatorOptions  extends PureComponent {
+export default class BattleSimulatorOptions extends PureComponent {
   constructor(props) {
-    super()
+    super();
 
-    const { attacker, defender } = props
+    const { attacker, defender } = props;
 
     this.state = {
       atk: attacker.pokemon,
@@ -109,12 +116,22 @@ export default class BattleSimulatorOptions  extends PureComponent {
   }
 
   callback() {
-    const { atk, def, atkIdx1, atkIdx2, defIdx1, defIdx2, isPvP, isRaid, weather } = this.state
+    const {
+      atk,
+      def,
+      atkIdx1,
+      atkIdx2,
+      defIdx1,
+      defIdx2,
+      isPvP,
+      isRaid,
+      weather,
+    } = this.state;
 
-    const atkQuick = dex.findMove(atk.moves.quick[atkIdx1])
-    const atkCharge = dex.findMove(atk.moves.charge[atkIdx2])
-    const defQuick = dex.findMove(def.moves.quick[defIdx1])
-    const defCharge = dex.findMove(def.moves.charge[defIdx2])
+    const atkQuick = dex.findMove(atk.moves.quick[atkIdx1]);
+    const atkCharge = dex.findMove(atk.moves.charge[atkIdx2]);
+    const defQuick = dex.findMove(def.moves.quick[defIdx1]);
+    const defCharge = dex.findMove(def.moves.charge[defIdx2]);
 
     this.props.onBattle({
       atk: {
@@ -137,26 +154,26 @@ export default class BattleSimulatorOptions  extends PureComponent {
     if (id === poke.moves.quick.length - 1) {
       this.setState({
         [stateKey]: 0,
-      })
-      return
+      });
+      return;
     }
 
     this.setState({
       [stateKey]: id + 1,
-    })
+    });
   }
 
   nextChargeMove(stateKey, id, poke) {
     if (id === poke.moves.charge.length - 1) {
       this.setState({
         [stateKey]: 0,
-      })
-      return
+      });
+      return;
     }
 
     this.setState({
       [stateKey]: id + 1,
-    })
+    });
   }
 
   renderAttackerOptions() {
@@ -168,13 +185,15 @@ export default class BattleSimulatorOptions  extends PureComponent {
         quickMoveIdx={atkIdx1}
         chargeMoveIdx={atkIdx2}
         onNextQuickMove={(id, poke) => this.nextQuickMove('atkIdx1', id, poke)}
-        onNextChargeMove={(id, poke) => this.nextChargeMove('atkIdx2', id, poke)}
+        onNextChargeMove={(id, poke) =>
+          this.nextChargeMove('atkIdx2', id, poke)
+        }
       />
-    )
+    );
   }
 
   renderDefenderOptions() {
-    const { def, defIdx1, defIdx2 } = this.state
+    const { def, defIdx1, defIdx2 } = this.state;
 
     return (
       <MovePicker
@@ -182,9 +201,11 @@ export default class BattleSimulatorOptions  extends PureComponent {
         quickMoveIdx={defIdx1}
         chargeMoveIdx={defIdx2}
         onNextQuickMove={(id, poke) => this.nextQuickMove('defIdx1', id, poke)}
-        onNextChargeMove={(id, poke) => this.nextChargeMove('defIdx2', id, poke)}
+        onNextChargeMove={(id, poke) =>
+          this.nextChargeMove('defIdx2', id, poke)
+        }
       />
-    )
+    );
   }
 
   toggleRaidPvP(state) {
@@ -232,7 +253,9 @@ export default class BattleSimulatorOptions  extends PureComponent {
 
             <Switch
               value={this.state.isRaid}
-              onValueChange={() => this.toggleRaidPvP({ isRaid: !this.state.isRaid })}
+              onValueChange={() =>
+                this.toggleRaidPvP({ isRaid: !this.state.isRaid })
+              }
             />
           </View>
 
@@ -241,7 +264,9 @@ export default class BattleSimulatorOptions  extends PureComponent {
 
             <Switch
               value={this.state.isPvP}
-              onValueChange={() => this.toggleRaidPvP({ isPvP: !this.state.isPvP })}
+              onValueChange={() =>
+                this.toggleRaidPvP({ isPvP: !this.state.isPvP })
+              }
             />
           </View>
 
