@@ -7,6 +7,8 @@ import PokemonInfo from './PokemonInfo';
 import PokeModal from './PokeModal';
 import Arena from './Arena';
 
+import { Font } from 'expo';
+
 const Home = StackNavigator(
   {
     Main: { screen: PokemonChooser },
@@ -36,5 +38,27 @@ const Root = StackNavigator(
   },
 )
 
-// eslint-disable-next-line jsx/no-bind
-export default () => <Root onNavigationStateChange={() => {}} />;
+// TODO remove the expo font loading before publish
+export default class extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      fontLoaded: false,
+    }
+  }
+
+  componentDidMount() {
+    Font.loadAsync({
+      'EvilIcons': require('react-native-vector-icons/Fonts/EvilIcons.ttf'),
+      'Material Icons': require('react-native-vector-icons/Fonts/MaterialIcons.ttf'),
+    }).then(() => this.setState({ fontLoaded: true }));
+  }
+
+  render() {
+    if (!this.state.fontLoaded) {
+      return null;
+    }
+
+    return <Root onNavigationStateChange={() => {}} />;
+  }
+}
