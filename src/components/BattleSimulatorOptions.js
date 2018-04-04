@@ -1,18 +1,18 @@
 /* @flow */
 
-import React, { PureComponent } from 'react';
-import { Button, Switch, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import PickerSelect from 'react-native-picker-select';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import PickerSelect from 'react-native-picker-select';
+import React, { PureComponent } from 'react';
+import dex from 'pokemagic/dex';
+import isLegendary from 'pokemagic/lib/isLegendary';
+import { Button, Switch, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
+import MovePicker from './MovePicker';
 import PokemonListCard from './PokemonListCard';
 import formatMove from '../utils/formatMove';
 import store from '../store';
-
-import dex from 'pokemagic/dex';
-import MovePicker from './MovePicker';
 
 const styles = StyleSheet.create({
   container: {
@@ -101,7 +101,7 @@ export default class BattleSimulatorOptions  extends PureComponent {
       defIdx1: 0,
       defIdx2: 0,
 
-      isRaid: false,
+      isRaid: isLegendary(defender.name),
       text: '',
       weather: 'EXTREME',
     };
