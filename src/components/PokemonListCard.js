@@ -81,7 +81,7 @@ export default class PokemonListCard extends PureComponent<Props, void> {
       >
         <Text style={[styles.index, styles.subtitle]}>{toptext || `#${pokemon.id}`}</Text>
         <Image source={sprite} style={[styles.image, { height, margin }]} />
-        <Text style={styles.title}>{title || pokemon.name}</Text>
+        <Text style={styles.title}>{title || formatMove(pokemon.name)}</Text>
         <Text style={styles.subtitle}>{subtitle || types}</Text>
       </TouchableItem>
     );

@@ -13,6 +13,7 @@ import PokemonMatches from './PokemonMatches';
 import PokemonBattle from './PokemonBattle';
 import store from '../store';
 import type { PokemonID, Pokemon } from '../types';
+import formatMove from '../utils/formatMove';
 
 const styles = StyleSheet.create({
   container: {
@@ -147,7 +148,7 @@ class PokemonInfo extends PureComponent<Props, void> {
         </Appbar>
         <View style={[styles.row, styles.meta]}>
           <View style={styles.basic}>
-            <Text style={[styles.label, styles.name]}>{pokemon.name}</Text>
+            <Text style={[styles.label, styles.name]}>{formatMove(pokemon.name)}</Text>
             <View style={styles.types}>
               {pokemon.types.map(type => (
                 <PokemonTypeLabel key={type} type={type} />
