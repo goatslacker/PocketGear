@@ -1,68 +1,31 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
-import type { Pokemon } from '../types';
+import getTypeEffectiveness from 'pokemagic/lib/getTypeEffectiveness';
+import topPokemon from 'pokemagic/lib/topPokemon';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
 
+import MovesetPicker from './MovesetPicker';
 import PokemonList from './PokemonList';
-import Heading from './Heading';
 
 import formatMove from '../utils/formatMove';
 import getMoveCombinations from '../utils/getMoveCombinations';
-
-import topPokemon from 'pokemagic/lib/topPokemon';
-import getTypeEffectiveness from 'pokemagic/lib/getTypeEffectiveness';
+import getBestMoveset from '../utils/getBestMoveset';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
+    backgroundColor: '#fafafa',
   },
 
-  heading: {
-    color: '#000',
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 14,
-    textAlign: 'center',
-    opacity: 0.75,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: 'transparent',
+  content: {
+    padding: 4,
+    marginTop: 4,
+  },
+
+  row: {
+    flexDirection: 'row',
   },
 });
-
-type Props = {
-  pokemon: Pokemon,
-  style?: any,
-};
-
-function moveDPS(pokemon, moves) {
-  const stabQuick = pokemon.type1 === moves.quick.Type || pokemon.type2 === moves.quick.Type;
-  const stabCharge = pokemon.type1 === moves.charge.Type || pokemon.type2 === moves.charge.Type;
-
-  const quickDMG = (moves.quick.Power || 0) * stabQuick + 1;
-  const chargeDMG = (moves.charge.Power || 0) * stabCharge + 1;
-
-  const e100 = Math.ceil(100 / moves.quick.Energy);
-  const totalQuickDMG = quickDMG * e100;
-  const totalQuickTime = moves.quick.DurationMs * e100;
-
-  const charges = Math.floor(Math.abs(100 / moves.charge.Energy));
-  const totalChargeDMG = chargeDMG * charges;
-  const totalChargeTime = moves.charge.DurationMs * charges;
-
-  return (totalQuickDMG + totalChargeDMG) / ((totalQuickTime + totalChargeTime) / 1000);
-}
-
-function comboDPS(pokemon) {
-  return (a, b) => {
-    const dpsA = moveDPS(pokemon, a);
-    const dpsB = moveDPS(pokemon, b);
-
-    return dpsA > dpsB ? -1 : 1;
-  };
-}
 
 export default class PokemonBattle extends PureComponent {
   constructor(props) {
@@ -70,9 +33,7 @@ export default class PokemonBattle extends PureComponent {
 
     const { pokemon } = props;
 
-    const moveCombos = getMoveCombinations(pokemon).sort(comboDPS(pokemon));
-
-    this.data = moveCombos.map(({ quick, charge }) => {
+    this.data = getMoveCombinations(pokemon).map(({ quick, charge }) => {
       return {
         key: `${quick.Name}/${charge.Name}`,
         quick,
@@ -97,6 +58,27 @@ export default class PokemonBattle extends PureComponent {
           .slice(0, 20),
       };
     });
+
+    const best = getBestMoveset(pokemon);
+    const moveset = `${best.quick.Name}/${best.charge.Name}`;
+
+    this.state = {
+      data: [this.data[0]],
+      moveset,
+    }
+  }
+
+  changeMoveset(moveset) {
+    const result = this.data.find(move => move.key === moveset);
+    if (result) {
+      const data = [result];
+      this.setState({ moveset, data });
+      return;
+    }
+
+    this.setState({
+      data: [],
+    });
   }
 
   handlePokePress(pokemon) {
@@ -107,14 +89,21 @@ export default class PokemonBattle extends PureComponent {
   }
 
   render() {
-    // TODO when you tap on these take you to the battle screen
+    const { pokemon } = this.props;
+
     return (
-      <ScrollView {...this.props} style={[styles.container, this.props.style]}>
-        {this.data.map(({ key, quick, charge, results }) => (
-          <View key={key}>
-            <Text style={styles.heading}>
-              {formatMove(quick.Name)} & {formatMove(charge.Name)}
-            </Text>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+      >
+        <MovesetPicker
+          onChange={moveset => this.changeMoveset(moveset)}
+          pokemon={pokemon}
+          value={this.state.moveset}
+        />
+
+        {this.state.data.map(({ key, quick, charge, results }) => (
+          <View key={key} style={styles.row}>
             <PokemonList
               data={results}
               navigation={this.props.navigation}

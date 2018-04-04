@@ -1,16 +1,17 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
-import More from './More';
-import PokemonListCard from './PokemonListCard';
-import type { Pokemon, PokemonID } from '../types';
-import store from '../store';
-import PokemonList from './PokemonList';
-import formatMove from '../utils/formatMove';
-import shortenMove from '../utils/shortenMove';
-
 import defenderProfile from 'pokemagic/defenderProfile';
+import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
+
+import More from './More';
+import MovesetPicker from './MovesetPicker';
+import PokemonList from './PokemonList';
+import PokemonListCard from './PokemonListCard';
+import formatMove from '../utils/formatMove';
+import getBestMoveset from '../utils/getBestMoveset';
+import shortenMove from '../utils/shortenMove';
+import store from '../store';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,42 +23,25 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
-  heading: {
-    color: '#000',
-    fontFamily: 'Montserrat-SemiBold',
-    fontSize: 14,
-    textAlign: 'center',
-    opacity: 0.75,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: 'transparent',
-  },
-
   row: {
     flexDirection: 'row',
   },
 });
 
-type Props = {
-  pokemon: Pokemon,
-  style?: any,
-  navigation: Object,
-};
-
-function getDefenderProfile(pokemon) {
-  // TODO let you configure and run your own
-  const { counters } = defenderProfile(pokemon.name, null, null, {
+function getDefenderProfile(pokemon, quickMove, chargeMove) {
+  const { counters } = defenderProfile(pokemon.name, quickMove, chargeMove, {
     legacy: false,
-    numPokemon: 4,
-    raid: true,
+    numPokemon: 20,
     tm: false,
+    // TODO let you configure weather
     weather: 'EXTREME',
   });
 
   return counters.map(moveset => ({
-    m1: moveset.quick,
-    m2: moveset.charge,
-    p: moveset.results.map(x => {
+    key: `${moveset.quick}/${moveset.charge}`,
+    quick: moveset.quick,
+    charge: moveset.charge,
+    results: moveset.results.map(x => {
       const pokemon = store.getPokemonByName(x.name)
       const [quick, charge] = x.stats[0].moves
 
@@ -83,6 +67,7 @@ function getCardProps(rowData) {
 }
 
 function goToBattle(defender, navigation) {
+  // TODO pass the moves in!
   return (attacker, rowData) => {
     navigation.navigate('Arena', {
       attackerId: attacker.id,
@@ -91,35 +76,66 @@ function goToBattle(defender, navigation) {
   }
 }
 
-export default function PokemonMatches(props: Props) {
-  const { navigation, pokemon } = props;
+export default class PokemonMatches extends React.Component {
+  constructor(props) {
+    super()
 
-  const counters = store.getCounters(pokemon.id) || getDefenderProfile(pokemon);
+    const { pokemon } = props;
 
-  return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-    >
-      {counters.map(moveset => {
-        const key = `${moveset.m1}/${moveset.m2}`;
+    const best = getBestMoveset(pokemon);
+    const moveset = `${best.quick.Name}/${best.charge.Name}`;
+    const data = getDefenderProfile(pokemon, best.quick.Name, best.charge.Name);
 
-        return (
-          <View key={key}>
-            <Text style={styles.heading}>
-              {formatMove(moveset.m1)} & {formatMove(moveset.m2)}
-            </Text>
-            <View style={styles.row}>
-              <PokemonList
-                data={moveset.p}
-                navigation={navigation}
-                getCardProps={getCardProps}
-                onPress={goToBattle(pokemon, navigation)}
-              />
-            </View>
+    this.state = { moveset, data };
+  }
+
+  changeMoveset(moveset) {
+    const { pokemon } = this.props;
+
+    if (!moveset) {
+      this.setState({
+        data: [],
+      });
+      return;
+    }
+
+    const [quick, charge] = moveset.split('/');
+    const data = getDefenderProfile(pokemon, quick, charge);
+    if (data) {
+      this.setState({ moveset, data });
+      return;
+    }
+
+    this.setState({
+      data: [],
+    });
+  }
+
+  render() {
+    const { navigation, pokemon } = this.props;
+
+    return (
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+      >
+        <MovesetPicker
+          onChange={moveset => this.changeMoveset(moveset)}
+          pokemon={pokemon}
+          value={this.state.moveset}
+        />
+
+        {this.state.data.map(({ key, quick, charge, results }) => (
+          <View key={key} style={styles.row}>
+            <PokemonList
+              data={results}
+              getCardProps={getCardProps}
+              navigation={this.props.navigation}
+              onPress={goToBattle(pokemon, navigation)}
+            />
           </View>
-        )
-      })}
-    </ScrollView>
-  );
+        ))}
+      </ScrollView>
+    );
+  }
 }
