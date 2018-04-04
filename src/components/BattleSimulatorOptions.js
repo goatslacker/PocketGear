@@ -187,26 +187,6 @@ export default class BattleSimulatorOptions  extends PureComponent {
     )
   }
 
-//  handleChooseYourPokemon() {
-//    return;
-//
-//    const onSelectPokemon = pokemon => this.setState({
-//      def: pokemon,
-//      defMove1: pokemon.moves.quick[0],
-//      defMove2: pokemon.moves.charge[0],
-//    });
-//    this.props.navigation.navigate('Modal', { onSelectPokemon });
-//  }
-//  renderOpponent() {
-//    return (
-//      <Button
-//        color="#23238E"
-//        title="Select Pokemon"
-//        onPress={this.handleChooseYourPokemon.bind(this)}
-//      />
-//    )
-//  }
-
   toggleRaidPvP(state) {
     if (state.isRaid === true) {
       this.setState({
@@ -233,7 +213,6 @@ export default class BattleSimulatorOptions  extends PureComponent {
         <Heading>Attacker</Heading>
         <PokemonListCard
           navigation={this.props.navigation}
-          onPress={() => false}
           pokemon={this.state.atk}
         />
         {this.renderAttackerOptions()}
@@ -242,7 +221,6 @@ export default class BattleSimulatorOptions  extends PureComponent {
           <Heading>Opponent</Heading>
           <PokemonListCard
             navigation={this.props.navigation}
-            onPress={() => false}
             pokemon={this.state.def}
           />
           {this.renderDefenderOptions()}
