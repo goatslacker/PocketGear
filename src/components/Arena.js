@@ -235,6 +235,7 @@ export default class Arena extends PureComponent {
       };
 
       const options = {
+        pvp: state.isPvP,
         raid: state.isRaid,
         weather: state.weather,
       };

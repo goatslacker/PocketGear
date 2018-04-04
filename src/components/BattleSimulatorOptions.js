@@ -101,6 +101,7 @@ export default class BattleSimulatorOptions  extends PureComponent {
       defIdx1: 0,
       defIdx2: 0,
 
+      isPvP: false,
       isRaid: isLegendary(defender.name),
       text: '',
       weather: 'EXTREME',
@@ -108,7 +109,7 @@ export default class BattleSimulatorOptions  extends PureComponent {
   }
 
   callback() {
-    const { atk, def, atkIdx1, atkIdx2, defIdx1, defIdx2, isRaid, weather } = this.state
+    const { atk, def, atkIdx1, atkIdx2, defIdx1, defIdx2, isPvP, isRaid, weather } = this.state
 
     const atkQuick = dex.findMove(atk.moves.quick[atkIdx1])
     const atkCharge = dex.findMove(atk.moves.charge[atkIdx2])
@@ -126,6 +127,7 @@ export default class BattleSimulatorOptions  extends PureComponent {
         quickMove: defQuick,
         chargeMove: defCharge,
       },
+      isPvP,
       isRaid,
       weather,
     });
@@ -205,6 +207,26 @@ export default class BattleSimulatorOptions  extends PureComponent {
 //    )
 //  }
 
+  toggleRaidPvP(state) {
+    if (state.isRaid === true) {
+      this.setState({
+        isPvP: false,
+        isRaid: true,
+      });
+      return;
+    }
+
+    if (state.isPvP === true) {
+      this.setState({
+        isPvP: true,
+        isRaid: false,
+      });
+      return;
+    }
+
+    this.setState(state);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -232,7 +254,16 @@ export default class BattleSimulatorOptions  extends PureComponent {
 
             <Switch
               value={this.state.isRaid}
-              onValueChange={() => this.setState({ isRaid: !this.state.isRaid })}
+              onValueChange={() => this.toggleRaidPvP({ isRaid: !this.state.isRaid })}
+            />
+          </View>
+
+          <View>
+            <Heading>PVP</Heading>
+
+            <Switch
+              value={this.state.isPvP}
+              onValueChange={() => this.toggleRaidPvP({ isPvP: !this.state.isPvP })}
             />
           </View>
 
