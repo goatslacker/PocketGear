@@ -8,6 +8,6 @@ export default function getQuickAttacks(pokemon: Pokemon) {
   return pokemon.moves.quick
     .map(dex.findMove)
     .sort(
-      (a, b) => (b.Power || 0) / b.DurationMs - (a.Power || 0) / a.DurationMs
+      (a, b) => (b.Energy || 0) / b.DurationMs - (a.Energy || 0) / a.DurationMs
     );
 }

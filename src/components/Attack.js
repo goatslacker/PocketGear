@@ -92,7 +92,10 @@ export default function Attack(props: Props) {
       ) : (
         <View style={styles.spacer}>
           <Text style={[styles.text, styles.energyQuick]}>
-            +{move.Energy} energy
+            {(move.Power / (move.DurationMs / 1000)).toFixed(1)} dps
+          </Text>
+          <Text style={[styles.text, styles.energyQuick]}>
+            {(move.Energy / (move.DurationMs / 1000)).toFixed(1)} eps
           </Text>
         </View>
       )}
