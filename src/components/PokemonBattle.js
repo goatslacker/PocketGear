@@ -38,7 +38,8 @@ export default class PokemonBattle extends PureComponent {
         key: `${quick.Name}/${charge.Name}`,
         quick,
         charge,
-        results: dex.getTopPokemon()
+        results: dex
+          .getTopPokemon()
           .reduce((acc, pokemon) => {
             const fx = getTypeEffectiveness(pokemon, charge);
 
