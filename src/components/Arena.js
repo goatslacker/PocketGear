@@ -3,7 +3,6 @@
 import React, { PureComponent } from 'react';
 import getTypeEffectiveness from 'pokemagic/lib/getTypeEffectiveness';
 import simulateBattle from 'pokemagic/simulateBattle';
-import topPokemon from 'pokemagic/lib/topPokemon';
 import {
   Button,
   FlatList,

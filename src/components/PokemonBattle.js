@@ -1,8 +1,8 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
+import dex from 'pokemagic/dex';
 import getTypeEffectiveness from 'pokemagic/lib/getTypeEffectiveness';
-import topPokemon from 'pokemagic/lib/topPokemon';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
 
 import MovesetPicker from './MovesetPicker';
@@ -38,7 +38,7 @@ export default class PokemonBattle extends PureComponent {
         key: `${quick.Name}/${charge.Name}`,
         quick,
         charge,
-        results: topPokemon
+        results: dex.getTopPokemon()
           .reduce((acc, pokemon) => {
             const fx = getTypeEffectiveness(pokemon, charge);
 
