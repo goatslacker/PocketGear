@@ -49,8 +49,8 @@ export default class extends React.Component {
 
   componentDidMount() {
     Font.loadAsync({
-      EvilIcons: require('react-native-vector-icons/Fonts/EvilIcons.ttf'),
-      'Material Icons': require('react-native-vector-icons/Fonts/MaterialIcons.ttf'),
+      EvilIcons: require('@expo/vector-icons/fonts/EvilIcons.ttf'),
+      'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
     }).then(() => this.setState({ fontLoaded: true }));
   }
 
