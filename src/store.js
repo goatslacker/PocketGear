@@ -52,7 +52,9 @@ function getTypeChart(): Array<TypeChart> {
 }
 
 function getSprite(id: PokemonID): any {
-  return sprites[id - 1];
+  const pokemon = dex.findPokemon(id);
+  if (!pokemon) return;
+  return sprites[pokemon.form || pokemon.name];
 }
 
 function getColor(type: PokemonType): string {
