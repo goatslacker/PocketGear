@@ -144,7 +144,7 @@ class PokemonInfo extends PureComponent<Props, void> {
     return (
       <View {...this.props} style={[styles.container, this.props.style]}>
         <Appbar style={styles.appbar} navigation={this.props.navigation}>
-          {'#' + pokemon.id}
+          {'#' + pokemon.dex}
         </Appbar>
         <View style={[styles.row, styles.meta]}>
           <View style={styles.basic}>

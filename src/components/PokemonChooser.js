@@ -67,7 +67,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
 
     if (query) {
       if (!isNaN(query)) {
-        return filter(pokemons, p => p.id === parseInt(query, 10));
+        return filter(pokemons, p => p.dex === parseInt(query, 10));
       }
       return filter(pokemons, pokemon => {
         return (
@@ -93,7 +93,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
         case 'max_cp':
           return store.getMaxCP(b) - store.getMaxCP(a);
         case '#':
-          return a.id - b.id;
+          return a.dex - b.dex;
         case 'attack':
           return b.stats.attack - a.stats.attack;
         case 'defense':
