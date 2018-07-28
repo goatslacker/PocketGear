@@ -410,4 +410,4 @@ export default {
   DEOXYS_ATTACK: require('../assets/sprites/deoxys_attack.png'),
   DEOXYS_DEFENSE: require('../assets/sprites/deoxys_defense.png'),
   DEOXYS_SPEED: require('../assets/sprites/deoxys_speed.png'),
-}
+};
