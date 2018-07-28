@@ -52,7 +52,7 @@ function getTypeChart(): Array<TypeChart> {
 }
 
 function getSprite(id: PokemonID): any {
-  return sprites[pokemon.id];
+  return sprites[id];
 }
 
 function getColor(type: PokemonType): string {
@@ -64,7 +64,7 @@ function getCPValues() {
 }
 
 function getPokemonByID(id) {
-  return allPokemon[id - 1];
+  return allPokemon.find(poke => poke.id === id);
 }
 
 export default {
