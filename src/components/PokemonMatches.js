@@ -30,9 +30,8 @@ const styles = StyleSheet.create({
 
 function getDefenderProfile(pokemon, quickMove, chargeMove) {
   const { counters } = defenderProfile(pokemon.name, quickMove, chargeMove, {
-    legacy: false,
+    filterAttackerMoveset: move => move.legacy === 0,
     numPokemon: 20,
-    tm: false,
     // TODO let you configure weather
     weather: 'EXTREME',
   });

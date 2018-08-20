@@ -24,9 +24,9 @@
   "dependencies": {
     "expo": "^26.0.0",
     "lodash": "^4.17.4",
-    "pokemagic": "^3.0.0",
+    "pokemagic": "^4.1.0",
     "react": "^16.3.0-alpha.1",
-    "react-native": "^0.54.4",
+    "react-native": "^0.56.0",
     "react-native-picker-select": "^2.0.1",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.19"
@@ -48,10 +48,10 @@
     "eslint-plugin-react-native": "^3.1.0",
     "flow-bin": "~0.53.0",
     "jest": "^21.2.1",
-    "jest-expo": "~22.0.1",
+    "jest-expo": "^29.0.0",
     "node-cleanup": "^2.1.2",
     "prettier": "^1.8.2",
-    "react-native-scripts": "1.7.0",
+    "react-native-scripts": "^1.14.1",
     "react-test-renderer": "16.0.0-beta.5"
   }
 }
