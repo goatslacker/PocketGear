@@ -44,7 +44,6 @@ export default class PokemonList extends PureComponent<Props, void> {
     const extraProps = this.props.getCardProps
       ? this.props.getCardProps(rowData)
       : {};
-    console.log('@', rowData);
     return (
       <PokemonListCard
         pokemon={rowData}
