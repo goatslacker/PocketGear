@@ -3,7 +3,7 @@
     "name": "PocketGear",
     "description": "PocketGear is a clean and simple Pokédex app for Pokémon GO you'll ever need.",
     "slug": "pocketgear",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "icon": "assets/icons/app.png",
     "loading": {
       "icon": "assets/icons/splash.png",
