@@ -51,7 +51,7 @@
     "jest-expo": "^29.0.0",
     "node-cleanup": "^2.1.2",
     "prettier": "^1.8.2",
-    "react-native-scripts": "^1.14.1",
+    "react-native-scripts": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5"
   }
 }
