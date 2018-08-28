@@ -68,6 +68,16 @@ function isQuickMove(move) {
   return quickMoveRx.test(move.Name);
 }
 
+function isLegacy(legacy) {
+  if (legacy === 1 || legacy === 2) {
+    return ' (L)'
+  }
+  if (legacy === 4) {
+    return ' (CD)'
+  }
+  return null
+}
+
 export default function Attack(props: Props) {
   const { move, types } = props;
 
@@ -80,7 +90,7 @@ export default function Attack(props: Props) {
   return (
     <View style={styles.row}>
       <View style={styles.type}>
-        <Text style={styles.text}>{formatMove(move.Name)}</Text>
+        <Text style={styles.text}>{formatMove(move.Name)}{isLegacy(move.legacy)}</Text>
         <Text style={styles.subtitle}>{prettyType}</Text>
       </View>
       {!isQuickMove(move) && move.Energy ? (

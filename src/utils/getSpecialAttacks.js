@@ -1,6 +1,7 @@
 /* @flow */
 
 import dex from 'pokemagic/dex';
+import addTMCombinations from 'pokemagic/lib/addTMCombinations';
 
 import type { Pokemon } from '../types';
 
@@ -13,8 +14,18 @@ function getDPSxDPE(pokemon, m) {
   return dmg / m.DurationMs * dmg / Math.abs(m.Energy);
 }
 
+function normalizeLegacy(legacy, move) {
+  if (legacy === 0 || legacy === 1) return 0
+  if (legacy === 3) return 2
+  if (legacy === 4 && move === 'SMACK_DOWN_FAST') return 0
+  return legacy
+}
+
 export default function getSpecialAttacks(pokemon: Pokemon) {
-  return pokemon.moves.charge
-    .map(dex.findMove)
-    .sort((a, b) => getDPSxDPE(pokemon, b) - getDPSxDPE(pokemon, a));
+  const chargeMoves = addTMCombinations(pokemon).map(({ A, B, legacy }) => {
+    const move = dex.findMove(B)
+    move.legacy = normalizeLegacy(legacy, A)
+    return move
+  })
+  return Array.from(new Set(chargeMoves)).sort((a, b) => getDPSxDPE(pokemon, b) - getDPSxDPE(pokemon, a));
 }
