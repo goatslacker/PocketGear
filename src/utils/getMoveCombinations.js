@@ -1,22 +1,22 @@
 import dex from 'pokemagic/dex';
 import addTMCombinations from 'pokemagic/lib/addTMCombinations';
 
-function moveDPS(pokemon, moves) {
+function moveDPS(pokemon, moveset) {
   const stabQuick =
-    pokemon.type1 === moves.quick.Type || pokemon.type2 === moves.quick.Type;
+    pokemon.type1 === moveset.quick.Type || pokemon.type2 === moveset.quick.Type;
   const stabCharge =
-    pokemon.type1 === moves.charge.Type || pokemon.type2 === moves.charge.Type;
+    pokemon.type1 === moveset.charge.Type || pokemon.type2 === moveset.charge.Type;
 
-  const quickDMG = (moves.quick.Power || 0) * stabQuick + 1;
-  const chargeDMG = (moves.charge.Power || 0) * stabCharge + 1;
+  const quickDMG = (moveset.quick.Power || 0) * stabQuick + 1;
+  const chargeDMG = (moveset.charge.Power || 0) * stabCharge + 1;
 
-  const e100 = Math.ceil(100 / moves.quick.Energy);
+  const e100 = Math.ceil(100 / moveset.quick.Energy);
   const totalQuickDMG = quickDMG * e100;
-  const totalQuickTime = moves.quick.DurationMs * e100;
+  const totalQuickTime = moveset.quick.DurationMs * e100;
 
-  const charges = Math.floor(Math.abs(100 / moves.charge.Energy));
+  const charges = Math.floor(Math.abs(100 / moveset.charge.Energy));
   const totalChargeDMG = chargeDMG * charges;
-  const totalChargeTime = moves.charge.DurationMs * charges;
+  const totalChargeTime = moveset.charge.DurationMs * charges;
 
   return (
     (totalQuickDMG + totalChargeDMG) /
