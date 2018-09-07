@@ -40,15 +40,13 @@ export default function getMoveCombinations(pokemon) {
     return movesetCache[pokemon.name];
   }
 
-  const moveCombos = [];
-
-  addTMCombinations(pokemon).forEach(({ A, B, legacy }) => {
-    moveCombos.push({
+  const moveCombos = addTMCombinations(pokemon).map(({ A, B, legacy }) => {
+    return {
       quick: dex.findMove(A),
       charge: dex.findMove(B),
       legacy,
-    })
-  })
+    };
+  });
 
   movesetCache[pokemon.name] = moveCombos.sort(comboDPS(pokemon));
 

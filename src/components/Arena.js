@@ -19,7 +19,6 @@ import Heading from './Heading';
 import Placeholder from './Placeholder';
 import PokemonListCard from './PokemonListCard';
 import formatMove from '../utils/formatMove';
-import getMoveCombinations from '../utils/getMoveCombinations';
 import shortenMove from '../utils/shortenMove';
 import store from '../store';
 
@@ -42,15 +41,15 @@ export default class Arena extends PureComponent {
 
   getAttacker() {
     const {
-      attackerId,
-      atkm1idx,
-      atkm2idx,
+      atkId,
+      atkQuick,
+      atkCharge,
     } = this.props.navigation.state.params;
 
-    const pokemon = store.getPokemonByID(attackerId);
+    const pokemon = store.getPokemonByID(atkId);
     const moves =
-      atkm1idx !== undefined && atkm2idx !== undefined
-        ? [atkm1idx, atkm2idx]
+      atkQuick !== undefined && atkCharge !== undefined
+        ? [atkQuick, atkCharge]
         : [];
 
     return { moves, pokemon };
@@ -58,15 +57,15 @@ export default class Arena extends PureComponent {
 
   getDefender() {
     const {
-      defenderId,
-      defm1idx,
-      defm2idx,
+      defId,
+      defQuick,
+      defCharge,
     } = this.props.navigation.state.params;
 
-    const pokemon = store.getPokemonByID(defenderId);
+    const pokemon = store.getPokemonByID(defId);
     const moves =
-      defm1idx !== undefined && defm2idx !== undefined
-        ? [defm1idx, defm2idx]
+      defQuick !== undefined && defCharge !== undefined
+        ? [defQuick, defCharge]
         : [];
 
     return { moves, pokemon };

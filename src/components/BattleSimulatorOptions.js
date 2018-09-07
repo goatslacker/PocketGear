@@ -16,9 +16,10 @@ import {
 } from 'react-native';
 
 import Heading from './Heading';
-import MovePicker from './MovePicker';
+import MovesetPicker from './MovesetPicker';
 import PokemonListCard from './PokemonListCard';
 import formatMove from '../utils/formatMove';
+import getMoveCombinations from '../utils/getMoveCombinations';
 import store from '../store';
 
 const styles = StyleSheet.create({
@@ -101,12 +102,10 @@ export default class BattleSimulatorOptions extends PureComponent {
 
     this.state = {
       atk: attacker.pokemon,
-      atkIdx1: attacker.moves[0] || 0,
-      atkIdx2: attacker.moves[1] || 0,
+      atkMoves: `${attacker.moves[0]}/${attacker.moves[1]}`,
 
       def: defender.pokemon,
-      defIdx1: defender.moves[0] || 0,
-      defIdx2: defender.moves[1] || 0,
+      defMoves: `${defender.moves[0]}/${defender.moves[1]}`,
 
       isPvP: false,
       isRaid: isLegendary(defender.pokemon.name),
@@ -118,31 +117,32 @@ export default class BattleSimulatorOptions extends PureComponent {
   callback() {
     const {
       atk,
+      atkMoves,
       def,
-      atkIdx1,
-      atkIdx2,
-      defIdx1,
-      defIdx2,
+      defMoves,
       isPvP,
       isRaid,
       weather,
     } = this.state;
 
-    const atkQuick = dex.findMove(atk.moves.quick[atkIdx1]);
-    const atkCharge = dex.findMove(atk.moves.charge[atkIdx2]);
-    const defQuick = dex.findMove(def.moves.quick[defIdx1]);
-    const defCharge = dex.findMove(def.moves.charge[defIdx2]);
+    const [atkQuick, atkCharge] = atkMoves.split('/');
+    const [defQuick, defCharge] = defMoves.split('/');
+
+    const atkQuickMove = dex.findMove(atkQuick);
+    const atkChargeMove = dex.findMove(atkCharge);
+    const defQuickMove = dex.findMove(defQuick);
+    const defChargeMove = dex.findMove(defCharge);
 
     this.props.onBattle({
       atk: {
         pokemon: atk,
-        quickMove: atkQuick,
-        chargeMove: atkCharge,
+        quickMove: atkQuickMove,
+        chargeMove: atkChargeMove,
       },
       def: {
         pokemon: def,
-        quickMove: defQuick,
-        chargeMove: defCharge,
+        quickMove: defQuickMove,
+        chargeMove: defChargeMove,
       },
       isPvP,
       isRaid,
@@ -150,60 +150,26 @@ export default class BattleSimulatorOptions extends PureComponent {
     });
   }
 
-  nextQuickMove(stateKey, id, poke) {
-    if (id === poke.moves.quick.length - 1) {
-      this.setState({
-        [stateKey]: 0,
-      });
-      return;
-    }
-
-    this.setState({
-      [stateKey]: id + 1,
-    });
-  }
-
-  nextChargeMove(stateKey, id, poke) {
-    if (id === poke.moves.charge.length - 1) {
-      this.setState({
-        [stateKey]: 0,
-      });
-      return;
-    }
-
-    this.setState({
-      [stateKey]: id + 1,
-    });
-  }
-
   renderAttackerOptions() {
-    const { atk, atkIdx1, atkIdx2 } = this.state;
+    const { atk, atkMoves } = this.state;
 
     return (
-      <MovePicker
+      <MovesetPicker
+        onChange={atkMoves => this.setState({ atkMoves })}
         pokemon={atk}
-        quickMoveIdx={atkIdx1}
-        chargeMoveIdx={atkIdx2}
-        onNextQuickMove={(id, poke) => this.nextQuickMove('atkIdx1', id, poke)}
-        onNextChargeMove={(id, poke) =>
-          this.nextChargeMove('atkIdx2', id, poke)
-        }
+        value={atkMoves}
       />
     );
   }
 
   renderDefenderOptions() {
-    const { def, defIdx1, defIdx2 } = this.state;
+    const { def, defMoves } = this.state;
 
     return (
-      <MovePicker
+      <MovesetPicker
+        onChange={defMoves => this.setState({ defMoves })}
         pokemon={def}
-        quickMoveIdx={defIdx1}
-        chargeMoveIdx={defIdx2}
-        onNextQuickMove={(id, poke) => this.nextQuickMove('defIdx1', id, poke)}
-        onNextChargeMove={(id, poke) =>
-          this.nextChargeMove('defIdx2', id, poke)
-        }
+        value={defMoves}
       />
     );
   }

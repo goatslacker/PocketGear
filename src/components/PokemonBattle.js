@@ -85,17 +85,15 @@ export default class PokemonBattle extends PureComponent {
   handlePokePress(defender, rowData) {
     const { pokemon } = this.props;
 
-    const [quick, charge] = this.state.moveset.split('/');
-    const atkm1idx = pokemon.moves.quick.indexOf(quick);
-    const atkm2idx = pokemon.moves.charge.indexOf(charge);
+    const [atkQuick, atkCharge] = this.state.moveset.split('/');
 
     this.props.navigation.navigate('Arena', {
-      attackerId: pokemon.id,
-      atkm1idx,
-      atkm2idx,
-      defenderId: defender.id,
-      defm1idx: rowData[1],
-      defm2idx: rowData[2],
+      atkId: pokemon.id,
+      atkQuick,
+      atkCharge,
+      defId: defender.id,
+      defQuick: rowData[1],
+      defCharge: rowData[2],
     });
   }
 

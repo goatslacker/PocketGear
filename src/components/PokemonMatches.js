@@ -44,20 +44,14 @@ function getDefenderProfile(pokemon, quickMove, chargeMove) {
       const pokemon = store.getPokemonByName(x.name);
       const [quick, charge] = x.stats[0].moves;
 
-      return [
-        pokemon.id,
-        pokemon.moves.quick.indexOf(quick),
-        pokemon.moves.charge.indexOf(charge),
-      ];
+      return [pokemon.id, quick, charge];
     }),
   }));
 }
 
 function getCardProps(rowData) {
   const pokemon = store.getPokemonByID(rowData[0]);
-  const quick = pokemon.moves.quick[rowData[1]] || '?';
-  const charge = pokemon.moves.charge[rowData[2]] || '?';
-  const subtitle = [quick, charge].map(shortenMove).join('/');
+  const subtitle = rowData.slice(1).map(shortenMove).join('/');
 
   return {
     pokemon,
@@ -67,17 +61,15 @@ function getCardProps(rowData) {
 
 function goToBattle(defender, moveset, navigation) {
   return (attacker, rowData) => {
-    const [quick, charge] = moveset.split('/');
-    const defm1idx = defender.moves.quick.indexOf(quick);
-    const defm2idx = defender.moves.charge.indexOf(charge);
+    const [defQuick, defCharge] = moveset.split('/');
 
     navigation.navigate('Arena', {
-      attackerId: attacker.id,
-      atkm1idx: rowData[1],
-      atkm2idx: rowData[2],
-      defenderId: defender.id,
-      defm1idx,
-      defm2idx,
+      atkId: attacker.id,
+      atkQuick: rowData[1],
+      atkCharge: rowData[2],
+      defId: defender.id,
+      defQuick,
+      defCharge,
     });
   };
 }

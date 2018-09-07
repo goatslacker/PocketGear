@@ -24,8 +24,8 @@ function Icon() {
 
 export default function MovePicker({
   pokemon,
-  quickMoveIdx,
-  chargeMoveIdx,
+  quickMove,
+  chargeMove,
   onNextQuickMove,
   onNextChargeMove,
 }) {
@@ -33,8 +33,8 @@ export default function MovePicker({
     return null;
   }
 
-  const quick = dex.findMove(pokemon.moves.quick[quickMoveIdx]);
-  const charge = dex.findMove(pokemon.moves.charge[chargeMoveIdx]);
+  const quick = dex.findMove(quickMove);
+  const charge = dex.findMove(chargeMove);
   const types = [pokemon.type1, pokemon.type2];
 
   return (
@@ -43,7 +43,7 @@ export default function MovePicker({
 
       <TouchableOpacity
         style={styles.row}
-        onPress={() => onNextQuickMove(quickMoveIdx, pokemon)}
+        onPress={() => onNextQuickMove(quickMove, pokemon)}
       >
         <Attack move={quick} types={types} />
         <Icon />
@@ -53,7 +53,7 @@ export default function MovePicker({
 
       <TouchableOpacity
         style={styles.row}
-        onPress={() => onNextChargeMove(chargeMoveIdx, pokemon)}
+        onPress={() => onNextChargeMove(chargeMove, pokemon)}
       >
         <Attack move={charge} types={types} />
         <Icon />
