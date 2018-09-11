@@ -33,23 +33,11 @@ const styles = StyleSheet.create({
 });
 
 function bestDPS(results) {
-  if (bestDPS.cache) {
-    return bestDPS.cache;
-  }
-
-  bestDPS.cache = Math.max.apply(Math.max, results.map(x => x[3]));
-
-  return bestDPS.cache;
+  return Math.max.apply(Math.max, results.map(x => x[3]));
 }
 
 function bestTDO(results) {
-  if (bestTDO.cache) {
-    return bestTDO.cache;
-  }
-
-  bestTDO.cache = Math.max.apply(Math.max, results.map(x => x[4]));
-
-  return bestTDO.cache;
+  return Math.max.apply(Math.max, results.map(x => x[4]));
 }
 
 // TODO build a small lru cache to hold these in
@@ -63,7 +51,9 @@ function getDefenderProfile(pokemon, quickMoveName, chargeMoveName) {
     weather: 'EXTREME',
   });
 
-  return data.map(moveset => ({
+  const [moveset] = data;
+
+  return {
     key: `${moveset.quick}/${moveset.charge}`,
     quick: moveset.quick,
     charge: moveset.charge,
@@ -80,7 +70,7 @@ function getDefenderProfile(pokemon, quickMoveName, chargeMoveName) {
         x.stats[0].total,
       ];
     }),
-  }));
+  };
 }
 
 function getCardProps(rowData) {
@@ -133,6 +123,9 @@ export default class PokemonMatches extends React.Component {
     const { quickMove, chargeMove } = this.state;
     const data = getDefenderProfile(pokemon, quickMove.Name, chargeMove.Name);
 
+    const maxDPS = bestDPS(data.results);
+    const maxTDO = bestTDO(data.results);
+
     return (
       <ScrollView
         style={styles.container}
@@ -147,39 +140,37 @@ export default class PokemonMatches extends React.Component {
           onSelectChargeMove={chargeMove => this.setState({ chargeMove })}
         />
 
-        {data.map(({ key, results }) => (
-          <View key={key} style={styles.row}>
-            <PokemonList
-              data={results}
-              getCardProps={getCardProps}
-              navigation={this.props.navigation}
-              onPress={goToBattle(pokemon, quickMove, chargeMove, navigation)}
-            >
-              {({ dps, tdo, total }) => (
-                <View style={[styles.wide]}>
-                  <ProgressLabel
-                    color="#9575cd"
-                    label="Score"
-                    ratio={total / results[0][5]}
-                    value={Math.round(total)}
-                  />
-                  <ProgressLabel
-                    color="#e57373"
-                    label="DPS"
-                    ratio={dps / bestDPS(results)}
-                    value={dps}
-                  />
-                  <ProgressLabel
-                    color="#5499c7"
-                    label="TDO"
-                    ratio={tdo / bestTDO(results)}
-                    value={tdo}
-                  />
-                </View>
-              )}
-            </PokemonList>
-          </View>
-        ))}
+        <View style={styles.row}>
+          <PokemonList
+            data={data.results}
+            getCardProps={getCardProps}
+            navigation={this.props.navigation}
+            onPress={goToBattle(pokemon, quickMove, chargeMove, navigation)}
+          >
+            {({ dps, tdo, total }) => (
+              <View style={[styles.wide]}>
+                <ProgressLabel
+                  color="#9575cd"
+                  label="Score"
+                  ratio={total / data.results[0][5]}
+                  value={Math.round(total)}
+                />
+                <ProgressLabel
+                  color="#e57373"
+                  label="DPS"
+                  ratio={dps / maxDPS}
+                  value={dps}
+                />
+                <ProgressLabel
+                  color="#5499c7"
+                  label="TDO"
+                  ratio={tdo / maxTDO}
+                  value={tdo}
+                />
+              </View>
+            )}
+          </PokemonList>
+        </View>
       </ScrollView>
     );
   }

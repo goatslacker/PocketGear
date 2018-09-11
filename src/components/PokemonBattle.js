@@ -33,23 +33,11 @@ const styles = StyleSheet.create({
 });
 
 function bestDPS(results) {
-  if (bestDPS.cache) {
-    return bestDPS.cache;
-  }
-
-  bestDPS.cache = Math.max.apply(Math.max, results.map(x => x[3]));
-
-  return bestDPS.cache;
+  return Math.max.apply(Math.max, results.map(x => x[3]));
 }
 
 function bestTDO(results) {
-  if (bestTDO.cache) {
-    return bestTDO.cache;
-  }
-
-  bestTDO.cache = Math.max.apply(Math.max, results.map(x => x[4]));
-
-  return bestTDO.cache;
+  return Math.max.apply(Math.max, results.map(x => x[4]));
 }
 
 function getCardProps(rowData) {
@@ -137,6 +125,8 @@ export default class PokemonBattle extends PureComponent {
       this.state.quickMove.Name,
       this.state.chargeMove.Name
     );
+    const maxDPS = bestDPS(results);
+    const maxTDO = bestTDO(results);
 
     return (
       <ScrollView
@@ -169,13 +159,13 @@ export default class PokemonBattle extends PureComponent {
                 <ProgressLabel
                   color="#e57373"
                   label="DPS"
-                  ratio={dps / bestDPS(results)}
+                  ratio={dps / maxDPS}
                   value={dps}
                 />
                 <ProgressLabel
                   color="#5499c7"
                   label="TDO"
-                  ratio={tdo / bestTDO(results)}
+                  ratio={tdo / maxTDO}
                   value={tdo}
                 />
               </View>
