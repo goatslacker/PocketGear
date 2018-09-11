@@ -63,10 +63,11 @@ const styles = StyleSheet.create({
         : 0,
   },
 
-  row: {
-    height: Platform.OS === 'ios' ? 44 : 48,
-    flexDirection: 'row',
+  toolbar: {
     alignItems: 'center',
+    flexDirection: 'row',
+    height: Platform.OS === 'ios' ? 44 : 48,
+    justifyContent: 'center',
     paddingHorizontal: 2,
   },
 
@@ -179,7 +180,7 @@ export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
             pointerEvents={'auto'}
           >
             <Animated.View style={styles.separator} />
-            <Animated.View style={styles.row}>
+            <Animated.View style={styles.toolbar}>
               {this.props.toggles.map(toggle => (
                 <FilterToggle
                   key={toggle.name}

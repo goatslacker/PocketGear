@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    marginHorizontal: 8,
     height: 72,
     resizeMode: 'contain',
+    marginBottom: -12,
   },
 
   types: {
@@ -83,10 +83,9 @@ const styles = StyleSheet.create({
   },
 
   meta: {
-    paddingHorizontal: 16,
-    marginBottom: 16,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    paddingHorizontal: 16,
   },
 
   label2: {

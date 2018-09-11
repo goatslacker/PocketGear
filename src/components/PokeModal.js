@@ -13,13 +13,21 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
 
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   padding: {
     paddingHorizontal: 40,
   },
 
   row: {
+    backgroundColor: '#fff',
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
   },
 
   image: {
@@ -50,9 +58,11 @@ export default class PokeModal extends PureComponent {
 
     return (
       <ScrollView style={styles.modal}>
-        <Image style={styles.image} source={sprite} />
-        <View style={styles.padding}>
+        <View style={styles.center}>
+          <Image style={styles.image} source={sprite} />
           <Heading level={1}>Select a Move</Heading>
+        </View>
+        <View style={styles.padding}>
           {attacks.map(move => {
             return (
               <TouchableItem
