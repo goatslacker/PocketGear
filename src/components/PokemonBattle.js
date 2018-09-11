@@ -5,6 +5,7 @@ import attackerProfile from 'pokemagic/lib/attackerProfile';
 import dex from 'pokemagic/dex';
 import { View, ScrollView, StyleSheet } from 'react-native';
 
+import FilterToggle from './FilterToggle';
 import MovePicker from './MovePicker';
 import PokemonList from './PokemonList';
 import ProgressLabel from './ProgressLabel';
@@ -24,6 +25,14 @@ const styles = StyleSheet.create({
 
   row: {
     flexDirection: 'row',
+  },
+
+  toggles: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 8,
+    paddingHorizontal: 2,
   },
 
   wide: {
@@ -61,13 +70,16 @@ function getCardProps(rowData) {
 }
 
 // TODO lru cache
-function getProfile(pokemon, quickMoveName, chargeMoveName) {
+function getProfile(pokemon, state) {
+  const quickMoveName = state.quickMove.Name;
+  const chargeMoveName = state.chargeMove.Name;
   const { data } = attackerProfile({
     chargeMoveName,
     numPokemon: 20,
     pokemon,
     quickMoveName,
     weather: 'EXTREME',
+    scoring: state.sort,
   });
 
   const [moveset] = data;
@@ -102,6 +114,7 @@ export default class PokemonBattle extends PureComponent {
     this.state = {
       quickMove: best.quick,
       chargeMove: best.charge,
+      sort: 'dps',
     };
   }
 
@@ -120,13 +133,15 @@ export default class PokemonBattle extends PureComponent {
 
   render() {
     const { pokemon } = this.props;
-    const { results } = getProfile(
-      pokemon,
-      this.state.quickMove.Name,
-      this.state.chargeMove.Name
-    );
+    const { results } = getProfile(pokemon, this.state);
     const maxDPS = bestDPS(results);
     const maxTDO = bestTDO(results);
+
+    const toggles = [
+      { name: 'score', label: 'score', active: this.state.sort === 'score' },
+      { name: 'dps', label: 'dps', active: this.state.sort === 'dps' },
+      { name: 'tdo', label: 'tdo', active: this.state.sort === 'tdo' },
+    ];
 
     return (
       <ScrollView
@@ -141,6 +156,16 @@ export default class PokemonBattle extends PureComponent {
           onSelectQuickMove={quickMove => this.setState({ quickMove })}
           onSelectChargeMove={chargeMove => this.setState({ chargeMove })}
         />
+        <View style={styles.toggles}>
+          {toggles.map(toggle => (
+            <FilterToggle
+              key={toggle.name}
+              active={toggle.active}
+              label={toggle.label}
+              onPress={() => this.setState({ sort: toggle.name })}
+            />
+          ))}
+        </View>
         <View style={styles.row}>
           <PokemonList
             data={results}
