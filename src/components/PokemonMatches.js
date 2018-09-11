@@ -108,8 +108,8 @@ function goToBattle(defender, quickMove, chargeMove, navigation) {
       atkQuick: rowData[1],
       atkCharge: rowData[2],
       defId: defender.id,
-      defQuick: quickMove,
-      defCharge: chargeMove,
+      defQuick: quickMove.Name,
+      defCharge: chargeMove.Name,
     });
   };
 }
