@@ -83,7 +83,7 @@ export default function Attack(props: Props) {
 
   const prettyType = ucFirst(move.Type.toLowerCase());
 
-  const power = move.Power || 0;
+  const power = move.Power || 1;
   const multiplier = types.includes(prettyType) ? 1.25 : 1;
   const stab = Math.floor(power * (multiplier - 1));
 
@@ -105,7 +105,7 @@ export default function Attack(props: Props) {
       ) : (
         <View style={styles.spacer}>
           <Text style={[styles.text, styles.energyQuick]}>
-            {(move.Power / (move.DurationMs / 1000)).toFixed(1)} dps
+            {(power / (move.DurationMs / 1000)).toFixed(1)} dps
           </Text>
           <Text style={[styles.text, styles.energyQuick]}>
             {(move.Energy / (move.DurationMs / 1000)).toFixed(1)} eps

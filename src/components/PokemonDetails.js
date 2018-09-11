@@ -228,7 +228,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Capture Rate
               </Text>
               <Text selectable style={styles.text}>
-                {pokemon.captureRate * 100}%
+                {Math.min(100, (pokemon.captureRate) * 100)}%
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>
@@ -239,7 +239,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Flee Rate
               </Text>
               <Text selectable style={styles.text}>
-                {pokemon.fleeRate * 100}%
+                {(pokemon.fleeRate || 0) * 100}%
               </Text>
             </View>
             {pokemon.kmBuddyDistance ? (
