@@ -7,7 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
+    marginHorizontal: 8,
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ddc',

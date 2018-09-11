@@ -11,8 +11,8 @@ import { View, Image, Text, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   block: {
     backgroundColor: '#fff',
-    padding: 16,
     borderRadius: 2,
+    marginVertical: 4,
     justifyContent: 'flex-start',
     flexDirection: 'row',
   },

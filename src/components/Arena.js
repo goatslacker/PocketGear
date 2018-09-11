@@ -121,6 +121,7 @@ export default class Arena extends PureComponent {
             defender={defender}
             navigation={this.props.navigation}
             onBattle={state => this.runBattleSimulator(state)}
+            weather={this.props.navigation.state.params.weather}
           />
         )}
         {this.state.results && (

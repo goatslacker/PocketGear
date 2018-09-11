@@ -50,7 +50,7 @@ export default class BattleSimulatorOptions extends PureComponent {
   constructor(props) {
     super();
 
-    const { attacker, defender } = props;
+    const { attacker, defender, weather } = props;
 
     this.state = {
       atk: attacker.pokemon,
@@ -62,7 +62,7 @@ export default class BattleSimulatorOptions extends PureComponent {
       isPvP: false,
       isRaid: isLegendary(defender.pokemon.name),
       text: '',
-      weather: 'EXTREME',
+      weather: weather || 'EXTREME',
     };
   }
 
