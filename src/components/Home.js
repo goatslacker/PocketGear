@@ -1,13 +1,13 @@
 /* @flow */
 
 import * as React from 'react';
+import Expo from 'expo';
 import { StackNavigator } from 'react-navigation';
+
+import Arena from './Arena';
+import PokeModal from './PokeModal';
 import PokemonChooser from './PokemonChooser';
 import PokemonInfo from './PokemonInfo';
-import PokeModal from './PokeModal';
-import Arena from './Arena';
-
-import { Font } from 'expo';
 
 const Home = StackNavigator(
   {
@@ -48,7 +48,7 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    Font.loadAsync({
+    Expo.Font.loadAsync({
       EvilIcons: require('@expo/vector-icons/fonts/EvilIcons.ttf'),
       'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
     }).then(() => this.setState({ fontLoaded: true }));

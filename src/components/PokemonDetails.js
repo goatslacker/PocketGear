@@ -228,7 +228,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
                 Capture Rate
               </Text>
               <Text selectable style={styles.text}>
-                {Math.min(100, (pokemon.captureRate) * 100)}%
+                {Math.min(100, pokemon.captureRate * 100)}%
               </Text>
             </View>
             <View style={[styles.row, styles.center]}>

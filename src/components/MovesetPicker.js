@@ -35,8 +35,8 @@ export default function MovesetPicker({ onChange, pokemon, value }) {
   return (
     <View style={styles.center}>
       <PickerSelect
-        hideDoneBar={true}
-        hideIcon={true}
+        hideDoneBar
+        hideIcon
         items={moveCombos}
         onValueChange={combo => onChange(combo)}
         style={{ inputIOS: styles.heading }}

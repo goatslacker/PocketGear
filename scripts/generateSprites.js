@@ -1,3 +1,4 @@
+/* eslint-disable import/no-commonjs */
 const dex = require('pokemagic/dex');
 const fs = require('fs');
 
@@ -14,8 +15,8 @@ const fs = require('fs');
 const lines = dex.getAllPokemon().map(({ form, id, name }) => {
   const spritePath = `../assets/sprites/${(form || name).toLowerCase()}.png`;
   if (!fs.existsSync(spritePath.slice(1))) {
-    console.log('@', spritePath)
-    throw new Error(form || name)
+    console.log('@', spritePath);
+    throw new Error(form || name);
   }
 
   return `${id}: require('${spritePath}'),`;

@@ -1,25 +1,13 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
-import getTypeEffectiveness from 'pokemagic/lib/getTypeEffectiveness';
 import simulateBattle from 'pokemagic/simulateBattle';
-import {
-  Button,
-  FlatList,
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import BattleResults from './BattleResults';
 import Appbar from './Appbar';
 import BattleSimulatorOptions from './BattleSimulatorOptions';
-import Heading from './Heading';
 import Placeholder from './Placeholder';
-import PokemonListCard from './PokemonListCard';
-import formatMove from '../utils/formatMove';
-import shortenMove from '../utils/shortenMove';
 import store from '../store';
 
 const styles = StyleSheet.create({

@@ -1,55 +1,20 @@
 /* @flow */
 
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PickerSelect from 'react-native-picker-select';
 import React, { PureComponent } from 'react';
 import dex from 'pokemagic/dex';
 import isLegendary from 'pokemagic/lib/isLegendary';
-import {
-  Button,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-} from 'react-native';
+import { Button, Switch, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
 import MovesetPicker from './MovesetPicker';
 import PokemonListCard from './PokemonListCard';
 import formatMove from '../utils/formatMove';
-import getMoveCombinations from '../utils/getMoveCombinations';
-import store from '../store';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-
-  icon: {
-    color: '#222',
-  },
-
-  dropdown: {
-    borderWidth: 0,
-    backgroundColor: '#cacaca',
-    height: 80,
-    width: 340,
-  },
-
-  dropdownText: {
-    fontSize: 16,
-  },
-
-  move: {
-    marginBottom: 4,
-    marginTop: 4,
-  },
-
-  moveText: {
-    fontSize: 16,
   },
 
   section: {
@@ -64,19 +29,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-type Props = {
-  onPress: func,
-  style?: any,
-};
-
-function createMoveItem(move) {
-  return {
-    label: formatMove(move),
-    value: move,
-    key: move,
-  };
-}
 
 const WEATHER = [
   'SUNNY',
@@ -232,8 +184,8 @@ export default class BattleSimulatorOptions extends PureComponent {
             <Heading>Weather</Heading>
 
             <PickerSelect
-              hideDoneBar={true}
-              hideIcon={true}
+              hideDoneBar
+              hideIcon
               items={WEATHER}
               onValueChange={weather => this.setState({ weather })}
               value={this.state.weather}
