@@ -1,19 +1,26 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
-import { Image, Text, StyleSheet } from 'react-native';
 import TouchableItem from './TouchableItem';
-import store from '../store';
-import type { Pokemon } from '../types';
-import throttle from 'lodash/throttle';
 import formatMove from '../utils/formatMove';
+import store from '../store';
+import throttle from 'lodash/throttle';
+import type { Pokemon } from '../types';
+import { View, Image, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   block: {
-    alignItems: 'center',
     backgroundColor: '#fff',
     padding: 16,
     borderRadius: 2,
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+  },
+
+  col: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   image: {
@@ -28,19 +35,17 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: '#000',
+    color: '#666',
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 13,
     textAlign: 'center',
-    opacity: 0.7,
   },
 
   subtitle: {
-    color: '#000',
+    color: '#888',
     fontFamily: 'Montserrat',
-    fontSize: 11,
+    fontSize: 12,
     textAlign: 'center',
-    opacity: 0.5,
   },
 });
 
@@ -63,7 +68,7 @@ export default class PokemonListCard extends PureComponent<Props, void> {
   }, 500);
 
   render() {
-    const { height, pokemon, subtitle, style, title, toptext } = this.props;
+    const { children, height, pokemon, subtitle, style, title, toptext } = this.props;
     const types = [pokemon.type1, pokemon.type2]
       .filter(Boolean)
       .map(formatMove)
@@ -73,19 +78,26 @@ export default class PokemonListCard extends PureComponent<Props, void> {
     const margin = Math.floor(height / 6);
 
     return (
-      <TouchableItem
+      <View
         key={pokemon.name}
-        onPress={this._handlePress}
-        activeOpacity={0.7}
-        style={[styles.block, { backgroundColor: color }, style]}
+        style={[styles.block, style]}
       >
-        <Text style={[styles.index, styles.subtitle]}>
-          {toptext || `#${pokemon.dex}`}
-        </Text>
-        <Image source={sprite} style={[styles.image, { height, margin }]} />
-        <Text style={styles.title}>{title || formatMove(pokemon.name)}</Text>
-        <Text style={styles.subtitle}>{subtitle || types}</Text>
-      </TouchableItem>
+        <TouchableItem
+          onPress={this._handlePress}
+          activeOpacity={0.7}
+          style={[{ backgroundColor: color }]}
+        >
+          <Text style={[styles.index, styles.subtitle]}>
+            {toptext || `#${pokemon.dex}`}
+          </Text>
+          <Image source={sprite} style={[styles.image, { height, width: height, margin }]} />
+        </TouchableItem>
+        <View style={[styles.col]}>
+          <Text style={styles.title}>{title || formatMove(pokemon.name)}</Text>
+          <Text style={styles.subtitle}>{subtitle || types}</Text>
+          {children && children(this.props)}
+        </View>
+      </View>
     );
   }
 }

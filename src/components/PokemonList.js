@@ -20,8 +20,6 @@ type Props = {
   style?: any,
 };
 
-const CARD_WIDTH = 160;
-
 export default class PokemonList extends PureComponent<Props, void> {
   scrollTo(options: any) {
     this._root.scrollTo(options);
@@ -50,12 +48,10 @@ export default class PokemonList extends PureComponent<Props, void> {
         {...extraProps}
         navigation={this.props.navigation}
         onPress={pokemon => this.handlePress(pokemon, rowData)}
-      />
+      >
+        {this.props.children}
+      </PokemonListCard>
     );
-  };
-
-  _getNumberOfColumns = (width: number) => {
-    return Math.floor(width / CARD_WIDTH);
   };
 
   _setRef = (c: Object) => (this._root = c);
@@ -68,7 +64,7 @@ export default class PokemonList extends PureComponent<Props, void> {
         style={[styles.grid, this.props.style]}
         spacing={8}
         renderRow={this._renderRow}
-        getNumberOfColumns={this._getNumberOfColumns}
+        getNumberOfColumns={() => 1}
         ref={this._setRef}
       />
     );

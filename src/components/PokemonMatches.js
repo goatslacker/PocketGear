@@ -2,12 +2,14 @@
 
 import React, { PureComponent } from 'react';
 import defenderProfile from 'pokemagic/defenderProfile';
+import dex from 'pokemagic/dex';
 import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
 
 import More from './More';
 import MovesetPicker from './MovesetPicker';
 import PokemonList from './PokemonList';
 import PokemonListCard from './PokemonListCard';
+import ProgressBar from './ProgressBar';
 import formatMove from '../utils/formatMove';
 import getBestMoveset from '../utils/getBestMoveset';
 import shortenMove from '../utils/shortenMove';
@@ -26,7 +28,58 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+
+  row4: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 4,
+  },
+
+  text: {
+    color: '#888',
+    fontFamily: 'Montserrat',
+    fontSize: 12,
+  },
+
+  center: {
+    alignItems: 'center',
+  },
+
+  wide: {
+    marginTop: 8,
+    width: 170,
+  },
+
+  label: {
+    marginRight: 4,
+    width: 40,
+  },
+
+  amount: {
+    textAlign: 'right',
+    width: 50,
+  },
 });
+
+function bestDPS(results) {
+  if (bestDPS.cache) {
+    return bestDPS.cache;
+  }
+
+  bestDPS.cache = Math.max.apply(Math.max, results.map(x => x[3]));
+
+  return bestDPS.cache;
+}
+
+function bestTDO(results) {
+  if (bestTDO.cache) {
+    return bestTDO.cache;
+  }
+
+  bestTDO.cache = Math.max.apply(Math.max, results.map(x => x[4]));
+
+  return bestTDO.cache;
+}
 
 function getDefenderProfile(pokemon, quickMove, chargeMove) {
   const { counters } = defenderProfile(pokemon.name, quickMove, chargeMove, {
@@ -44,18 +97,33 @@ function getDefenderProfile(pokemon, quickMove, chargeMove) {
       const pokemon = store.getPokemonByName(x.name);
       const [quick, charge] = x.stats[0].moves;
 
-      return [pokemon.id, quick, charge];
+      return [
+        pokemon.id,
+        quick,
+        charge,
+        x.stats[0].dps,
+        x.stats[0].tdo,
+        x.stats[0].score,
+      ];
     }),
   }));
 }
 
 function getCardProps(rowData) {
-  const pokemon = store.getPokemonByID(rowData[0]);
-  const subtitle = rowData.slice(1).map(shortenMove).join('/');
+  const [id, quickMove, chargeMove, dps, tdo, score] = rowData;
+
+  const pokemon = store.getPokemonByID(id);
+  const subtitle = `${formatMove(quickMove)} and ${formatMove(chargeMove)}`
+
+  const color = store.getColor(dex.findMove(chargeMove).Type);
 
   return {
     pokemon,
     subtitle,
+    color,
+    dps,
+    tdo,
+    score,
   };
 }
 
@@ -72,6 +140,21 @@ function goToBattle(defender, moveset, navigation) {
       defCharge,
     });
   };
+}
+
+function ProgressLabel({
+  color,
+  label,
+  ratio,
+  value,
+}) {
+  return (
+    <View style={[styles.row4, styles.center]}>
+      <Text style={[styles.text, styles.label]}>{label}</Text>
+      <ProgressBar ratio={ratio || 0} fillColor={color} />
+      <Text style={[styles.text, styles.amount]}>{value}</Text>
+    </View>
+  )
 }
 
 export default class PokemonMatches extends React.Component {
@@ -130,7 +213,34 @@ export default class PokemonMatches extends React.Component {
               getCardProps={getCardProps}
               navigation={this.props.navigation}
               onPress={goToBattle(pokemon, this.state.moveset, navigation)}
-            />
+            >{({
+              color,
+              dps,
+              tdo,
+              score,
+            }) => (
+              <View style={[styles.wide]}>
+                <ProgressLabel
+                  color="#9575cd"
+                  label="Score"
+                  ratio={score / results[0][5]}
+                  value={Math.round(score)}
+                />
+                <ProgressLabel
+                  color="#e57373"
+                  label="DPS"
+                  ratio={dps / bestDPS(results)}
+                  value={dps}
+                />
+                <ProgressLabel
+                  color="#5499c7"
+                  label="TDO"
+                  ratio={tdo / bestTDO(results)}
+                  value={tdo}
+                />
+              </View>
+            )}
+            </PokemonList>
           </View>
         ))}
       </ScrollView>

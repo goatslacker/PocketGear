@@ -9,9 +9,9 @@ function getDPSxDPE(pokemon, m) {
   const power = m.Power || 0;
   const multiplier =
     pokemon.type1 === m.Type || pokemon.type2 === m.Type ? 1.25 : 1;
-  const dmg = Math.floor(power * (multiplier - 1));
+  const dmg = Math.floor(power * multiplier);
 
-  return dmg / m.DurationMs * dmg / Math.abs(m.Energy);
+  return (dmg / m.DurationMs) * (dmg / Math.abs(m.Energy));
 }
 
 function normalizeLegacy(legacy, move) {
