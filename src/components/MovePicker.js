@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    marginLeft: 4,
+    color: '#999',
+    marginLeft: 8,
   },
 });
 
