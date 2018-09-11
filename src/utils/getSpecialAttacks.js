@@ -15,9 +15,8 @@ function getDPSxDPE(pokemon, m) {
 }
 
 function normalizeLegacy(legacy, move) {
-  if (legacy === 0 || legacy === 1) return 0;
+  if (legacy === 0 || legacy === 1 || legacy === 5) return 0;
   if (legacy === 3) return 2;
-  if (legacy === 4 && move === 'SMACK_DOWN_FAST') return 0;
   return legacy;
 }
 

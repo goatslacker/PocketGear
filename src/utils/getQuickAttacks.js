@@ -9,7 +9,7 @@ function normalizeLegacy(legacy, move) {
   if (legacy === 1) return 1;
   if (legacy === 2 || legacy === 0) return 0;
   if (legacy === 3) return 1;
-  if (legacy === 4 && move === 'SMACK_DOWN_FAST') return 4;
+  if (legacy === 5) return 5;
   return 0;
 }
 

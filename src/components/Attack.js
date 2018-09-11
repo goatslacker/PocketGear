@@ -82,11 +82,12 @@ function isQuickMove(move) {
   return quickMoveRx.test(move.Name);
 }
 
+// TODO provide a dex.moves.isLegacy() dex.moves.isCommunityDay()
 function isLegacy(legacy) {
   if (legacy === 1 || legacy === 2) {
     return ' (L)';
   }
-  if (legacy === 4) {
+  if (legacy === 5 || legacy === 6) {
     return ' (CD)';
   }
   return null;
