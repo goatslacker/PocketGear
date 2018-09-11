@@ -25,7 +25,7 @@ const Root = StackNavigator(
     Main: {
       screen: Home,
     },
-    Modal: {
+    Moves: {
       screen: PokeModal,
     },
     Arena: {

@@ -1,18 +1,20 @@
 /* @flow */
 
-import difference from 'lodash/difference';
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import Heading from './Heading';
-import ProgressBar from './ProgressBar';
-import PokemonTypeLabel from './PokemonTypeLabel';
+import difference from 'lodash/difference';
+import { Image, View, Text, ScrollView, StyleSheet } from 'react-native';
+
 import Attack from './Attack';
 import Evolution from './Evolution';
+import Heading from './Heading';
+import PokemonTypeLabel from './PokemonTypeLabel';
+import ProgressBar from './ProgressBar';
+import formatMove from '../utils/formatMove';
 import getQuickAttacks from '../utils/getQuickAttacks';
+import getResistantToTypes from '../utils/getResistantToTypes';
 import getSpecialAttacks from '../utils/getSpecialAttacks';
 import getStrongAgainstTypes from '../utils/getStrongAgainstTypes';
 import getWeakAgainstTypes from '../utils/getWeakAgainstTypes';
-import getResistantToTypes from '../utils/getResistantToTypes';
 import store from '../store';
 import type { Pokemon, PokemonID, Move } from '../types';
 
@@ -67,6 +69,40 @@ const styles = StyleSheet.create({
   amount: {
     textAlign: 'right',
     width: 80,
+  },
+
+  image: {
+    marginHorizontal: 8,
+    height: 72,
+    resizeMode: 'contain',
+  },
+
+  types: {
+    flexDirection: 'row',
+    marginHorizontal: -2,
+  },
+
+  meta: {
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+
+  label2: {
+    color: '#222',
+    fontFamily: 'Montserrat',
+    width: 160,
+  },
+
+  name: {
+    fontSize: 18,
+    fontFamily: 'Montserrat-SemiBold',
+    marginVertical: 4,
+  },
+
+  basic: {
+    flex: 1,
   },
 });
 
@@ -124,9 +160,24 @@ export default class PokemonDetails extends PureComponent<Props, void> {
       ...weakAgainst,
       ...strongAgainst,
     ]);
+    const sprite = store.getSprite(pokemon.id);
 
     return (
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
+        <View style={[styles.row, styles.meta]}>
+          <View style={styles.basic}>
+            <Text style={[styles.label2, styles.name]}>
+              {formatMove(pokemon.name)}
+            </Text>
+            <View style={styles.types}>
+              {pokemon.types.map(type => (
+                <PokemonTypeLabel key={type} type={type} />
+              ))}
+            </View>
+          </View>
+          <Image style={styles.image} source={sprite} />
+        </View>
+
         <View style={styles.content}>
           <View style={styles.item}>
             <Heading selectable>Stats</Heading>

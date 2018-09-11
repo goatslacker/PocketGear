@@ -3,17 +3,15 @@
 import find from 'lodash/find';
 import memoize from 'lodash/memoize';
 import React, { PureComponent } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import Appbar from './Appbar';
 import DelayedItem from './DelayedItem';
-import PokemonTypeLabel from './PokemonTypeLabel';
 import PokemonDetails from './PokemonDetails';
 import PokemonMatches from './PokemonMatches';
 import PokemonBattle from './PokemonBattle';
 import store from '../store';
 import type { PokemonID, Pokemon } from '../types';
-import formatMove from '../utils/formatMove';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,45 +25,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
 
-  image: {
-    marginHorizontal: 8,
-    height: 72,
-    resizeMode: 'contain',
-  },
-
-  label: {
-    color: '#222',
-    fontFamily: 'Montserrat',
-    width: 160,
-  },
-
-  name: {
-    fontSize: 18,
-    fontFamily: 'Montserrat-SemiBold',
-    marginVertical: 4,
-  },
-
-  types: {
-    flexDirection: 'row',
-    marginHorizontal: -2,
-  },
-
-  row: {
-    flexDirection: 'row',
-    marginVertical: 4,
-  },
-
-  meta: {
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-  },
-
-  basic: {
-    flex: 1,
-  },
-
   tabbar: {
     backgroundColor: '#fff',
     elevation: 0,
@@ -77,7 +36,7 @@ const styles = StyleSheet.create({
   tablabel: {
     color: '#222',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: 10,
+    fontSize: 12,
     marginVertical: 8,
   },
 
@@ -137,28 +96,12 @@ class PokemonInfo extends PureComponent<Props, void> {
     const pokemon = this._getPokemon(
       this.props.navigation.state.params.pokemonId
     );
-    const sprite = store.getSprite(
-      this.props.navigation.state.params.pokemonId
-    );
 
     return (
       <View {...this.props} style={[styles.container, this.props.style]}>
         <Appbar style={styles.appbar} navigation={this.props.navigation}>
           {'#' + pokemon.dex}
         </Appbar>
-        <View style={[styles.row, styles.meta]}>
-          <View style={styles.basic}>
-            <Text style={[styles.label, styles.name]}>
-              {formatMove(pokemon.name)}
-            </Text>
-            <View style={styles.types}>
-              {pokemon.types.map(type => (
-                <PokemonTypeLabel key={type} type={type} />
-              ))}
-            </View>
-          </View>
-          <Image style={styles.image} source={sprite} />
-        </View>
         <InfoTabs
           screenProps={{ pokemon }}
           navigation={this.props.navigation}

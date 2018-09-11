@@ -2,13 +2,21 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+
+import PokemonTypeLabel from './PokemonTypeLabel';
+import formatMove from '../utils/formatMove';
 import type { Move } from '../types';
 import ucFirst from '../utils/ucFirst';
-import formatMove from '../utils/formatMove';
 
 const styles = StyleSheet.create({
   spacer: {
     flex: 1,
+  },
+
+  wrap: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 
   text: {
@@ -16,6 +24,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontSize: 13,
     lineHeight: 20,
+  },
+
+  bold: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontWeight: 'bold',
+    color: '#666',
   },
 
   row: {
@@ -90,11 +104,13 @@ export default function Attack(props: Props) {
   return (
     <View style={styles.row}>
       <View style={styles.type}>
-        <Text style={styles.text}>
+        <Text style={[styles.text, styles.bold]}>
           {formatMove(move.Name)}
           {isLegacy(move.legacy)}
         </Text>
-        <Text style={styles.subtitle}>{prettyType}</Text>
+        <View style={styles.wrap}>
+          <PokemonTypeLabel type={move.Type} />
+        </View>
       </View>
       {!isQuickMove(move) && move.Energy ? (
         Array.from({
