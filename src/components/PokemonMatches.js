@@ -77,14 +77,14 @@ function getDefenderProfile(pokemon, quickMoveName, chargeMoveName) {
         charge,
         x.stats[0].dps,
         x.stats[0].tdo,
-        x.stats[0].score,
+        x.stats[0].total,
       ];
     }),
   }));
 }
 
 function getCardProps(rowData) {
-  const [id, quickMove, chargeMove, dps, tdo, score] = rowData;
+  const [id, quickMove, chargeMove, dps, tdo, total] = rowData;
 
   const pokemon = store.getPokemonByID(id);
   const subtitle = `${formatMove(quickMove)} and ${formatMove(chargeMove)}`;
@@ -97,7 +97,7 @@ function getCardProps(rowData) {
     color,
     dps,
     tdo,
-    score,
+    total,
   };
 }
 
@@ -155,13 +155,13 @@ export default class PokemonMatches extends React.Component {
               navigation={this.props.navigation}
               onPress={goToBattle(pokemon, quickMove, chargeMove, navigation)}
             >
-              {({ dps, tdo, score }) => (
+              {({ dps, tdo, total }) => (
                 <View style={[styles.wide]}>
                   <ProgressLabel
                     color="#9575cd"
                     label="Score"
-                    ratio={score / results[0][5]}
-                    value={Math.round(score)}
+                    ratio={total / results[0][5]}
+                    value={Math.round(total)}
                   />
                   <ProgressLabel
                     color="#e57373"

@@ -53,7 +53,7 @@ function bestTDO(results) {
 }
 
 function getCardProps(rowData) {
-  const [id, quickMoveName, chargeMoveName, dps, tdo, score] = rowData;
+  const [id, quickMoveName, chargeMoveName, dps, tdo, total] = rowData;
 
   const pokemon = store.getPokemonByID(id);
   const subtitle = `${formatMove(quickMoveName)} and ${formatMove(
@@ -68,18 +68,23 @@ function getCardProps(rowData) {
     color,
     dps,
     tdo,
-    score,
+    total,
   };
 }
 
-function getProfile(pokemon) {
+// TODO lru cache
+function getProfile(pokemon, quickMoveName, chargeMoveName) {
   const { data } = attackerProfile({
-    pokemon,
+    chargeMoveName,
     numPokemon: 20,
+    pokemon,
+    quickMoveName,
     weather: 'EXTREME',
   });
 
-  return data.map(moveset => ({
+  const [moveset] = data;
+
+  return {
     key: `${moveset.quick}/${moveset.charge}`,
     quick: moveset.quick,
     charge: moveset.charge,
@@ -93,10 +98,10 @@ function getProfile(pokemon) {
         charge,
         x.stats[0].dps,
         x.stats[0].tdo,
-        x.stats[0].score,
+        x.stats[0].total,
       ];
     }),
-  }));
+  };
 }
 
 export default class PokemonBattle extends PureComponent {
@@ -104,8 +109,6 @@ export default class PokemonBattle extends PureComponent {
     super();
 
     const { pokemon } = props;
-
-    this.data = getProfile(pokemon);
     const best = getBestMoveset(pokemon);
 
     this.state = {
@@ -129,10 +132,11 @@ export default class PokemonBattle extends PureComponent {
 
   render() {
     const { pokemon } = this.props;
-    const moveKey = `${this.state.quickMove.Name}/${
+    const { results } = getProfile(
+      pokemon,
+      this.state.quickMove.Name,
       this.state.chargeMove.Name
-    }`;
-    const { results } = this.data.find(move => move.key === moveKey);
+    );
 
     return (
       <ScrollView
@@ -154,13 +158,13 @@ export default class PokemonBattle extends PureComponent {
             navigation={this.props.navigation}
             onPress={this.handlePokePress.bind(this)}
           >
-            {({ dps, tdo, score }) => (
+            {({ dps, tdo, total }) => (
               <View style={[styles.wide]}>
                 <ProgressLabel
                   color="#9575cd"
                   label="Score"
-                  ratio={score / results[0][5]}
-                  value={Math.round(score)}
+                  ratio={total / results[0][5]}
+                  value={Math.round(total)}
                 />
                 <ProgressLabel
                   color="#e57373"
