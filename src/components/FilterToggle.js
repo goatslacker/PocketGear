@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 
   active: {
-    backgroundColor: '#222',
+    backgroundColor: '#444',
   },
 
   label: {
