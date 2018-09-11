@@ -30,20 +30,6 @@ const allPokemon = dex.getAllPokemon().map(pokemon => {
   });
 });
 
-const pokeFastCache = {};
-
-function getPokemonByName(name): Pokemon {
-  if (pokeFastCache[name]) {
-    return pokeFastCache[name];
-  }
-
-  const pokemon = allPokemon.find(poke => poke.name.toUpperCase() === name);
-
-  pokeFastCache[name] = pokemon;
-
-  return pokemon;
-}
-
 function getPokemons(): Array<Pokemon> {
   return allPokemon;
 }
@@ -64,8 +50,16 @@ function getCPValues() {
   return CP_VALUES;
 }
 
+const pokeFastCache = {};
+
 function getPokemonByID(id) {
-  return allPokemon.find(poke => poke.id === id);
+  if (pokeFastCache[id]) {
+    return pokeFastCache[id];
+  }
+
+  const pokemon = allPokemon.find(poke => poke.id === id);
+  pokeFastCache[id] = pokemon;
+  return pokemon;
 }
 
 function getMaxHP(pokemon) {
@@ -78,7 +72,6 @@ export default {
   getMaxCP,
   getMaxHP,
   getPokemonByID,
-  getPokemonByName,
   getPokemons,
   getSprite,
   getTypeChart,

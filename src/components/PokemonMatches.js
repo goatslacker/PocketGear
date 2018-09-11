@@ -26,7 +26,7 @@ function getDefenderProfile(pokemon, { quickMove, chargeMove, weather, sort }) {
     quick: moveset.quick,
     charge: moveset.charge,
     results: moveset.results.map(x => {
-      const pokemon = store.getPokemonByName(x.name);
+      const pokemon = store.getPokemonByID(x.id);
       const [quick, charge] = x.stats[0].moves;
 
       return [

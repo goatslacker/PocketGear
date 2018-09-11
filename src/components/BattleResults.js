@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 });
 
 function renderItem({ item }, results) {
-  const pokemon = store.getPokemonByName(results[item.p].name);
+  const pokemon = store.getPokemonByID(results[item.p].id);
   const sprite = store.getSprite(pokemon.id);
 
   if (item.m === '@FAINT') {
@@ -137,7 +137,7 @@ function Table({ rows }) {
 }
 
 export default function BattleResults({ onDone, results }) {
-  const pokemon = store.getPokemonByName(results[results.winner].name);
+  const pokemon = store.getPokemonByID(results[results.winner].id);
 
   let atkHP = results.atk.hp;
   let defHP = results.def.hp;
