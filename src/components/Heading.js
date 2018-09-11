@@ -18,7 +18,7 @@ type Props = {
   children?: any,
 };
 
-const levels = [, 1, 1.25, 1.5, 2, 4];
+const levels = [null, 1, 1.25, 1.5, 2, 4];
 
 function getLevelStyles(level) {
   if (!level) {

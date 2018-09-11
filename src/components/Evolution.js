@@ -128,7 +128,9 @@ export default class Evolution extends PureComponent<Props, void> {
             const prev = pokemons.find(p => p.name === parent);
 
             if (prev && prev.evolution && prev.evolution.branch) {
-              const ev = prev.evolution.branch.find(({ form, name }) => form === poke.form || name === poke.name);
+              const ev = prev.evolution.branch.find(
+                ({ form, name }) => form === poke.form || name === poke.name
+              );
               return { poke, ev };
             }
           }

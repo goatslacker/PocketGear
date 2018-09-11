@@ -6,7 +6,6 @@ import React, { PureComponent } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import SearchBar from './SearchBar';
 import PokemonList from './PokemonList';
-import PokemonListCard from './PokemonListCard';
 import NoResults from './NoResults';
 import store from '../store';
 import type { Pokemon } from '../types';

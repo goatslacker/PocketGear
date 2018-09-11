@@ -3,9 +3,11 @@ import addTMCombinations from 'pokemagic/lib/addTMCombinations';
 
 function moveDPS(pokemon, moveset) {
   const stabQuick =
-    pokemon.type1 === moveset.quick.Type || pokemon.type2 === moveset.quick.Type;
+    pokemon.type1 === moveset.quick.Type ||
+    pokemon.type2 === moveset.quick.Type;
   const stabCharge =
-    pokemon.type1 === moveset.charge.Type || pokemon.type2 === moveset.charge.Type;
+    pokemon.type1 === moveset.charge.Type ||
+    pokemon.type2 === moveset.charge.Type;
 
   const quickDMG = (moveset.quick.Power || 0) * stabQuick + 1;
   const chargeDMG = (moveset.charge.Power || 0) * stabCharge + 1;

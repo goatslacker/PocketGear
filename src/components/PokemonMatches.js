@@ -1,18 +1,15 @@
 /* @flow */
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import defenderProfile from 'pokemagic/defenderProfile';
 import dex from 'pokemagic/dex';
-import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 
-import More from './More';
 import MovesetPicker from './MovesetPicker';
 import PokemonList from './PokemonList';
-import PokemonListCard from './PokemonListCard';
-import ProgressBar from './ProgressBar';
+import ProgressLabel from './ProgressLabel';
 import formatMove from '../utils/formatMove';
 import getBestMoveset from '../utils/getBestMoveset';
-import shortenMove from '../utils/shortenMove';
 import store from '../store';
 
 const styles = StyleSheet.create({
@@ -29,35 +26,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
-  row4: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 4,
-  },
-
-  text: {
-    color: '#888',
-    fontFamily: 'Montserrat',
-    fontSize: 12,
-  },
-
-  center: {
-    alignItems: 'center',
-  },
-
   wide: {
     marginTop: 8,
     width: 170,
-  },
-
-  label: {
-    marginRight: 4,
-    width: 40,
-  },
-
-  amount: {
-    textAlign: 'right',
-    width: 50,
   },
 });
 
@@ -81,15 +52,17 @@ function bestTDO(results) {
   return bestTDO.cache;
 }
 
-function getDefenderProfile(pokemon, quickMove, chargeMove) {
-  const { counters } = defenderProfile(pokemon.name, quickMove, chargeMove, {
+function getDefenderProfile(pokemon, quickMoveName, chargeMoveName) {
+  const { data } = defenderProfile({
+    chargeMoveName,
     filterAttackerMoveset: move => move.legacy === 0,
     numPokemon: 20,
-    // TODO let you configure weather
+    pokemon,
+    quickMoveName,
     weather: 'EXTREME',
   });
 
-  return counters.map(moveset => ({
+  return data.map(moveset => ({
     key: `${moveset.quick}/${moveset.charge}`,
     quick: moveset.quick,
     charge: moveset.charge,
@@ -113,7 +86,7 @@ function getCardProps(rowData) {
   const [id, quickMove, chargeMove, dps, tdo, score] = rowData;
 
   const pokemon = store.getPokemonByID(id);
-  const subtitle = `${formatMove(quickMove)} and ${formatMove(chargeMove)}`
+  const subtitle = `${formatMove(quickMove)} and ${formatMove(chargeMove)}`;
 
   const color = store.getColor(dex.findMove(chargeMove).Type);
 
@@ -140,21 +113,6 @@ function goToBattle(defender, moveset, navigation) {
       defCharge,
     });
   };
-}
-
-function ProgressLabel({
-  color,
-  label,
-  ratio,
-  value,
-}) {
-  return (
-    <View style={[styles.row4, styles.center]}>
-      <Text style={[styles.text, styles.label]}>{label}</Text>
-      <ProgressBar ratio={ratio || 0} fillColor={color} />
-      <Text style={[styles.text, styles.amount]}>{value}</Text>
-    </View>
-  )
 }
 
 export default class PokemonMatches extends React.Component {
@@ -206,40 +164,36 @@ export default class PokemonMatches extends React.Component {
           value={this.state.moveset}
         />
 
-        {this.state.data.map(({ key, quick, charge, results }) => (
+        {this.state.data.map(({ key, results }) => (
           <View key={key} style={styles.row}>
             <PokemonList
               data={results}
               getCardProps={getCardProps}
               navigation={this.props.navigation}
               onPress={goToBattle(pokemon, this.state.moveset, navigation)}
-            >{({
-              color,
-              dps,
-              tdo,
-              score,
-            }) => (
-              <View style={[styles.wide]}>
-                <ProgressLabel
-                  color="#9575cd"
-                  label="Score"
-                  ratio={score / results[0][5]}
-                  value={Math.round(score)}
-                />
-                <ProgressLabel
-                  color="#e57373"
-                  label="DPS"
-                  ratio={dps / bestDPS(results)}
-                  value={dps}
-                />
-                <ProgressLabel
-                  color="#5499c7"
-                  label="TDO"
-                  ratio={tdo / bestTDO(results)}
-                  value={tdo}
-                />
-              </View>
-            )}
+            >
+              {({ dps, tdo, score }) => (
+                <View style={[styles.wide]}>
+                  <ProgressLabel
+                    color="#9575cd"
+                    label="Score"
+                    ratio={score / results[0][5]}
+                    value={Math.round(score)}
+                  />
+                  <ProgressLabel
+                    color="#e57373"
+                    label="DPS"
+                    ratio={dps / bestDPS(results)}
+                    value={dps}
+                  />
+                  <ProgressLabel
+                    color="#5499c7"
+                    label="TDO"
+                    ratio={tdo / bestTDO(results)}
+                    value={tdo}
+                  />
+                </View>
+              )}
             </PokemonList>
           </View>
         ))}

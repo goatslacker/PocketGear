@@ -6,7 +6,6 @@ import { Button, FlatList, Image, Text, View, StyleSheet } from 'react-native';
 import Heading from './Heading';
 import PokemonListCard from './PokemonListCard';
 import formatMove from '../utils/formatMove';
-import shortenMove from '../utils/shortenMove';
 import store from '../store';
 
 const styles = StyleSheet.create({
@@ -67,7 +66,6 @@ const styles = StyleSheet.create({
 
 function renderItem({ item }, results) {
   const pokemon = store.getPokemonByName(results[item.p].name);
-  const subtitle = `HP ${item.hp}`;
   const sprite = store.getSprite(pokemon.id);
 
   if (item.m === '@FAINT') {

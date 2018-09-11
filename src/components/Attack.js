@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { Move } from '../types';
 import ucFirst from '../utils/ucFirst';
@@ -70,12 +70,12 @@ function isQuickMove(move) {
 
 function isLegacy(legacy) {
   if (legacy === 1 || legacy === 2) {
-    return ' (L)'
+    return ' (L)';
   }
   if (legacy === 4) {
-    return ' (CD)'
+    return ' (CD)';
   }
-  return null
+  return null;
 }
 
 export default function Attack(props: Props) {
@@ -90,7 +90,10 @@ export default function Attack(props: Props) {
   return (
     <View style={styles.row}>
       <View style={styles.type}>
-        <Text style={styles.text}>{formatMove(move.Name)}{isLegacy(move.legacy)}</Text>
+        <Text style={styles.text}>
+          {formatMove(move.Name)}
+          {isLegacy(move.legacy)}
+        </Text>
         <Text style={styles.subtitle}>{prettyType}</Text>
       </View>
       {!isQuickMove(move) && move.Energy ? (

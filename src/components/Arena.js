@@ -40,11 +40,7 @@ export default class Arena extends PureComponent {
   }
 
   getAttacker() {
-    const {
-      atkId,
-      atkQuick,
-      atkCharge,
-    } = this.props.navigation.state.params;
+    const { atkId, atkQuick, atkCharge } = this.props.navigation.state.params;
 
     const pokemon = store.getPokemonByID(atkId);
     const moves =
@@ -56,11 +52,7 @@ export default class Arena extends PureComponent {
   }
 
   getDefender() {
-    const {
-      defId,
-      defQuick,
-      defCharge,
-    } = this.props.navigation.state.params;
+    const { defId, defQuick, defCharge } = this.props.navigation.state.params;
 
     const pokemon = store.getPokemonByID(defId);
     const moves =

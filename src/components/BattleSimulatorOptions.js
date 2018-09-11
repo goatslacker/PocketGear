@@ -115,15 +115,7 @@ export default class BattleSimulatorOptions extends PureComponent {
   }
 
   callback() {
-    const {
-      atk,
-      atkMoves,
-      def,
-      defMoves,
-      isPvP,
-      isRaid,
-      weather,
-    } = this.state;
+    const { atk, atkMoves, def, defMoves, isPvP, isRaid, weather } = this.state;
 
     const [atkQuick, atkCharge] = atkMoves.split('/');
     const [defQuick, defCharge] = defMoves.split('/');

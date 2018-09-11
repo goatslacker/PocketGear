@@ -3,7 +3,7 @@
 import typeChart from './data/type_chart.json';
 import colors from './colors.json';
 import sprites from './sprites';
-import type { Pokemon, PokemonID, PokemonType, Move, TypeChart } from './types';
+import type { Pokemon, PokemonID, PokemonType, TypeChart } from './types';
 
 import dex from 'pokemagic/dex';
 import ucFirst from './utils/ucFirst';

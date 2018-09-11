@@ -61,14 +61,22 @@ type Props = {
 };
 
 export default class PokemonListCard extends PureComponent<Props, void> {
-  _handlePress = throttle(rowData => {
+  _handlePress = throttle(() => {
     if (this.props.onPress) {
       this.props.onPress(this.props.pokemon);
     }
   }, 500);
 
   render() {
-    const { children, height, pokemon, subtitle, style, title, toptext } = this.props;
+    const {
+      children,
+      height,
+      pokemon,
+      subtitle,
+      style,
+      title,
+      toptext,
+    } = this.props;
     const types = [pokemon.type1, pokemon.type2]
       .filter(Boolean)
       .map(formatMove)
@@ -78,10 +86,7 @@ export default class PokemonListCard extends PureComponent<Props, void> {
     const margin = Math.floor(height / 6);
 
     return (
-      <View
-        key={pokemon.name}
-        style={[styles.block, style]}
-      >
+      <View key={pokemon.name} style={[styles.block, style]}>
         <TouchableItem
           onPress={this._handlePress}
           activeOpacity={0.7}
@@ -90,7 +95,10 @@ export default class PokemonListCard extends PureComponent<Props, void> {
           <Text style={[styles.index, styles.subtitle]}>
             {toptext || `#${pokemon.dex}`}
           </Text>
-          <Image source={sprite} style={[styles.image, { height, width: height, margin }]} />
+          <Image
+            source={sprite}
+            style={[styles.image, { height, width: height, margin }]}
+          />
         </TouchableItem>
         <View style={[styles.col]}>
           <Text style={styles.title}>{title || formatMove(pokemon.name)}</Text>

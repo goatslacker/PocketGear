@@ -1,11 +1,9 @@
 /* @flow */
 
-import dex from 'pokemagic/dex';
 import difference from 'lodash/difference';
 import React, { PureComponent } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import Heading from './Heading';
-import Paragraph from './Paragraph';
 import ProgressBar from './ProgressBar';
 import PokemonTypeLabel from './PokemonTypeLabel';
 import Attack from './Attack';
@@ -45,14 +43,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginVertical: 4,
-  },
-
-  origin: {
-    marginVertical: 10,
-  },
-
-  term: {
-    marginVertical: 2,
   },
 
   wrap: {
