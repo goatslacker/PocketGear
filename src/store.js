@@ -6,11 +6,11 @@ import sprites from './sprites';
 import type { Pokemon, PokemonID, PokemonType, TypeChart } from './types';
 
 import dex from 'pokemagic/dex';
-import ucFirst from './utils/ucFirst';
+import getHP from 'pokemagic/lib/getHP';
 import getMaxCP from 'pokemagic/lib/getMaxCP';
+import ucFirst from './utils/ucFirst';
 
 const CP_VALUES = {
-  max_hp: 414,
   max_cp: 4548,
 
   // These are intentionally not set at the maximum value but rather at an
@@ -18,7 +18,8 @@ const CP_VALUES = {
   // for presentational purposes only.
   attack: 300, // 300 (Mewtwo)
   defense: 300, // 396 (Shuckle)
-  stamina: 250, // 510 (Blissey)
+  stamina: 300, // 510 (Blissey)
+  max_hp: 250, // 414
 };
 
 const allPokemon = dex.getAllPokemon().map(pokemon => {
@@ -67,10 +68,15 @@ function getPokemonByID(id) {
   return allPokemon.find(poke => poke.id === id);
 }
 
+function getMaxHP(pokemon) {
+  return getHP(pokemon, 15, 0.79030001);
+}
+
 export default {
   getCPValues,
   getColor,
   getMaxCP,
+  getMaxHP,
   getPokemonByID,
   getPokemonByName,
   getPokemons,

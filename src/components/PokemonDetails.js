@@ -148,6 +148,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
   render() {
     const { pokemon } = this.props;
     const maxCP = store.getMaxCP(pokemon);
+    const maxHP = store.getMaxHP(pokemon);
     const maxValues = store.getCPValues();
     const quickAttacks = getQuickAttacks(pokemon);
     const specialAttacks = getSpecialAttacks(pokemon);
@@ -186,6 +187,12 @@ export default class PokemonDetails extends PureComponent<Props, void> {
               maxCP / maxValues.max_cp,
               maxCP,
               '#e57373'
+            )}
+            {this._renderStat(
+              'Max HP',
+              maxHP / maxValues.max_hp,
+              maxHP,
+              '#66d073'
             )}
             {this._renderStat(
               'Attack',
