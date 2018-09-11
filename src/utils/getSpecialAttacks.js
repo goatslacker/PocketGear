@@ -14,7 +14,7 @@ function getDPSxDPE(pokemon, m) {
   return dmg / m.DurationMs * (dmg / Math.abs(m.Energy));
 }
 
-function normalizeLegacy(legacy, move) {
+function normalizeLegacy(legacy) {
   if (legacy === 0 || legacy === 1 || legacy === 5) return 0;
   if (legacy === 3) return 2;
   return legacy;

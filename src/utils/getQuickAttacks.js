@@ -5,7 +5,7 @@ import addTMCombinations from 'pokemagic/lib/addTMCombinations';
 
 import type { Pokemon } from '../types';
 
-function normalizeLegacy(legacy, move) {
+function normalizeLegacy(legacy) {
   if (legacy === 1) return 1;
   if (legacy === 2 || legacy === 0) return 0;
   if (legacy === 3) return 1;

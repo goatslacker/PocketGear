@@ -3,10 +3,11 @@
 import filter from 'lodash/filter';
 import debounce from 'lodash/debounce';
 import React, { PureComponent } from 'react';
-import { KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import SearchBar from './SearchBar';
 import PokemonList from './PokemonList';
 import NoResults from './NoResults';
+import ProgressLabel from './ProgressLabel';
 import store from '../store';
 import type { Pokemon } from '../types';
 
@@ -30,6 +31,11 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 60,
   },
+
+  wide: {
+    marginTop: 8,
+    width: 170,
+  },
 });
 
 type SortKey = '#' | 'name' | 'attack' | 'defense' | 'max_cp' | 'stamina';
@@ -46,6 +52,14 @@ type Props = {
   onChosen?: func,
   navigation: Object,
 };
+
+function getCardProps(pokemon) {
+  return {
+    atk: pokemon.stats.attack,
+    def: pokemon.stats.defense,
+    sta: pokemon.stats.stamina,
+  };
+}
 
 export default class PokemonChooser extends PureComponent<Props, State> {
   constructor() {
@@ -161,13 +175,37 @@ export default class PokemonChooser extends PureComponent<Props, State> {
         {this.state.results.pokemons.length ? (
           <PokemonList
             scrollsToTop
+            getCardProps={getCardProps}
             keyboardShouldPersistTaps="handled"
             data={this._sortResults(this.state.results.pokemons)}
             navigation={this.props.navigation}
             contentContainerStyle={styles.content}
             ref={this._setRef}
             onPress={this.handleRowPress.bind(this)}
-          />
+          >
+            {({ atk, def, sta }) => (
+              <View style={[styles.wide]}>
+                <ProgressLabel
+                  color="#ff8a65"
+                  label="Atk"
+                  ratio={atk / 300}
+                  value={atk}
+                />
+                <ProgressLabel
+                  color="#9575cd"
+                  label="Def"
+                  ratio={def / 300}
+                  value={def}
+                />
+                <ProgressLabel
+                  color="#5499c7"
+                  label="Sta"
+                  ratio={sta / 300}
+                  value={sta}
+                />
+              </View>
+            )}
+          </PokemonList>
         ) : (
           <NoResults
             label="No Pokémon found"
