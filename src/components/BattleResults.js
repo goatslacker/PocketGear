@@ -4,7 +4,6 @@ import React from 'react';
 import { Button, FlatList, Image, Text, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
-import PokemonListCard from './PokemonListCard';
 import formatMove from '../utils/formatMove';
 import store from '../store';
 
@@ -15,6 +14,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 4,
+  },
+
+  container: {
+    paddingTop: 12,
+  },
+
+  replay: {
+    marginTop: 16,
+    marginBottom: -4,
   },
 
   dmg: {
@@ -34,6 +42,10 @@ const styles = StyleSheet.create({
 
   results: {
     marginBottom: 60,
+  },
+
+  tinySection: {
+    marginVertical: 8,
   },
 
   section: {
@@ -62,11 +74,31 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 12,
   },
+
+  image2: {
+    height: 72,
+    resizeMode: 'contain',
+  },
+
+  meta: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  name: {
+    color: '#222',
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 18,
+  },
+
+  soft: {
+    color: '#666',
+  },
 });
 
 function renderItem({ item }, results) {
-  const pokemon = store.getPokemonByID(results[item.p].id);
-  const sprite = store.getSprite(pokemon.id);
+  const sprite = store.getSprite(results[item.p].id);
 
   if (item.m === '@FAINT') {
     return (
@@ -137,8 +169,6 @@ function Table({ rows }) {
 }
 
 export default function BattleResults({ onDone, results }) {
-  const pokemon = store.getPokemonByID(results[results.winner].id);
-
   let atkHP = results.atk.hp;
   let defHP = results.def.hp;
   const log = results.log.map(row => {
@@ -156,24 +186,52 @@ export default function BattleResults({ onDone, results }) {
     return row;
   });
 
-  return (
-    <View style={styles.results}>
-      <Heading level={1}>Winner</Heading>
+  const atkSprite = store.getSprite(results.atk.id);
+  const defSprite = store.getSprite(results.def.id);
 
-      <PokemonListCard
-        pokemon={pokemon}
-        subtitle={results[results.winner].moves.map(formatMove).join(' & ')}
-        toptext={results.winner}
+  return (
+    <View style={styles.container}>
+      <Table
+        rows={[
+          {
+            label: 'Winner',
+            text: formatMove(results[results.winner].name),
+          },
+          {
+            label: 'Time Elapsed',
+            text: `${results.timeElapsed / 1000}s`,
+          },
+          {
+            label: 'Time Remaining',
+            text: `${results.timeRemaining / 1000}s`,
+          },
+        ]}
       />
 
-      <Heading level={1}>Battle Stats</Heading>
+      <View style={styles.replay}>
+        <Button color="#df4848" title="Replay Battle" onPress={onDone} />
+      </View>
 
-      <View>
+      <View style={styles.section}>
+        <View style={[styles.meta]}>
+          <View>
+            <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
+            <Heading level={4} style={styles.soft}>
+              {formatMove(results.atk.moves[0])} and {formatMove(results.atk.moves[1])}
+            </Heading>
+          </View>
+          <Image style={styles.image2} source={atkSprite} />
+        </View>
+
         <Table
           rows={[
             {
-              label: 'Time Elapsed',
-              text: `${results.timeElapsed / 1000}s`,
+              label: 'CP',
+              text: results.atk.cp,
+            },
+            {
+              label: 'HP',
+              text: results.atk.hp,
             },
             {
               label: 'Damage Taken',
@@ -185,65 +243,40 @@ export default function BattleResults({ onDone, results }) {
             },
           ]}
         />
-      </View>
 
-      <View>
-        <View style={styles.row}>
+        <View style={[styles.meta]}>
           <View>
-            <Heading style={styles.center}>
-              {formatMove(results.atk.name)}
+            <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
+            <Heading level={4} style={styles.soft}>
+              {formatMove(results.def.moves[0])} and {formatMove(results.def.moves[1])}
             </Heading>
-            <Text style={styles.center}>
-              {formatMove(results.atk.moves[0])}
-            </Text>
-            <Text style={styles.center}>
-              {formatMove(results.atk.moves[1])}
-            </Text>
-            <Table
-              rows={[
-                {
-                  label: 'CP',
-                  text: results.atk.cp,
-                },
-                {
-                  label: 'HP',
-                  text: results.atk.hp,
-                },
-              ]}
-            />
           </View>
-
-          <View>
-            <Heading style={styles.center}>
-              {formatMove(results.def.name)}
-            </Heading>
-            <Text style={styles.center}>
-              {formatMove(results.def.moves[0])}
-            </Text>
-            <Text style={styles.center}>
-              {formatMove(results.def.moves[1])}
-            </Text>
-            <Table
-              rows={[
-                {
-                  label: 'CP',
-                  text: results.def.cp,
-                },
-                {
-                  label: 'HP',
-                  text: results.def.hp,
-                },
-              ]}
-            />
-          </View>
+          <Image style={styles.image2} source={defSprite} />
         </View>
+
+        <Table
+          rows={[
+            {
+              label: 'CP',
+              text: results.def.cp,
+            },
+            {
+              label: 'HP',
+              text: results.def.hp,
+            },
+            {
+              label: 'Damage Taken',
+              text: `-${results.def.dmgTaken}hp`,
+            },
+            {
+              label: 'Damage Dealt',
+              text: `${results.def.dmgDealt}dmg`,
+            },
+          ]}
+        />
       </View>
 
-      <View style={styles.section}>
-        <Button color="#df4848" title="Battle Again?" onPress={onDone} />
-      </View>
-
-      <Heading level={1}>Battle Log</Heading>
+      <Heading level={1} style={styles.center}>Battle Log</Heading>
 
       <FlatList
         data={log}
