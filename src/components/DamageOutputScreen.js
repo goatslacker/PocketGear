@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    padding: 4,
     marginTop: 4,
+    padding: 4,
   },
 
   row: {
@@ -50,6 +50,13 @@ const styles = StyleSheet.create({
   wide: {
     marginTop: 8,
     width: 170,
+  },
+
+  picker: {
+    marginHorizontal: 8,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddc',
   },
 });
 
@@ -164,14 +171,16 @@ export default class PokemonBattle extends PureComponent {
         style={styles.container}
         contentContainerStyle={styles.content}
       >
-        <MovePicker
-          pokemon={pokemon}
-          quickMove={quickMove}
-          chargeMove={chargeMove}
-          navigation={navigation}
-          onSelectQuickMove={quickMove => this.setState({ quickMove })}
-          onSelectChargeMove={chargeMove => this.setState({ chargeMove })}
-        />
+        <View style={styles.picker}>
+          <MovePicker
+            pokemon={pokemon}
+            quickMove={quickMove}
+            chargeMove={chargeMove}
+            navigation={navigation}
+            onSelectQuickMove={quickMove => this.setState({ quickMove })}
+            onSelectChargeMove={chargeMove => this.setState({ chargeMove })}
+          />
+        </View>
         <View style={styles.options}>
           <View style={styles.weather}>
             <Heading>Weather</Heading>

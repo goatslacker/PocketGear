@@ -38,7 +38,7 @@ export default function Heading(props: Props) {
   return (
     <Text
       {...props}
-      style={[styles.heading, props.style, getLevelStyles(props.level)]}
+      style={[styles.heading, getLevelStyles(props.level), props.style]}
     >
       {props.children}
     </Text>

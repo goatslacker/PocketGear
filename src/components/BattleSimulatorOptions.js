@@ -4,12 +4,12 @@ import PickerSelect from 'react-native-picker-select';
 import React, { PureComponent } from 'react';
 import dex from 'pokemagic/dex';
 import isLegendary from 'pokemagic/lib/isLegendary';
-import { Button, Switch, View, StyleSheet } from 'react-native';
+import { Button, Switch, Image, Text, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
-import MovesetPicker from './MovesetPicker';
-import PokemonListCard from './PokemonListCard';
+import MovePicker from './MovePicker';
 import formatMove from '../utils/formatMove';
+import store from '../store';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
   },
 
   section: {
-    marginTop: 20,
-    marginBottom: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddc',
   },
 
   row: {
@@ -27,6 +28,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+
+  image: {
+    height: 72,
+    resizeMode: 'contain',
+    marginBottom: -12,
+  },
+
+  meta: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  name: {
+    color: '#222',
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 18,
+  },
+
+  button: {
+    marginTop: 10,
   },
 });
 
@@ -54,10 +76,12 @@ export default class BattleSimulatorOptions extends PureComponent {
 
     this.state = {
       atk: attacker.pokemon,
-      atkMoves: `${attacker.moves[0]}/${attacker.moves[1]}`,
+      atkQuick: dex.findMove(attacker.moves[0]),
+      atkCharge: dex.findMove(attacker.moves[1]),
 
       def: defender.pokemon,
-      defMoves: `${defender.moves[0]}/${defender.moves[1]}`,
+      defQuick: dex.findMove(defender.moves[0]),
+      defCharge: dex.findMove(defender.moves[1]),
 
       isPvP: false,
       isRaid: isLegendary(defender.pokemon.name),
@@ -66,56 +90,35 @@ export default class BattleSimulatorOptions extends PureComponent {
     };
   }
 
-  callback() {
-    const { atk, atkMoves, def, defMoves, isPvP, isRaid, weather } = this.state;
-
-    const [atkQuick, atkCharge] = atkMoves.split('/');
-    const [defQuick, defCharge] = defMoves.split('/');
-
-    const atkQuickMove = dex.findMove(atkQuick);
-    const atkChargeMove = dex.findMove(atkCharge);
-    const defQuickMove = dex.findMove(defQuick);
-    const defChargeMove = dex.findMove(defCharge);
+  handleSimulateBattlePress() {
+    const {
+      atk,
+      atkQuick,
+      atkCharge,
+      def,
+      defQuick,
+      defCharge,
+      defMoves,
+      isPvP,
+      isRaid,
+      weather,
+    } = this.state;
 
     this.props.onBattle({
       atk: {
         pokemon: atk,
-        quickMove: atkQuickMove,
-        chargeMove: atkChargeMove,
+        quickMove: atkQuick,
+        chargeMove: atkCharge,
       },
       def: {
         pokemon: def,
-        quickMove: defQuickMove,
-        chargeMove: defChargeMove,
+        quickMove: defQuick,
+        chargeMove: defCharge,
       },
       isPvP,
       isRaid,
       weather,
     });
-  }
-
-  renderAttackerOptions() {
-    const { atk, atkMoves } = this.state;
-
-    return (
-      <MovesetPicker
-        onChange={atkMoves => this.setState({ atkMoves })}
-        pokemon={atk}
-        value={atkMoves}
-      />
-    );
-  }
-
-  renderDefenderOptions() {
-    const { def, defMoves } = this.state;
-
-    return (
-      <MovesetPicker
-        onChange={defMoves => this.setState({ defMoves })}
-        pokemon={def}
-        value={defMoves}
-      />
-    );
   }
 
   toggleRaidPvP(state) {
@@ -139,33 +142,53 @@ export default class BattleSimulatorOptions extends PureComponent {
   }
 
   render() {
+    const atkSprite = store.getSprite(this.state.atk.id);
+    const defSprite = store.getSprite(this.state.def.id);
+
     return (
       <View style={styles.container}>
-        <Heading>Attacker</Heading>
-        <PokemonListCard
-          navigation={this.props.navigation}
-          pokemon={this.state.atk}
-        />
-        {this.renderAttackerOptions()}
+        <View style={[styles.section]}>
+          <View style={[styles.row, styles.meta]}>
+            <Text style={[styles.name]}>{formatMove(this.state.atk.name)}</Text>
+            <Image style={styles.image} source={atkSprite} />
+          </View>
 
-        <View style={styles.section}>
-          <Heading>Opponent</Heading>
-          <PokemonListCard
+          <MovePicker
+            pokemon={this.state.atk}
+            quickMove={this.state.atkQuick}
+            chargeMove={this.state.atkCharge}
             navigation={this.props.navigation}
-            pokemon={this.state.def}
+            onSelectQuickMove={atkQuick => this.setState({ atkQuick })}
+            onSelectChargeMove={atkCharge => this.setState({ atkCharge })}
           />
-          {this.renderDefenderOptions()}
+        </View>
+
+        <View style={[styles.section]}>
+          <View style={[styles.row, styles.meta]}>
+            <Text style={[styles.name]}>{formatMove(this.state.def.name)}</Text>
+            <Image style={styles.image} source={defSprite} />
+          </View>
+
+          <MovePicker
+            pokemon={this.state.def}
+            quickMove={this.state.defQuick}
+            chargeMove={this.state.defCharge}
+            navigation={this.props.navigation}
+            onSelectQuickMove={defQuick => this.setState({ defQuick })}
+            onSelectChargeMove={defCharge => this.setState({ defCharge })}
+          />
         </View>
 
         <View style={[styles.section, styles.row]}>
           <View>
-            <Heading>Raid Battle</Heading>
+            <Heading>Weather</Heading>
 
-            <Switch
-              value={this.state.isRaid}
-              onValueChange={() =>
-                this.toggleRaidPvP({ isRaid: !this.state.isRaid })
-              }
+            <PickerSelect
+              hideDoneBar
+              hideIcon
+              items={WEATHER}
+              onValueChange={weather => this.setState({ weather })}
+              value={this.state.weather}
             />
           </View>
 
@@ -181,24 +204,23 @@ export default class BattleSimulatorOptions extends PureComponent {
           </View>
 
           <View>
-            <Heading>Weather</Heading>
+            <Heading>Raid Battle</Heading>
 
-            <PickerSelect
-              hideDoneBar
-              hideIcon
-              items={WEATHER}
-              onValueChange={weather => this.setState({ weather })}
-              value={this.state.weather}
+            <Switch
+              value={this.state.isRaid}
+              onValueChange={() =>
+                this.toggleRaidPvP({ isRaid: !this.state.isRaid })
+              }
             />
           </View>
         </View>
 
-        <View style={styles.section}>
+        <View style={styles.button}>
           <Button
             accessibilityLabel="Battle this Pokemon"
-            color="#801515"
+            color="#e57373"
             title="Simulate Battle"
-            onPress={() => this.callback()}
+            onPress={() => this.handleSimulateBattlePress()}
           />
         </View>
       </View>

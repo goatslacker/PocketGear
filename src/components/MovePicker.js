@@ -6,13 +6,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 8,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddc',
-  },
-
   row: {
     flex: 1,
     flexDirection: 'row',
@@ -50,7 +43,7 @@ export default function MovePicker({
 
   return (
     <View style={styles.container}>
-      <Heading>Quick Move</Heading>
+      <Heading level={4}>Quick Move</Heading>
 
       <TouchableOpacity
         style={styles.row}
@@ -66,7 +59,7 @@ export default function MovePicker({
         <Icon style={styles.icon} />
       </TouchableOpacity>
 
-      <Heading>Charge Move</Heading>
+      <Heading level={4}>Charge Move</Heading>
 
       <TouchableOpacity
         style={styles.row}

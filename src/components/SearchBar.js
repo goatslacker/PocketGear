@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 44 : 48,
     justifyContent: 'center',
     paddingHorizontal: 2,
+    marginTop: -2,
+    marginBottom: 4,
   },
 
   toggles: {
@@ -117,6 +119,7 @@ type Props<T> = {
   style?: any,
 };
 
+// TODO implement POGO search algos
 export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
   static HEIGHT = Platform.OS === 'ios' ? 64 : 56;
 
