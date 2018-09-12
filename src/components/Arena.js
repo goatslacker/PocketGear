@@ -72,18 +72,17 @@ export default class Arena extends PureComponent {
     }
 
     this.setState({ isLoading: true }, () => {
-      // TODO custom iv and level for atk and def
       const attacker = {
-        iv: 0xfff,
-        lvl: 40,
+        iv: state.atk.iv,
+        lvl: state.atk.lvl,
         quickMove: state.atk.quickMove,
         chargeMove: state.atk.chargeMove,
         pokemon: state.atk.pokemon,
       };
 
       const defender = {
-        iv: 0xfff,
-        lvl: 40,
+        iv: state.def.iv,
+        lvl: state.def.lvl,
         quickMove: state.def.quickMove,
         chargeMove: state.def.chargeMove,
         pokemon: state.def.pokemon,
@@ -92,6 +91,7 @@ export default class Arena extends PureComponent {
       const options = {
         pvp: state.isPvP,
         raid: state.isRaid,
+        raidTier: state.defRaidTier,
         weather: state.weather,
       };
 
