@@ -3,13 +3,17 @@
 import filter from 'lodash/filter';
 import debounce from 'lodash/debounce';
 import React, { PureComponent } from 'react';
+import dex from 'pokemagic/dex';
 import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import SearchBar from './SearchBar';
 import PokemonList from './PokemonList';
+import isLegendary from 'pokemagic/lib/isLegendary';
 import NoResults from './NoResults';
 import ProgressLabel from './ProgressLabel';
 import store from '../store';
 import type { Pokemon } from '../types';
+import parseSearchString from '../utils/parseSearchString';
+import addTMCombinations from 'pokemagic/lib/addTMCombinations';
 
 const styles = StyleSheet.create({
   container: {
@@ -78,25 +82,81 @@ export default class PokemonChooser extends PureComponent<Props, State> {
     const query = text.toLowerCase().trim();
     const pokemons = store.getPokemons();
 
-    if (query) {
-      if (!isNaN(query)) {
-        return filter(pokemons, p => p.dex === parseInt(query, 10));
-      }
-      return filter(pokemons, pokemon => {
-        return (
-          /* String#startsWith doesn't work properly for unicode */
-          pokemon.name.toLowerCase().indexOf(query) === 0 ||
-          query
-            .split(',')
-            .map(q => q.trim())
-            .every(q =>
-              pokemon.types.some(type => type.toLowerCase().indexOf(q) === 0)
-            )
-        );
-      });
+    if (!query) {
+      return pokemons;
     }
 
-    return pokemons;
+    const search = parseSearchString(query);
+
+    return pokemons.filter(pokemon => {
+      return search(({ cp, hp, species, move, poke, special, text }) => {
+        if (text) {
+          if (text === 'lucky') {
+            return Math.random() < 0.02;
+          }
+
+          if (!isNaN(text)) {
+            return pokemon.dex === parseInt(text, 10);
+          }
+          return (
+            pokemon.name.toLowerCase().indexOf(text) === 0 ||
+            pokemon.types.some(type => type.toLowerCase().indexOf(text) === 0)
+          );
+        }
+
+        if (move) {
+          const moves = addTMCombinations(pokemon);
+          const moveInfo = dex.findMove(move);
+          return moves.some(
+            move => move.A === moveInfo.Name || move.B === moveInfo.Name
+          );
+        }
+
+        // TODO
+        if (cp) {
+          return false;
+        }
+
+        // TODO
+        if (hp) {
+          return false;
+        }
+
+        if (species) {
+          return pokemon.family === `FAMILY_${species.toUpperCase()}`;
+        }
+
+        // pokemon range
+        if (poke) {
+          const start = !isNaN(poke[0]) ? Number(poke[0]) : -Infinity;
+          const end = !isNaN(poke[1]) ? Number(poke[1]) : Infinity;
+
+          return pokemon.dex >= start && pokemon.dex <= end;
+        }
+
+        if (special === 'mythical') {
+          return pokemon.id === 'V0251' || pokemon.id === 'V0151';
+        }
+
+        if (special === 'alola') {
+          return pokemon.form === `${pokemon.name}_ALOLA`;
+        }
+
+        if (special === 'evolve') {
+          return !!pokemon.evolutionBranch;
+        }
+
+        if (special === 'legacy') {
+          return addTMCombinations(pokemon).some(x => x.legacy > 0);
+        }
+
+        if (special === 'legendary') {
+          return isLegendary(pokemon.name);
+        }
+
+        return false;
+      });
+    });
   };
 
   _sortResults = (results: Array<Pokemon>) => {
