@@ -136,7 +136,6 @@ export default class BattleSimulatorOptions extends PureComponent {
       defIVD,
       defIVS,
       defLVL,
-      defMoves,
       defQuick,
       isPvP,
       isRaid,

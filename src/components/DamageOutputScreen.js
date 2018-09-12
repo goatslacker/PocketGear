@@ -1,12 +1,10 @@
 /* @flow */
 
-import PickerSelect from 'react-native-picker-select';
 import React, { PureComponent } from 'react';
 import dex from 'pokemagic/dex';
 import { View, ScrollView, StyleSheet } from 'react-native';
 
 import FilterToggle from './FilterToggle';
-import Heading from './Heading';
 import MovePicker from './MovePicker';
 import PokemonList from './PokemonList';
 import ProgressLabel from './ProgressLabel';

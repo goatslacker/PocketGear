@@ -1,6 +1,5 @@
 /* @flow */
 
-import filter from 'lodash/filter';
 import debounce from 'lodash/debounce';
 import React, { PureComponent } from 'react';
 import dex from 'pokemagic/dex';
