@@ -10,6 +10,7 @@ import Heading from './Heading';
 import MovePicker from './MovePicker';
 import PokemonList from './PokemonList';
 import ProgressLabel from './ProgressLabel';
+import WeatherPicker from './WeatherPicker';
 import cache from '../utils/cache';
 import formatMove from '../utils/formatMove';
 import getBestMoveset from '../utils/getBestMoveset';
@@ -59,22 +60,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddc',
   },
 });
-
-const WEATHER = [
-  'SUNNY',
-  'CLEAR',
-  'PARTLY_CLOUDY',
-  'CLOUDY',
-  'RAIN',
-  'SNOW',
-  'WINDY',
-  'FOGGY',
-  'EXTREME',
-].map(key => ({
-  key,
-  label: formatMove(key),
-  value: key,
-}));
 
 function bestDPS(results) {
   return Math.max.apply(Math.max, results.map(x => x[3]));
@@ -183,13 +168,9 @@ export default class PokemonBattle extends PureComponent {
         </View>
         <View style={styles.options}>
           <View style={styles.weather}>
-            <Heading>Weather</Heading>
-
-            <PickerSelect
-              hideIcon
-              items={WEATHER}
-              onValueChange={weather => this.setState({ weather })}
-              value={weather}
+            <WeatherPicker
+              onWeatherChanged={weather => this.setState({ weather })}
+              weather={weather}
             />
           </View>
           <View style={styles.toggles}>

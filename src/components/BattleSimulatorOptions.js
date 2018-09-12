@@ -8,6 +8,7 @@ import { Button, Switch, Image, Text, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
 import MovePicker from './MovePicker';
+import WeatherPicker from './WeatherPicker';
 import formatMove from '../utils/formatMove';
 import store from '../store';
 
@@ -51,22 +52,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-
-const WEATHER = [
-  'SUNNY',
-  'CLEAR',
-  'PARTLY_CLOUDY',
-  'CLOUDY',
-  'RAIN',
-  'SNOW',
-  'WINDY',
-  'FOGGY',
-  'EXTREME',
-].map(key => ({
-  key,
-  label: formatMove(key),
-  value: key,
-}));
 
 export default class BattleSimulatorOptions extends PureComponent {
   constructor(props) {
@@ -180,17 +165,10 @@ export default class BattleSimulatorOptions extends PureComponent {
         </View>
 
         <View style={[styles.section, styles.row]}>
-          <View>
-            <Heading>Weather</Heading>
-
-            <PickerSelect
-              hideDoneBar
-              hideIcon
-              items={WEATHER}
-              onValueChange={weather => this.setState({ weather })}
-              value={this.state.weather}
-            />
-          </View>
+          <WeatherPicker
+            onWeatherChanged={weather => this.setState({ weather })}
+            weather={this.state.weather}
+          />
 
           <View>
             <Heading>PVP</Heading>
