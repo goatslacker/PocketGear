@@ -42,8 +42,8 @@ export default function MovePicker({
   const types = [pokemon.type1, pokemon.type2];
 
   return (
-    <View style={styles.container}>
-      <Heading level={4}>Quick Move</Heading>
+    <View>
+      <Heading>Moves</Heading>
 
       <TouchableOpacity
         style={styles.row}
@@ -58,8 +58,6 @@ export default function MovePicker({
         <Attack move={quickMove} types={types} />
         <Icon style={styles.icon} />
       </TouchableOpacity>
-
-      <Heading level={4}>Charge Move</Heading>
 
       <TouchableOpacity
         style={styles.row}

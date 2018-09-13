@@ -38,17 +38,17 @@ const IV_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
   },
 
   section: {
-    paddingBottom: 10,
+    paddingTop: 4,
+    paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#ddc',
   },
 
   row: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -57,18 +57,18 @@ const styles = StyleSheet.create({
   image: {
     height: 72,
     resizeMode: 'contain',
-    marginBottom: -12,
   },
 
   meta: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
 
   name: {
     color: '#222',
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
+    marginHorizontal: 4,
   },
 
   button: {
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   iv: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginVertical: 4,
   },
 
   soft: {
@@ -191,8 +192,8 @@ export default class BattleSimulatorOptions extends PureComponent {
       <View style={styles.container}>
         <View style={[styles.section]}>
           <View style={[styles.row, styles.meta]}>
-            <Text style={[styles.name]}>{formatMove(this.state.atk.name)}</Text>
             <Image style={styles.image} source={atkSprite} />
+            <Text style={[styles.name]}>{formatMove(this.state.atk.name)}</Text>
           </View>
 
           <MovePicker

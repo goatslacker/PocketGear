@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 16,
-    color: '#222',
+    color: '#333',
     lineHeight: 24,
     marginVertical: 4,
   },

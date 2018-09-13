@@ -4,16 +4,24 @@ import React from 'react';
 import { Button, FlatList, Image, Text, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
+import ProgressBar from './ProgressBar';
 import formatMove from '../utils/formatMove';
 import store from '../store';
 
 const styles = StyleSheet.create({
   row: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 4,
+  },
+
+  right: {
+    textAlign: 'right',
+  },
+
+  basic: {
+    flex: 1,
   },
 
   container: {
@@ -26,26 +34,23 @@ const styles = StyleSheet.create({
   },
 
   dmg: {
-    alignItems: 'center',
+    fontSize: 14,
     fontWeight: 'bold',
   },
 
   time: {
     color: '#999',
-    fontSize: 10,
-    textAlign: 'center',
+    fontSize: 12,
+  },
+
+  middle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 160,
   },
 
   center: {
     textAlign: 'center',
-  },
-
-  results: {
-    marginBottom: 60,
-  },
-
-  tinySection: {
-    marginVertical: 8,
   },
 
   section: {
@@ -56,6 +61,7 @@ const styles = StyleSheet.create({
     color: '#222',
     fontFamily: 'Montserrat',
     fontSize: 13,
+    textAlign: 'right',
   },
 
   label: {
@@ -67,8 +73,17 @@ const styles = StyleSheet.create({
 
   image: {
     resizeMode: 'contain',
+    marginRight: 12,
     height: 60,
     width: 60,
+  },
+
+  atk: {
+    backgroundColor: '#fc8080',
+  },
+
+  def: {
+    backgroundColor: '#8080fc',
   },
 
   item: {
@@ -83,7 +98,7 @@ const styles = StyleSheet.create({
   meta: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
 
   name: {
@@ -99,11 +114,12 @@ const styles = StyleSheet.create({
 
 function renderItem({ item }, results) {
   const sprite = store.getSprite(results[item.p].id);
+  const style = [styles.image, styles[item.p]];
 
   if (item.m === '@FAINT') {
     return (
       <View style={[styles.item, styles.row]}>
-        <Image source={sprite} style={[styles.image]} />
+        <Image source={sprite} style={style} />
 
         <Text>Faints</Text>
       </View>
@@ -113,7 +129,7 @@ function renderItem({ item }, results) {
   if (item.m === '@SWITCH') {
     return (
       <View style={[styles.item, styles.row]}>
-        <Image source={sprite} style={[styles.image]} />
+        <Image source={sprite} style={style} />
 
         <Text>Switches into Battle</Text>
       </View>
@@ -131,18 +147,18 @@ function renderItem({ item }, results) {
   return (
     <View style={styles.item}>
       <View style={styles.row}>
-        <Image source={sprite} style={[styles.image]} />
+        <Image source={sprite} style={style} />
 
         <View>
           <Text style={styles.dmg}>{formatMove(item.m)}</Text>
           <Text style={styles.time}>{item.ms / 1000}s</Text>
         </View>
 
-        <View>
-          <Text>
-            {item.p} {item.dmg}dmg
+        <View style={styles.basic}>
+          <Text style={styles.right}>
+            {item.dmg}dmg
           </Text>
-          <Text>
+          <Text style={styles.right}>
             {item.p === 'atk' ? 'def' : 'atk'} {item.hp}hp
           </Text>
         </View>
@@ -159,7 +175,12 @@ function Table({ rows }) {
           <Text selectable style={styles.label}>
             {row.label}
           </Text>
-          <Text selectable style={styles.text}>
+          {row.middle && (
+            <View style={styles.middle}>
+              {row.middle}
+            </View>
+          )}
+          <Text selectable style={[styles.basic, styles.text]}>
             {row.text}
           </Text>
         </View>
@@ -195,14 +216,30 @@ export default function BattleResults({ onDone, results }) {
         rows={[
           {
             label: 'Winner',
-            text: formatMove(results[results.winner].name),
+            text: `${formatMove(results[results.winner].name)} (${results.winner})`,
           },
           {
             label: 'Time Elapsed',
             text: `${results.timeElapsed / 1000}s`,
           },
           {
+            label: 'Damage',
+            middle: (
+              <ProgressBar
+                ratio={results.atk.dmgDealt / results.def.hp}
+                fillColor="#e57373"
+              />
+            ),
+            text: results.atk.dmgDealt,
+          },
+          {
             label: 'Time Remaining',
+            middle: (
+              <ProgressBar
+                ratio={results.timeRemaining / (results.timeElapsed + results.timeRemaining)}
+                fillColor="#5499c7"
+              />
+            ),
             text: `${results.timeRemaining / 1000}s`,
           },
         ]}
@@ -214,13 +251,14 @@ export default function BattleResults({ onDone, results }) {
 
       <View style={styles.section}>
         <View style={[styles.meta]}>
+          <Image style={[styles.image, styles.atk]} source={atkSprite} />
           <View>
             <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
             <Heading level={4} style={styles.soft}>
-              {formatMove(results.atk.moves[0])} and {formatMove(results.atk.moves[1])}
+              {formatMove(results.atk.moves[0])} and{' '}
+              {formatMove(results.atk.moves[1])}
             </Heading>
           </View>
-          <Image style={styles.image2} source={atkSprite} />
         </View>
 
         <Table
@@ -244,14 +282,15 @@ export default function BattleResults({ onDone, results }) {
           ]}
         />
 
-        <View style={[styles.meta]}>
+        <View style={[styles.meta, { marginTop: 16 }]}>
+          <Image style={[styles.image, styles.def]} source={defSprite} />
           <View>
             <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
             <Heading level={4} style={styles.soft}>
-              {formatMove(results.def.moves[0])} and {formatMove(results.def.moves[1])}
+              {formatMove(results.def.moves[0])} and{' '}
+              {formatMove(results.def.moves[1])}
             </Heading>
           </View>
-          <Image style={styles.image2} source={defSprite} />
         </View>
 
         <Table
@@ -276,7 +315,9 @@ export default function BattleResults({ onDone, results }) {
         />
       </View>
 
-      <Heading level={1} style={styles.center}>Battle Log</Heading>
+      <Heading level={1} style={styles.center}>
+        Battle Log
+      </Heading>
 
       <FlatList
         data={log}

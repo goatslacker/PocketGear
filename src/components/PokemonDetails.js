@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   image: {
     height: 72,
     resizeMode: 'contain',
-    marginBottom: -12,
   },
 
   types: {
@@ -83,8 +82,8 @@ const styles = StyleSheet.create({
   },
 
   meta: {
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
 
@@ -98,10 +97,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Montserrat-SemiBold',
     marginVertical: 4,
-  },
-
-  basic: {
-    flex: 1,
   },
 });
 
@@ -165,7 +160,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
     return (
       <ScrollView {...this.props} style={[styles.container, this.props.style]}>
         <View style={[styles.row, styles.meta]}>
-          <View style={styles.basic}>
+          <View>
             <Text style={[styles.label2, styles.name]}>
               {formatMove(pokemon.name)}
             </Text>
