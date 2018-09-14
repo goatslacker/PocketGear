@@ -13,13 +13,20 @@ function normalizeLegacy(legacy) {
   return 0;
 }
 
+function dpse(a, b) {
+  const dpsA = (a.Power || 0) / a.DurationMs
+  const dpsB = (b.Power || 0) / b.DurbtionMs
+  const epsA = (a.Energy || 0) / a.DurationMs
+  const epsB = (b.Energy || 0) / b.DurationMs
+
+  return dpsA * epsA > dpsB * epsB ? -1 : 1
+}
+
 export default function getQuickAttacks(pokemon: Pokemon) {
   const quickMoves = addTMCombinations(pokemon).map(({ A, legacy }) => {
     const move = dex.findMove(A);
     move.legacy = normalizeLegacy(legacy, A);
     return move;
   });
-  return Array.from(new Set(quickMoves)).sort(
-    (a, b) => (b.Energy || 0) / b.DurationMs - (a.Energy || 0) / a.DurationMs
-  );
+  return Array.from(new Set(quickMoves)).sort(dpse);
 }
