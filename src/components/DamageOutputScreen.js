@@ -106,8 +106,9 @@ export default class PokemonBattle extends PureComponent {
   constructor(props) {
     super();
 
-    const { pokemon } = props;
-    const best = getBestMoveset(pokemon);
+    const { cacheKey, pokemon } = props;
+    const isDefender = cacheKey === 'matches';
+    const best = getBestMoveset(pokemon, isDefender);
 
     this.state = {
       quickMove: best.quick,

@@ -162,9 +162,7 @@ function renderItem({ item }, results) {
         </View>
 
         <View style={styles.basic}>
-          <Text style={styles.right}>
-            {item.dmg}
-          </Text>
+          <Text style={styles.right}>{item.dmg}</Text>
         </View>
       </View>
     </View>
@@ -179,11 +177,7 @@ function Table({ rows }) {
           <Text selectable style={styles.label}>
             {row.label}
           </Text>
-          {row.middle && (
-            <View style={styles.middle}>
-              {row.middle}
-            </View>
-          )}
+          {row.middle && <View style={styles.middle}>{row.middle}</View>}
           <Text selectable style={[styles.basic, styles.text]}>
             {row.text}
           </Text>
@@ -209,7 +203,9 @@ export default function BattleResults({ onDone, results }) {
         rows={[
           {
             label: 'Winner',
-            text: `${formatMove(results[results.winner].name)} (${results.winner})`,
+            text: `${formatMove(results[results.winner].name)} (${
+              results.winner
+            })`,
           },
           {
             label: 'Time Elapsed',
@@ -229,7 +225,10 @@ export default function BattleResults({ onDone, results }) {
             label: 'Time Remaining',
             middle: (
               <ProgressBar
-                ratio={results.timeRemaining / (results.timeElapsed + results.timeRemaining)}
+                ratio={
+                  results.timeRemaining /
+                  (results.timeElapsed + results.timeRemaining)
+                }
                 fillColor="#5499c7"
               />
             ),
