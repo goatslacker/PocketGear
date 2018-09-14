@@ -123,6 +123,16 @@ function renderItem({ item }, results) {
   const sprite = store.getSprite(results[item.p].id);
   const style = [styles.image, styles[item.p]];
 
+  if (item.m === '@DODGE') {
+    return (
+      <View style={[styles.item, styles.row]}>
+        <Image source={sprite} style={style} />
+
+        <Text>Dodged</Text>
+      </View>
+    );
+  }
+
   if (item.m === '@FAINT') {
     return (
       <View style={[styles.item, styles.row]}>

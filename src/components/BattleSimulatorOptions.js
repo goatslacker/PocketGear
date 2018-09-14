@@ -115,6 +115,7 @@ export default class BattleSimulatorOptions extends PureComponent {
       defLVL: 40,
       defRaidTier: 5, // TODO get a default raid level if we have one
 
+      dodge: true,
       isPvP: false,
       isRaid: isLegendary(defender.pokemon.name),
       text: '',
@@ -138,6 +139,7 @@ export default class BattleSimulatorOptions extends PureComponent {
       defIVS,
       defLVL,
       defQuick,
+      dodge,
       isPvP,
       isRaid,
       weather,
@@ -158,6 +160,7 @@ export default class BattleSimulatorOptions extends PureComponent {
         lvl: defLVL,
         iv: toHex(defIVA, defIVD, defIVS),
       },
+      dodge,
       isPvP,
       isRaid,
       weather,
@@ -329,7 +332,18 @@ export default class BattleSimulatorOptions extends PureComponent {
           />
 
           <View>
-            <Heading>PVP</Heading>
+            <Heading>Dodge</Heading>
+
+            <Switch
+              value={this.state.dodge}
+              onValueChange={() =>
+                this.setState({ dodge: !this.state.dodge })
+              }
+            />
+          </View>
+
+          <View>
+            <Heading>PvP</Heading>
 
             <Switch
               value={this.state.isPvP}
@@ -340,7 +354,7 @@ export default class BattleSimulatorOptions extends PureComponent {
           </View>
 
           <View>
-            <Heading>Raid Battle</Heading>
+            <Heading>Raid</Heading>
 
             <Switch
               value={this.state.isRaid}

@@ -89,6 +89,7 @@ export default class Arena extends PureComponent {
       };
 
       const options = {
+        atkDodgeStrategy: state.dodge ? 'charge' : null,
         pvp: state.isPvP,
         raid: state.isRaid,
         raidTier: state.defRaidTier,
