@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
   },
 
   right: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#666',
     textAlign: 'right',
   },
 
@@ -51,6 +54,10 @@ const styles = StyleSheet.create({
 
   center: {
     textAlign: 'center',
+  },
+
+  mb: {
+    marginBottom: 10,
   },
 
   section: {
@@ -156,10 +163,7 @@ function renderItem({ item }, results) {
 
         <View style={styles.basic}>
           <Text style={styles.right}>
-            {item.dmg}dmg
-          </Text>
-          <Text style={styles.right}>
-            {item.p === 'atk' ? 'def' : 'atk'} {item.hp}hp
+            {item.dmg}
           </Text>
         </View>
       </View>
@@ -190,20 +194,9 @@ function Table({ rows }) {
 }
 
 export default function BattleResults({ onDone, results }) {
-  let atkHP = results.atk.hp;
-  let defHP = results.def.hp;
+  // TODO provide periodic breaks which detail current state of events?
   const log = results.log.map(row => {
-    if (row.p === 'atk') {
-      defHP -= row.dmg;
-      row.hp = defHP;
-    }
-    if (row.p === 'def') {
-      atkHP -= row.dmg;
-      row.hp = atkHP;
-    }
-
     row.key = row.p + row.ms + row.m;
-
     return row;
   });
 
@@ -273,11 +266,11 @@ export default function BattleResults({ onDone, results }) {
             },
             {
               label: 'Damage Taken',
-              text: `-${results.atk.dmgTaken}hp`,
+              text: results.atk.dmgTaken,
             },
             {
               label: 'Damage Dealt',
-              text: `${results.atk.dmgDealt}dmg`,
+              text: results.atk.dmgDealt,
             },
           ]}
         />
@@ -305,25 +298,27 @@ export default function BattleResults({ onDone, results }) {
             },
             {
               label: 'Damage Taken',
-              text: `-${results.def.dmgTaken}hp`,
+              text: results.def.dmgTaken,
             },
             {
               label: 'Damage Dealt',
-              text: `${results.def.dmgDealt}dmg`,
+              text: results.def.dmgDealt,
             },
           ]}
         />
       </View>
 
-      <Heading level={1} style={styles.center}>
+      <Heading level={1} style={[styles.center, styles.mb]}>
         Battle Log
       </Heading>
 
-      <FlatList
-        data={log}
-        keyExtractor={item => item.key}
-        renderItem={item => renderItem(item, results)}
-      />
+      <View style={styles.section}>
+        <FlatList
+          data={log}
+          keyExtractor={item => item.key}
+          renderItem={item => renderItem(item, results)}
+        />
+      </View>
     </View>
   );
 }
