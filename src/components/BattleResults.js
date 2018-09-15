@@ -137,6 +137,10 @@ const styles = StyleSheet.create({
   soft: {
     color: '#666',
   },
+
+  gold: {
+    color: '#daa520',
+  },
 });
 
 function renderDetails(item, results) {
@@ -285,6 +289,10 @@ export default function BattleResults({ onDone, results }) {
   const atkSprite = store.getSprite(results.atk.id);
   const defSprite = store.getSprite(results.def.id);
 
+  const winner = (
+    <EvilIcons name="trophy" size={24} style={styles.gold} />
+  );
+
   return (
     <View style={styles.container}>
       <Table
@@ -346,7 +354,10 @@ export default function BattleResults({ onDone, results }) {
           <View style={[styles.meta]}>
             <Image style={[styles.image, styles.atk]} source={atkSprite} />
             <View>
-              <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
+              <View style={styles.meta}>
+                <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
+                {results.winner === 'atk' && winner}
+              </View>
               <Heading level={4} style={styles.soft}>
                 {formatMove(results.atk.moves[0])} and{' '}
                 {formatMove(results.atk.moves[1])}
@@ -383,7 +394,10 @@ export default function BattleResults({ onDone, results }) {
           <View style={[styles.meta, { marginTop: 16 }]}>
             <Image style={[styles.image, styles.def]} source={defSprite} />
             <View>
-              <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
+              <View style={styles.meta}>
+                <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
+                {results.winner === 'def' && winner}
+              </View>
               <Heading level={4} style={styles.soft}>
                 {formatMove(results.def.moves[0])} and{' '}
                 {formatMove(results.def.moves[1])}
