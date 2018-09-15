@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Button, FlatList, Image, Text, View, StyleSheet } from 'react-native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import TouchableItem from './TouchableItem';
 import Heading from './Heading';
@@ -339,15 +340,22 @@ export default function BattleResults({ onDone, results }) {
       </View>
 
       <View style={styles.section}>
-        <View style={[styles.meta]}>
-          <Image style={[styles.image, styles.atk]} source={atkSprite} />
-          <View>
-            <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
-            <Heading level={4} style={styles.soft}>
-              {formatMove(results.atk.moves[0])} and{' '}
-              {formatMove(results.atk.moves[1])}
-            </Heading>
+
+
+        <View style={styles.row}>
+          <View style={[styles.meta]}>
+            <Image style={[styles.image, styles.atk]} source={atkSprite} />
+            <View>
+              <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
+              <Heading level={4} style={styles.soft}>
+                {formatMove(results.atk.moves[0])} and{' '}
+                {formatMove(results.atk.moves[1])}
+              </Heading>
+            </View>
           </View>
+          <TouchableItem onPress={onDone}>
+            <EvilIcons name="gear" size={24} style={styles.soft} />
+          </TouchableItem>
         </View>
 
         <Table
@@ -371,15 +379,20 @@ export default function BattleResults({ onDone, results }) {
           ]}
         />
 
-        <View style={[styles.meta, { marginTop: 16 }]}>
-          <Image style={[styles.image, styles.def]} source={defSprite} />
-          <View>
-            <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
-            <Heading level={4} style={styles.soft}>
-              {formatMove(results.def.moves[0])} and{' '}
-              {formatMove(results.def.moves[1])}
-            </Heading>
+        <View style={styles.row}>
+          <View style={[styles.meta, { marginTop: 16 }]}>
+            <Image style={[styles.image, styles.def]} source={defSprite} />
+            <View>
+              <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
+              <Heading level={4} style={styles.soft}>
+                {formatMove(results.def.moves[0])} and{' '}
+                {formatMove(results.def.moves[1])}
+              </Heading>
+            </View>
           </View>
+          <TouchableItem onPress={onDone}>
+            <EvilIcons name="gear" size={24} style={styles.soft} />
+          </TouchableItem>
         </View>
 
         <Table
