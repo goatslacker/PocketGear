@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button, FlatList, Image, Text, View, StyleSheet } from 'react-native';
 
+import TouchableItem from './TouchableItem';
 import Heading from './Heading';
 import ProgressBar from './ProgressBar';
 import formatMove from '../utils/formatMove';
@@ -46,6 +47,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
+  tiny: {
+    color: '#888',
+    fontSize: 12,
+    marginBottom: 8,
+  },
+
   middle: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -85,6 +92,18 @@ const styles = StyleSheet.create({
     width: 60,
   },
 
+  details: {
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: 120,
+  },
+
+  img: {
+    height: 80,
+    width: 80,
+  },
+
   atk: {
     backgroundColor: '#fc8080',
   },
@@ -119,64 +138,123 @@ const styles = StyleSheet.create({
   },
 });
 
-function renderItem({ item }, results) {
-  const sprite = store.getSprite(results[item.p].id);
-  const style = [styles.image, styles[item.p]];
-
-  if (item.m === '@DODGE') {
-    return (
-      <View style={[styles.item, styles.row]}>
-        <Image source={sprite} style={style} />
-
-        <Text>Dodged</Text>
-      </View>
-    );
-  }
-
-  if (item.m === '@FAINT') {
-    return (
-      <View style={[styles.item, styles.row]}>
-        <Image source={sprite} style={style} />
-
-        <Text>Faints</Text>
-      </View>
-    );
-  }
-
-  if (item.m === '@SWITCH') {
-    return (
-      <View style={[styles.item, styles.row]}>
-        <Image source={sprite} style={style} />
-
-        <Text>Switches into Battle</Text>
-      </View>
-    );
-  }
-
-  if (item.m === '@TIME_OUT') {
-    return (
-      <View style={[styles.item, styles.row]}>
-        <Text style={[styles.dmg, styles.center]}>Timed Out</Text>
-      </View>
-    );
-  }
+function renderDetails(item, results) {
+  const atk = item.p === 'atk' ? item.a : item.d;
+  const def = item.p === 'def' ? item.a : item.d;
 
   return (
-    <View style={styles.item}>
-      <View style={styles.row}>
-        <Image source={sprite} style={style} />
+    <View style={styles.row}>
+      <View style={styles.details}>
+        <Image source={store.getSprite(results.atk.id)} style={styles.img} />
+        <ProgressBar
+          ratio={atk.e / 100}
+          fillColor="#fc8080"
+        />
+        <Text style={styles.tiny}>Energy {atk.e}</Text>
+        <ProgressBar
+          ratio={atk.h / results.atk.hp}
+          fillColor="#fc8080"
+        />
+        <Text style={styles.tiny}>HP {atk.h}</Text>
+      </View>
 
-        <View>
-          <Text style={styles.dmg}>{formatMove(item.m)}</Text>
-          <Text style={styles.time}>{item.ms / 1000}s</Text>
-        </View>
-
-        <View style={styles.basic}>
-          <Text style={styles.right}>{item.dmg}</Text>
-        </View>
+      <View style={styles.details}>
+        <Image source={store.getSprite(results.def.id)} style={styles.img} />
+        <ProgressBar
+          ratio={def.e / 200}
+          fillColor="#8080fc"
+        />
+        <Text style={styles.tiny}>Energy {def.e}</Text>
+        <ProgressBar
+          ratio={def.h / results.def.hp}
+          fillColor="#8080fc"
+        />
+        <Text style={styles.tiny}>HP {def.h}</Text>
       </View>
     </View>
   );
+}
+
+class RowItem extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      showDetails: false,
+    };
+  }
+
+  render() {
+    const { item, results } = this.props;
+
+    const sprite = store.getSprite(results[item.p].id);
+    const style = [styles.image, styles[item.p]];
+
+    if (item.m === '@DODGE') {
+      return (
+        <View style={[styles.item, styles.row]}>
+          <Image source={sprite} style={style} />
+
+          <Text>Dodged</Text>
+        </View>
+      );
+    }
+
+    if (item.m === '@FAINT') {
+      return (
+        <View style={[styles.item, styles.row]}>
+          <Image source={sprite} style={style} />
+
+          <Text>Faints</Text>
+        </View>
+      );
+    }
+
+    if (item.m === '@SWITCH') {
+      return (
+        <View style={[styles.item, styles.row]}>
+          <Image source={sprite} style={style} />
+
+          <Text>Switches into Battle</Text>
+        </View>
+      );
+    }
+
+    if (item.m === '@TIME_OUT') {
+      return (
+        <View style={[styles.item, styles.row]}>
+          <Text style={[styles.dmg, styles.center]}>Timed Out</Text>
+        </View>
+      );
+    }
+
+    return (
+      <TouchableItem
+        activeOpacity={0.85}
+        onPress={() => this.setState({ showDetails: !this.state.showDetails })}
+        style={styles.item}
+      >
+        <View style={styles.row}>
+          <Image source={sprite} style={style} />
+
+          <View>
+            <Text style={styles.dmg}>{formatMove(item.m)}</Text>
+            <Text style={styles.time}>{item.ms / 1000}s</Text>
+          </View>
+
+          <View style={styles.basic}>
+            <Text style={styles.right}>{item.dmg}</Text>
+          </View>
+        </View>
+
+        {this.state.showDetails && renderDetails(item, results)}
+      </TouchableItem>
+    );
+  }
+}
+
+function renderItem({ item }, results) {
+  return <RowItem item={item} results={results} />;
 }
 
 function Table({ rows }) {
@@ -198,7 +276,6 @@ function Table({ rows }) {
 }
 
 export default function BattleResults({ onDone, results }) {
-  // TODO provide periodic breaks which detail current state of events?
   const log = results.log.map(row => {
     row.key = row.p + row.ms + row.m;
     return row;
@@ -227,6 +304,16 @@ export default function BattleResults({ onDone, results }) {
               <ProgressBar
                 ratio={results.atk.dmgDealt / results.def.hp}
                 fillColor="#e57373"
+              />
+            ),
+            text: results.atk.dmgDealt,
+          },
+          {
+            label: 'HP',
+            middle: (
+              <ProgressBar
+                ratio={(results.atk.hp - results.atk.dmgTaken) / results.atk.hp}
+                fillColor="#66d073"
               />
             ),
             text: results.atk.dmgDealt,
