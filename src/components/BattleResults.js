@@ -117,11 +117,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-  image2: {
-    height: 72,
-    resizeMode: 'contain',
-  },
-
   meta: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -151,29 +146,17 @@ function renderDetails(item, results) {
     <View style={styles.row}>
       <View style={styles.details}>
         <Image source={store.getSprite(results.atk.id)} style={styles.img} />
-        <ProgressBar
-          ratio={atk.e / 100}
-          fillColor="#fc8080"
-        />
+        <ProgressBar ratio={atk.e / 100} fillColor="#fc8080" />
         <Text style={styles.tiny}>Energy {atk.e}</Text>
-        <ProgressBar
-          ratio={atk.h / results.atk.hp}
-          fillColor="#fc8080"
-        />
+        <ProgressBar ratio={atk.h / results.atk.hp} fillColor="#fc8080" />
         <Text style={styles.tiny}>HP {atk.h}</Text>
       </View>
 
       <View style={styles.details}>
         <Image source={store.getSprite(results.def.id)} style={styles.img} />
-        <ProgressBar
-          ratio={def.e / 200}
-          fillColor="#8080fc"
-        />
+        <ProgressBar ratio={def.e / 200} fillColor="#8080fc" />
         <Text style={styles.tiny}>Energy {def.e}</Text>
-        <ProgressBar
-          ratio={def.h / results.def.hp}
-          fillColor="#8080fc"
-        />
+        <ProgressBar ratio={def.h / results.def.hp} fillColor="#8080fc" />
         <Text style={styles.tiny}>HP {def.h}</Text>
       </View>
     </View>
@@ -289,9 +272,7 @@ export default function BattleResults({ onDone, results }) {
   const atkSprite = store.getSprite(results.atk.id);
   const defSprite = store.getSprite(results.def.id);
 
-  const winner = (
-    <EvilIcons name="trophy" size={24} style={styles.gold} />
-  );
+  const winner = <EvilIcons name="trophy" size={24} style={styles.gold} />;
 
   return (
     <View style={styles.container}>
@@ -348,14 +329,14 @@ export default function BattleResults({ onDone, results }) {
       </View>
 
       <View style={styles.section}>
-
-
         <View style={styles.row}>
           <View style={[styles.meta]}>
             <Image style={[styles.image, styles.atk]} source={atkSprite} />
             <View>
               <View style={styles.meta}>
-                <Text style={[styles.name]}>{formatMove(results.atk.name)}</Text>
+                <Text style={[styles.name]}>
+                  {formatMove(results.atk.name)}
+                </Text>
                 {results.winner === 'atk' && winner}
               </View>
               <Heading level={4} style={styles.soft}>
@@ -395,7 +376,9 @@ export default function BattleResults({ onDone, results }) {
             <Image style={[styles.image, styles.def]} source={defSprite} />
             <View>
               <View style={styles.meta}>
-                <Text style={[styles.name]}>{formatMove(results.def.name)}</Text>
+                <Text style={[styles.name]}>
+                  {formatMove(results.def.name)}
+                </Text>
                 {results.winner === 'def' && winner}
               </View>
               <Heading level={4} style={styles.soft}>

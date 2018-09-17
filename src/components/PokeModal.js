@@ -56,7 +56,7 @@ export default class PokeModal extends PureComponent {
 
     return (
       <ScrollView style={styles.container}>
-        <Appbar navigation={this.props.navigation} close={true}>
+        <Appbar navigation={this.props.navigation} close>
           Select a Move
         </Appbar>
         <View style={styles.center}>

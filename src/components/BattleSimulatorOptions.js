@@ -2,8 +2,6 @@
 
 import PickerSelect from 'react-native-picker-select';
 import React, { PureComponent } from 'react';
-import dex from 'pokemagic/dex';
-import isLegendary from 'pokemagic/lib/isLegendary';
 import { Button, Switch, Image, Text, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
@@ -92,37 +90,6 @@ function toHex(atk, def, sta) {
 }
 
 export default class BattleSimulatorOptions extends PureComponent {
-  constructor(props) {
-    super();
-
-    const { attacker, defender, weather } = props;
-
-    this.state = {
-      atk: attacker.pokemon,
-      atkQuick: dex.findMove(attacker.moves[0]),
-      atkCharge: dex.findMove(attacker.moves[1]),
-      atkIVA: 15,
-      atkIVD: 15,
-      atkIVS: 15,
-      atkLVL: 40,
-
-      def: defender.pokemon,
-      defQuick: dex.findMove(defender.moves[0]),
-      defCharge: dex.findMove(defender.moves[1]),
-      defIVA: 15,
-      defIVD: 15,
-      defIVS: 15,
-      defLVL: 40,
-      defRaidTier: 5, // TODO get a default raid level if we have one
-
-      dodge: true,
-      isPvP: false,
-      isRaid: isLegendary(defender.pokemon.name),
-      text: '',
-      weather: weather || 'EXTREME',
-    };
-  }
-
   handleSimulateBattlePress() {
     const {
       atk,
@@ -143,7 +110,7 @@ export default class BattleSimulatorOptions extends PureComponent {
       isPvP,
       isRaid,
       weather,
-    } = this.state;
+    } = this.props;
 
     this.props.onBattle({
       atk: {
@@ -167,45 +134,45 @@ export default class BattleSimulatorOptions extends PureComponent {
     });
   }
 
-  toggleRaidPvP(state) {
-    if (state.isRaid === true) {
-      this.setState({
+  toggleRaidPvP(props) {
+    if (props.isRaid === true) {
+      this.props.onChange({
         isPvP: false,
         isRaid: true,
       });
       return;
     }
 
-    if (state.isPvP === true) {
-      this.setState({
+    if (props.isPvP === true) {
+      this.props.onChange({
         isPvP: true,
         isRaid: false,
       });
       return;
     }
 
-    this.setState(state);
+    this.props.onChange(props);
   }
 
   render() {
-    const atkSprite = store.getSprite(this.state.atk.id);
-    const defSprite = store.getSprite(this.state.def.id);
+    const atkSprite = store.getSprite(this.props.atk.id);
+    const defSprite = store.getSprite(this.props.def.id);
 
     return (
       <View style={styles.container}>
         <View style={[styles.section]}>
           <View style={[styles.row, styles.meta]}>
             <Image style={styles.image} source={atkSprite} />
-            <Text style={[styles.name]}>{formatMove(this.state.atk.name)}</Text>
+            <Text style={[styles.name]}>{formatMove(this.props.atk.name)}</Text>
           </View>
 
           <MovePicker
-            pokemon={this.state.atk}
-            quickMove={this.state.atkQuick}
-            chargeMove={this.state.atkCharge}
+            pokemon={this.props.atk}
+            quickMove={this.props.atkQuick}
+            chargeMove={this.props.atkCharge}
             navigation={this.props.navigation}
-            onSelectQuickMove={atkQuick => this.setState({ atkQuick })}
-            onSelectChargeMove={atkCharge => this.setState({ atkCharge })}
+            onSelectQuickMove={atkQuick => this.props.onChange({ atkQuick })}
+            onSelectChargeMove={atkCharge => this.props.onChange({ atkCharge })}
           />
 
           <View style={styles.iv}>
@@ -214,8 +181,8 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={LEVELS_RANGE}
-                onValueChange={atkLVL => this.setState({ atkLVL })}
-                value={this.state.atkLVL}
+                onValueChange={atkLVL => this.props.onChange({ atkLVL })}
+                value={this.props.atkLVL}
               />
             </View>
 
@@ -224,8 +191,8 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={IV_RANGE}
-                onValueChange={atkIVA => this.setState({ atkIVA })}
-                value={this.state.atkIVA}
+                onValueChange={atkIVA => this.props.onChange({ atkIVA })}
+                value={this.props.atkIVA}
               />
             </View>
 
@@ -234,8 +201,8 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={IV_RANGE}
-                onValueChange={atkIVD => this.setState({ atkIVD })}
-                value={this.state.atkIVD}
+                onValueChange={atkIVD => this.props.onChange({ atkIVD })}
+                value={this.props.atkIVD}
               />
             </View>
 
@@ -244,8 +211,8 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={IV_RANGE}
-                onValueChange={atkIVS => this.setState({ atkIVS })}
-                value={this.state.atkIVS}
+                onValueChange={atkIVS => this.props.onChange({ atkIVS })}
+                value={this.props.atkIVS}
               />
             </View>
           </View>
@@ -253,42 +220,44 @@ export default class BattleSimulatorOptions extends PureComponent {
 
         <View style={[styles.section]}>
           <View style={[styles.row, styles.meta]}>
-            <Text style={[styles.name]}>{formatMove(this.state.def.name)}</Text>
+            <Text style={[styles.name]}>{formatMove(this.props.def.name)}</Text>
             <Image style={styles.image} source={defSprite} />
           </View>
 
           <MovePicker
-            pokemon={this.state.def}
-            quickMove={this.state.defQuick}
-            chargeMove={this.state.defCharge}
+            pokemon={this.props.def}
+            quickMove={this.props.defQuick}
+            chargeMove={this.props.defCharge}
             navigation={this.props.navigation}
-            onSelectQuickMove={defQuick => this.setState({ defQuick })}
-            onSelectChargeMove={defCharge => this.setState({ defCharge })}
+            onSelectQuickMove={defQuick => this.props.onChange({ defQuick })}
+            onSelectChargeMove={defCharge => this.props.onChange({ defCharge })}
           />
 
-          {this.state.isRaid && (
+          {this.props.isRaid && (
             <View style={styles.iv}>
               <View>
                 <Heading style={styles.soft}>Raid Tier</Heading>
                 <PickerSelect
                   hideIcon
                   items={RAID_RANGE}
-                  onValueChange={defRaidTier => this.setState({ defRaidTier })}
-                  value={this.state.defRaidTier}
+                  onValueChange={defRaidTier =>
+                    this.props.onChange({ defRaidTier })
+                  }
+                  value={this.props.defRaidTier}
                 />
               </View>
             </View>
           )}
 
-          {!this.state.isRaid && (
+          {!this.props.isRaid && (
             <View style={styles.iv}>
               <View>
                 <Heading style={styles.soft}>Lvl</Heading>
                 <PickerSelect
                   hideIcon
                   items={LEVELS_RANGE}
-                  onValueChange={defLVL => this.setState({ defLVL })}
-                  value={this.state.defLVL}
+                  onValueChange={defLVL => this.props.onChange({ defLVL })}
+                  value={this.props.defLVL}
                 />
               </View>
 
@@ -297,8 +266,8 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={IV_RANGE}
-                  onValueChange={defIVA => this.setState({ defIVA })}
-                  value={this.state.defIVA}
+                  onValueChange={defIVA => this.props.onChange({ defIVA })}
+                  value={this.props.defIVA}
                 />
               </View>
 
@@ -307,8 +276,8 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={IV_RANGE}
-                  onValueChange={defIVD => this.setState({ defIVD })}
-                  value={this.state.defIVD}
+                  onValueChange={defIVD => this.props.onChange({ defIVD })}
+                  value={this.props.defIVD}
                 />
               </View>
 
@@ -317,8 +286,8 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={IV_RANGE}
-                  onValueChange={defIVS => this.setState({ defIVS })}
-                  value={this.state.defIVS}
+                  onValueChange={defIVS => this.props.onChange({ defIVS })}
+                  value={this.props.defIVS}
                 />
               </View>
             </View>
@@ -327,17 +296,17 @@ export default class BattleSimulatorOptions extends PureComponent {
 
         <View style={[styles.section, styles.row]}>
           <WeatherPicker
-            onWeatherChanged={weather => this.setState({ weather })}
-            weather={this.state.weather}
+            onWeatherChanged={weather => this.props.onChange({ weather })}
+            weather={this.props.weather}
           />
 
           <View>
             <Heading>Dodge</Heading>
 
             <Switch
-              value={this.state.dodge}
+              value={this.props.dodge}
               onValueChange={() =>
-                this.setState({ dodge: !this.state.dodge })
+                this.props.onChange({ dodge: !this.props.dodge })
               }
             />
           </View>
@@ -346,9 +315,9 @@ export default class BattleSimulatorOptions extends PureComponent {
             <Heading>PvP</Heading>
 
             <Switch
-              value={this.state.isPvP}
+              value={this.props.isPvP}
               onValueChange={() =>
-                this.toggleRaidPvP({ isPvP: !this.state.isPvP })
+                this.toggleRaidPvP({ isPvP: !this.props.isPvP })
               }
             />
           </View>
@@ -357,9 +326,9 @@ export default class BattleSimulatorOptions extends PureComponent {
             <Heading>Raid</Heading>
 
             <Switch
-              value={this.state.isRaid}
+              value={this.props.isRaid}
               onValueChange={() =>
-                this.toggleRaidPvP({ isRaid: !this.state.isRaid })
+                this.toggleRaidPvP({ isRaid: !this.props.isRaid })
               }
             />
           </View>

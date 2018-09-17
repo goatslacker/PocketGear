@@ -1,6 +1,8 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
+import dex from 'pokemagic/dex';
+import isLegendary from 'pokemagic/lib/isLegendary';
 import simulateBattle from 'pokemagic/simulateBattle';
 import { ScrollView, StyleSheet } from 'react-native';
 
@@ -19,11 +21,38 @@ const styles = StyleSheet.create({
 });
 
 export default class Arena extends PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const attacker = this.getAttacker();
+    const defender = this.getDefender();
+
     this.state = {
       isLoading: false,
       results: null,
+      options: {
+        atk: attacker.pokemon,
+        atkQuick: dex.findMove(attacker.moves[0]),
+        atkCharge: dex.findMove(attacker.moves[1]),
+        atkIVA: 15,
+        atkIVD: 15,
+        atkIVS: 15,
+        atkLVL: 40,
+
+        def: defender.pokemon,
+        defQuick: dex.findMove(defender.moves[0]),
+        defCharge: dex.findMove(defender.moves[1]),
+        defIVA: 15,
+        defIVD: 15,
+        defIVS: 15,
+        defLVL: 40,
+        defRaidTier: 5, // TODO get a default raid level if we have one
+
+        dodge: true,
+        isPvP: false,
+        isRaid: isLegendary(defender.pokemon.name),
+        weather: props.navigation.state.params.weather || 'EXTREME',
+      },
     };
   }
 
@@ -105,26 +134,32 @@ export default class Arena extends PureComponent {
     });
   }
 
+  updateOptionsState(options) {
+    this.setState({
+      options: {
+        ...this.state.options,
+        ...options,
+      },
+    });
+  }
+
   render() {
-    const attacker = this.getAttacker();
-    const defender = this.getDefender();
     return (
       <ScrollView
         {...this.props}
         ref={scrollView => (this.scrollView = scrollView)}
         style={[styles.container, this.props.style]}
       >
-        <Appbar navigation={this.props.navigation} close={true}>
+        <Appbar navigation={this.props.navigation} close>
           Battle Simulator
         </Appbar>
         {this.state.isLoading && <Placeholder />}
         {!this.state.results && (
           <BattleSimulatorOptions
-            attacker={attacker}
-            defender={defender}
             navigation={this.props.navigation}
             onBattle={state => this.runBattleSimulator(state)}
-            weather={this.props.navigation.state.params.weather}
+            onChange={options => this.updateOptionsState(options)}
+            {...this.state.options}
           />
         )}
         {this.state.results && (

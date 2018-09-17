@@ -14,12 +14,12 @@ function normalizeLegacy(legacy) {
 }
 
 function dpse(a, b) {
-  const dpsA = (a.Power || 0) / a.DurationMs
-  const dpsB = (b.Power || 0) / b.DurbtionMs
-  const epsA = (a.Energy || 0) / a.DurationMs
-  const epsB = (b.Energy || 0) / b.DurationMs
+  const dpsA = (a.Power || 0) / a.DurationMs;
+  const dpsB = (b.Power || 0) / b.DurbtionMs;
+  const epsA = (a.Energy || 0) / a.DurationMs;
+  const epsB = (b.Energy || 0) / b.DurationMs;
 
-  return dpsA * epsA > dpsB * epsB ? -1 : 1
+  return dpsA * epsA > dpsB * epsB ? -1 : 1;
 }
 
 export default function getQuickAttacks(pokemon: Pokemon) {
