@@ -289,26 +289,6 @@ export default function BattleResults({ onDone, results }) {
             text: `${results.timeElapsed / 1000}s`,
           },
           {
-            label: 'Damage',
-            middle: (
-              <ProgressBar
-                ratio={results.atk.dmgDealt / results.def.hp}
-                fillColor="#e57373"
-              />
-            ),
-            text: results.atk.dmgDealt,
-          },
-          {
-            label: 'HP',
-            middle: (
-              <ProgressBar
-                ratio={(results.atk.hp - results.atk.dmgTaken) / results.atk.hp}
-                fillColor="#66d073"
-              />
-            ),
-            text: results.atk.dmgDealt,
-          },
-          {
             label: 'Time Remaining',
             middle: (
               <ProgressBar
@@ -361,12 +341,24 @@ export default function BattleResults({ onDone, results }) {
               text: results.atk.hp,
             },
             {
-              label: 'Damage Taken',
-              text: results.atk.dmgTaken,
+              label: 'Damage',
+              middle: (
+                <ProgressBar
+                  ratio={results.atk.dmgDealt / results.def.hp}
+                  fillColor="#e57373"
+                />
+              ),
+              text: results.atk.dmgDealt,
             },
             {
-              label: 'Damage Dealt',
-              text: results.atk.dmgDealt,
+              label: 'Health',
+              middle: (
+                <ProgressBar
+                  ratio={(results.atk.hp - results.atk.dmgTaken) / results.atk.hp}
+                  fillColor="#66d073"
+                />
+              ),
+              text: results.atk.hp - results.atk.dmgTaken,
             },
           ]}
         />
@@ -403,12 +395,24 @@ export default function BattleResults({ onDone, results }) {
               text: results.def.hp,
             },
             {
-              label: 'Damage Taken',
-              text: results.def.dmgTaken,
+              label: 'Damage',
+              middle: (
+                <ProgressBar
+                  ratio={results.def.dmgDealt / results.atk.hp}
+                  fillColor="#e57373"
+                />
+              ),
+              text: results.def.dmgDealt,
             },
             {
-              label: 'Damage Dealt',
-              text: results.def.dmgDealt,
+              label: 'Health',
+              middle: (
+                <ProgressBar
+                  ratio={(results.def.hp - results.def.dmgTaken) / results.def.hp}
+                  fillColor="#66d073"
+                />
+              ),
+              text: results.def.hp - results.def.dmgTaken,
             },
           ]}
         />
