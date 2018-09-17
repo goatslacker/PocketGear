@@ -114,7 +114,9 @@ export default class Arena extends PureComponent {
         ref={scrollView => (this.scrollView = scrollView)}
         style={[styles.container, this.props.style]}
       >
-        <Appbar navigation={this.props.navigation}>Battle Simulator</Appbar>
+        <Appbar navigation={this.props.navigation} close={true}>
+          Battle Simulator
+        </Appbar>
         {this.state.isLoading && <Placeholder />}
         {!this.state.results && (
           <BattleSimulatorOptions

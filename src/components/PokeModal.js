@@ -1,25 +1,17 @@
 import React, { PureComponent } from 'react';
 import { Image, View, ScrollView, StyleSheet } from 'react-native';
 
+import Appbar from './Appbar';
 import Attack from './Attack';
-import Heading from './Heading';
 import TouchableItem from './TouchableItem';
 import getQuickAttacks from '../utils/getQuickAttacks';
 import getSpecialAttacks from '../utils/getSpecialAttacks';
 import store from '../store';
 
 const styles = StyleSheet.create({
-  modal: {
-    marginTop: 60,
-  },
-
   center: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  padding: {
-    paddingHorizontal: 40,
   },
 
   row: {
@@ -34,6 +26,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     height: 72,
     resizeMode: 'contain',
+  },
+
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 16,
   },
 });
 
@@ -57,12 +55,14 @@ export default class PokeModal extends PureComponent {
     const sprite = store.getSprite(pokemon.id);
 
     return (
-      <ScrollView style={styles.modal}>
+      <ScrollView style={styles.container}>
+        <Appbar navigation={this.props.navigation} close={true}>
+          Select a Move
+        </Appbar>
         <View style={styles.center}>
           <Image style={styles.image} source={sprite} />
-          <Heading level={1}>Select a Move</Heading>
         </View>
-        <View style={styles.padding}>
+        <View>
           {attacks.map(move => {
             return (
               <TouchableItem
