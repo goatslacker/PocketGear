@@ -1,11 +1,14 @@
 /* @flow */
 
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import PickerSelect from 'react-native-picker-select';
 import React, { PureComponent } from 'react';
+import dex from 'pokemagic/dex';
 import { Button, Switch, Image, Text, View, StyleSheet } from 'react-native';
 
 import Heading from './Heading';
 import MovePicker from './MovePicker';
+import TouchableItem from './TouchableItem';
 import WeatherPicker from './WeatherPicker';
 import formatMove from '../utils/formatMove';
 import store from '../store';
@@ -57,16 +60,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
-  meta: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   name: {
     color: '#222',
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 18,
-    marginHorizontal: 4,
+    marginRight: 4,
   },
 
   button: {
@@ -154,6 +152,22 @@ export default class BattleSimulatorOptions extends PureComponent {
     this.props.onChange(props);
   }
 
+  selectNewPokemon(style) {
+    this.props.navigation.navigate('Pokemon', {
+      onSelectPokemon: pokemon => {
+        const quick = dex.findMove(pokemon.moves.quick[0]);
+        const charge = dex.findMove(pokemon.moves.charge[0]);
+
+        const state =
+          style === 'atk'
+            ? { atk: pokemon, atkQuick: quick, atkCharge: charge }
+            : { def: pokemon, defQuick: quick, defCharge: charge };
+
+        this.props.onChange(state);
+      },
+    });
+  }
+
   render() {
     const atkSprite = store.getSprite(this.props.atk.id);
     const defSprite = store.getSprite(this.props.def.id);
@@ -161,9 +175,16 @@ export default class BattleSimulatorOptions extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={[styles.section]}>
-          <View style={[styles.row, styles.meta]}>
+          <View style={styles.row}>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.name]}>
+                {formatMove(this.props.atk.name)}
+              </Text>
+            </View>
             <Image style={styles.image} source={atkSprite} />
-            <Text style={[styles.name]}>{formatMove(this.props.atk.name)}</Text>
+            <TouchableItem onPress={() => this.selectNewPokemon('atk')}>
+              <EvilIcons name="gear" size={24} style={styles.soft} />
+            </TouchableItem>
           </View>
 
           <MovePicker
@@ -219,9 +240,16 @@ export default class BattleSimulatorOptions extends PureComponent {
         </View>
 
         <View style={[styles.section]}>
-          <View style={[styles.row, styles.meta]}>
-            <Text style={[styles.name]}>{formatMove(this.props.def.name)}</Text>
+          <View style={styles.row}>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.name]}>
+                {formatMove(this.props.def.name)}
+              </Text>
+            </View>
             <Image style={styles.image} source={defSprite} />
+            <TouchableItem onPress={() => this.selectNewPokemon('def')}>
+              <EvilIcons name="gear" size={24} style={styles.soft} />
+            </TouchableItem>
           </View>
 
           <MovePicker

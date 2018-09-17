@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class PokeModal extends PureComponent {
+export default class MovesModal extends PureComponent {
   selectMove(move) {
     const { navigation } = this.props;
     const { params } = navigation.state;

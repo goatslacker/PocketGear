@@ -5,7 +5,8 @@ import Expo from 'expo';
 import { StackNavigator } from 'react-navigation';
 
 import Arena from './Arena';
-import PokeModal from './PokeModal';
+import MovesModal from './MovesModal';
+import PokemonModal from './PokemonModal';
 import PokemonChooser from './PokemonChooser';
 import PokemonInfo from './PokemonInfo';
 
@@ -26,7 +27,10 @@ const Root = StackNavigator(
       screen: Home,
     },
     Moves: {
-      screen: PokeModal,
+      screen: MovesModal,
+    },
+    Pokemon: {
+      screen: PokemonModal,
     },
     Arena: {
       screen: Arena,
