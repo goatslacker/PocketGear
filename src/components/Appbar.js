@@ -31,6 +31,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 8,
   },
+
+  spacer: {
+    width: 40,
+  },
 });
 
 type Props = {
@@ -46,7 +50,7 @@ export default class Appbar extends PureComponent<Props, void> {
 
   renderBack() {
     if (this.props.close) {
-      return;
+      return <View style={styles.spacer} />;
     }
 
     return (
@@ -66,7 +70,7 @@ export default class Appbar extends PureComponent<Props, void> {
 
   renderClose() {
     if (!this.props.close) {
-      return;
+      return <View style={styles.spacer} />;
     }
 
     return (
