@@ -6,6 +6,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 
 import FilterToggle from './FilterToggle';
 import MovePicker from './MovePicker';
+import NoResults from './NoResults';
 import PokemonList from './PokemonList';
 import ProgressLabel from './ProgressLabel';
 import WeatherPicker from './WeatherPicker';
@@ -56,6 +57,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ddc',
+  },
+
+  noResults: {
+    flex: 1,
+    marginTop: 120,
   },
 });
 
@@ -184,37 +190,47 @@ export default class PokemonBattle extends PureComponent {
           </View>
         </View>
         <View style={styles.row}>
-          <PokemonList
-            data={results}
-            getCardProps={getCardProps}
-            navigation={navigation}
-            onPress={(pokemon, rowData) =>
-              handlePokemonPress(pokemon, this.state, rowData)
-            }
-          >
-            {({ dps, tdo, total }) => (
-              <View style={[styles.wide]}>
-                <ProgressLabel
-                  color="#9575cd"
-                  label="Score"
-                  ratio={total / results[0][5]}
-                  value={Math.round(total)}
-                />
-                <ProgressLabel
-                  color="#e57373"
-                  label="DPS"
-                  ratio={dps / maxDPS}
-                  value={dps}
-                />
-                <ProgressLabel
-                  color="#5499c7"
-                  label="TDO"
-                  ratio={tdo / maxTDO}
-                  value={tdo}
-                />
-              </View>
-            )}
-          </PokemonList>
+          {results.length && (
+            <PokemonList
+              data={results}
+              getCardProps={getCardProps}
+              navigation={navigation}
+              onPress={(pokemon, rowData) =>
+                handlePokemonPress(pokemon, this.state, rowData)
+              }
+            >
+              {({ dps, tdo, total }) => (
+                <View style={[styles.wide]}>
+                  <ProgressLabel
+                    color="#9575cd"
+                    label="Score"
+                    ratio={total / results[0][5]}
+                    value={Math.round(total)}
+                  />
+                  <ProgressLabel
+                    color="#e57373"
+                    label="DPS"
+                    ratio={dps / maxDPS}
+                    value={dps}
+                  />
+                  <ProgressLabel
+                    color="#5499c7"
+                    label="TDO"
+                    ratio={tdo / maxTDO}
+                    value={tdo}
+                  />
+                </View>
+              )}
+            </PokemonList>
+          )}
+          {!results.length && (
+            <View style={styles.noResults}>
+              <NoResults
+                label="No Pokémon found"
+                source={require('../../assets/images/open-pokeball.png')}
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
     );

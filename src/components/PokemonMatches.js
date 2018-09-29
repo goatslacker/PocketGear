@@ -11,13 +11,16 @@ function getDefenderProfile(pokemon, { quickMove, chargeMove, weather, sort }) {
   const chargeMoveName = chargeMove.Name;
   const { data } = defenderProfile({
     chargeMoveName,
-    filterAttackerMoveset: move => move.legacy === 0,
     numPokemon: 20,
     pokemon,
     quickMoveName,
-    weather,
     scoring: sort,
+    weather,
   });
+
+  if (!data) {
+    return { results: [] };
+  }
 
   const [moveset] = data;
 

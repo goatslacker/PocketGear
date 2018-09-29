@@ -354,7 +354,9 @@ export default function BattleResults({ onDone, results }) {
               label: 'Health',
               middle: (
                 <ProgressBar
-                  ratio={(results.atk.hp - results.atk.dmgTaken) / results.atk.hp}
+                  ratio={
+                    (results.atk.hp - results.atk.dmgTaken) / results.atk.hp
+                  }
                   fillColor="#66d073"
                 />
               ),
@@ -408,7 +410,9 @@ export default function BattleResults({ onDone, results }) {
               label: 'Health',
               middle: (
                 <ProgressBar
-                  ratio={(results.def.hp - results.def.dmgTaken) / results.def.hp}
+                  ratio={
+                    (results.def.hp - results.def.dmgTaken) / results.def.hp
+                  }
                   fillColor="#66d073"
                 />
               ),
