@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "PocketGear",
-    "description": "PocketGear is a clean and simple Pokédex app for Pokémon GO you'll ever need.",
-    "slug": "pocketgear",
-    "version": "1.1.0",
+    "name": "PokeMagic",
+    "description": "fiejwfowejfoijewofijewo",
+    "slug": "pokemagic",
+    "version": "2.0.0",
     "icon": "assets/icons/app.png",
     "loading": {
       "icon": "assets/icons/splash.png",
@@ -11,10 +11,10 @@
       "hideExponentText": true
     },
     "ios": {
-      "bundleIdentifier": "com.wibblystuff.gear"
+      "bundleIdentifier": "com.goatslacker.pokemagic"
     },
     "android": {
-      "package": "com.wibblystuff.gear",
+      "package": "com.goatslacker.pokemagic",
       "permissions": []
     },
     "privacy": "public",
