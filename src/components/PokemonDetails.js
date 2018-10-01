@@ -5,7 +5,6 @@ import difference from 'lodash/difference';
 import { Image, View, Text, ScrollView, StyleSheet } from 'react-native';
 
 import Attack from './Attack';
-import Evolution from './Evolution';
 import Heading from './Heading';
 import PokemonTypeLabel from './PokemonTypeLabel';
 import ProgressBar from './ProgressBar';
@@ -308,16 +307,6 @@ export default class PokemonDetails extends PureComponent<Props, void> {
               </View>
             ) : null}
           </View>
-
-          {pokemon.evolutionBranch ? (
-            <View style={styles.item}>
-              <Evolution
-                style={styles.item}
-                pokemon={pokemon}
-                navigation={this.props.navigation}
-              />
-            </View>
-          ) : null}
         </View>
       </ScrollView>
     );
