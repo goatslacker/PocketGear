@@ -86,7 +86,7 @@ export default class PokemonListCard extends PureComponent<Props, void> {
     const margin = Math.floor(height / 6);
 
     return (
-      <View key={pokemon.name} style={[styles.block, style]}>
+      <View key={pokemon.form || pokemon.name} style={[styles.block, style]}>
         <TouchableItem
           onPress={this._handlePress}
           activeOpacity={0.7}
@@ -101,7 +101,7 @@ export default class PokemonListCard extends PureComponent<Props, void> {
           />
         </TouchableItem>
         <View style={[styles.col]}>
-          <Text style={styles.title}>{title || formatMove(pokemon.name)}</Text>
+          <Text style={styles.title}>{title || formatMove(pokemon.form || pokemon.name)}</Text>
           <Text style={styles.subtitle}>{subtitle || types}</Text>
           {children && children(this.props)}
         </View>
