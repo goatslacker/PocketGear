@@ -248,7 +248,7 @@ function renderItem({ item }, results) {
 function Table({ rows }) {
   return (
     <View>
-      {rows.map(row => (
+      {rows.map((row) => (
         <View key={row.label} style={styles.row}>
           <Text selectable style={styles.label}>
             {row.label}
@@ -264,7 +264,7 @@ function Table({ rows }) {
 }
 
 export default function BattleResults({ onDone, results }) {
-  const log = results.log.map(row => {
+  const log = results.log.map((row) => {
     row.key = row.p + row.ms + row.m;
     return row;
   });
@@ -429,8 +429,8 @@ export default function BattleResults({ onDone, results }) {
       <View style={styles.section}>
         <FlatList
           data={log}
-          keyExtractor={item => item.key}
-          renderItem={item => renderItem(item, results)}
+          keyExtractor={(item) => item.key}
+          renderItem={(item) => renderItem(item, results)}
         />
       </View>
     </View>

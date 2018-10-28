@@ -87,7 +87,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
 
     const search = parseSearchString(query);
 
-    return pokemons.filter(pokemon => {
+    return pokemons.filter((pokemon) => {
       return search(({ cp, hp, species, move, poke, special, text }) => {
         if (text) {
           if (text === 'lucky') {
@@ -99,7 +99,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
           }
           return (
             pokemon.name.toLowerCase().indexOf(text) === 0 ||
-            pokemon.types.some(type => type.toLowerCase().indexOf(text) === 0)
+            pokemon.types.some((type) => type.toLowerCase().indexOf(text) === 0)
           );
         }
 
@@ -107,7 +107,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
           const moves = addTMCombinations(pokemon);
           const moveInfo = dex.findMove(move);
           return moves.some(
-            move => move.A === moveInfo.Name || move.B === moveInfo.Name
+            (move) => move.A === moveInfo.Name || move.B === moveInfo.Name
           );
         }
 
@@ -146,7 +146,7 @@ export default class PokemonChooser extends PureComponent<Props, State> {
         }
 
         if (special === 'legacy') {
-          return addTMCombinations(pokemon).some(x => x.legacy > 0);
+          return addTMCombinations(pokemon).some((x) => x.legacy > 0);
         }
 
         if (special === 'legendary') {

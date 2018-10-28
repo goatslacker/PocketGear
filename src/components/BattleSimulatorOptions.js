@@ -22,14 +22,14 @@ const LEVELS_RANGE = Array.from(Array(80)).map((_, i) => {
   };
 });
 
-const RAID_RANGE = [1, 2, 3, 4, 5].map(key => ({
+const RAID_RANGE = [1, 2, 3, 4, 5].map((key) => ({
   key,
   label: String(key),
   value: key,
 }));
 
 const IV_RANGE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
-  key => ({
+  (key) => ({
     key,
     label: String(key),
     value: key,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 });
 
 function toHex(atk, def, sta) {
-  const string = [atk, def, sta].map(n => n.toString(16)).join('');
+  const string = [atk, def, sta].map((n) => n.toString(16)).join('');
   return parseInt(string, 16);
 }
 
@@ -154,7 +154,7 @@ export default class BattleSimulatorOptions extends PureComponent {
 
   selectNewPokemon(style) {
     this.props.navigation.navigate('Pokemon', {
-      onSelectPokemon: pokemon => {
+      onSelectPokemon: (pokemon) => {
         const quick = dex.findMove(pokemon.moves.quick[0]);
         const charge = dex.findMove(pokemon.moves.charge[0]);
 
@@ -192,8 +192,10 @@ export default class BattleSimulatorOptions extends PureComponent {
             quickMove={this.props.atkQuick}
             chargeMove={this.props.atkCharge}
             navigation={this.props.navigation}
-            onSelectQuickMove={atkQuick => this.props.onChange({ atkQuick })}
-            onSelectChargeMove={atkCharge => this.props.onChange({ atkCharge })}
+            onSelectQuickMove={(atkQuick) => this.props.onChange({ atkQuick })}
+            onSelectChargeMove={(atkCharge) =>
+              this.props.onChange({ atkCharge })
+            }
           />
 
           <View style={styles.iv}>
@@ -202,7 +204,7 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={LEVELS_RANGE}
-                onValueChange={atkLVL => this.props.onChange({ atkLVL })}
+                onValueChange={(atkLVL) => this.props.onChange({ atkLVL })}
                 value={this.props.atkLVL}
               />
             </View>
@@ -212,7 +214,7 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={IV_RANGE}
-                onValueChange={atkIVA => this.props.onChange({ atkIVA })}
+                onValueChange={(atkIVA) => this.props.onChange({ atkIVA })}
                 value={this.props.atkIVA}
               />
             </View>
@@ -222,7 +224,7 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={IV_RANGE}
-                onValueChange={atkIVD => this.props.onChange({ atkIVD })}
+                onValueChange={(atkIVD) => this.props.onChange({ atkIVD })}
                 value={this.props.atkIVD}
               />
             </View>
@@ -232,7 +234,7 @@ export default class BattleSimulatorOptions extends PureComponent {
               <PickerSelect
                 hideIcon
                 items={IV_RANGE}
-                onValueChange={atkIVS => this.props.onChange({ atkIVS })}
+                onValueChange={(atkIVS) => this.props.onChange({ atkIVS })}
                 value={this.props.atkIVS}
               />
             </View>
@@ -257,8 +259,10 @@ export default class BattleSimulatorOptions extends PureComponent {
             quickMove={this.props.defQuick}
             chargeMove={this.props.defCharge}
             navigation={this.props.navigation}
-            onSelectQuickMove={defQuick => this.props.onChange({ defQuick })}
-            onSelectChargeMove={defCharge => this.props.onChange({ defCharge })}
+            onSelectQuickMove={(defQuick) => this.props.onChange({ defQuick })}
+            onSelectChargeMove={(defCharge) =>
+              this.props.onChange({ defCharge })
+            }
           />
 
           {this.props.isRaid && (
@@ -268,7 +272,7 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={RAID_RANGE}
-                  onValueChange={defRaidTier =>
+                  onValueChange={(defRaidTier) =>
                     this.props.onChange({ defRaidTier })
                   }
                   value={this.props.defRaidTier}
@@ -284,7 +288,7 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={LEVELS_RANGE}
-                  onValueChange={defLVL => this.props.onChange({ defLVL })}
+                  onValueChange={(defLVL) => this.props.onChange({ defLVL })}
                   value={this.props.defLVL}
                 />
               </View>
@@ -294,7 +298,7 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={IV_RANGE}
-                  onValueChange={defIVA => this.props.onChange({ defIVA })}
+                  onValueChange={(defIVA) => this.props.onChange({ defIVA })}
                   value={this.props.defIVA}
                 />
               </View>
@@ -304,7 +308,7 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={IV_RANGE}
-                  onValueChange={defIVD => this.props.onChange({ defIVD })}
+                  onValueChange={(defIVD) => this.props.onChange({ defIVD })}
                   value={this.props.defIVD}
                 />
               </View>
@@ -314,7 +318,7 @@ export default class BattleSimulatorOptions extends PureComponent {
                 <PickerSelect
                   hideIcon
                   items={IV_RANGE}
-                  onValueChange={defIVS => this.props.onChange({ defIVS })}
+                  onValueChange={(defIVS) => this.props.onChange({ defIVS })}
                   value={this.props.defIVS}
                 />
               </View>
@@ -324,7 +328,7 @@ export default class BattleSimulatorOptions extends PureComponent {
 
         <View style={[styles.section, styles.row]}>
           <WeatherPicker
-            onWeatherChanged={weather => this.props.onChange({ weather })}
+            onWeatherChanged={(weather) => this.props.onChange({ weather })}
             weather={this.props.weather}
           />
 

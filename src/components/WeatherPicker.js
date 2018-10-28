@@ -15,7 +15,7 @@ const WEATHER = [
   'WINDY',
   'FOGGY',
   'EXTREME',
-].map(key => ({
+].map((key) => ({
   key,
   label: formatMove(key),
   value: key,

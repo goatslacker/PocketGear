@@ -16,10 +16,9 @@ const path = require('path');
 // https://img.pokemondb.net/sprites/black-white/normal/giratina-altered.png
 
 function URL(basename) {
-//  return `https://img.pokemondb.net/sprites/black-white/normal/${basename}`;
+  //  return `https://img.pokemondb.net/sprites/black-white/normal/${basename}`;
   return `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${basename}`;
 }
-
 
 const missingSprites = [];
 const lines = [];
@@ -36,17 +35,20 @@ dex.getAllPokemon().forEach(({ form, id, name }) => {
 if (missingSprites.length) {
   const p = missingSprites.reduce((p, spritePath) => {
     return p.then(() => {
-      const basename = path.basename(spritePath)
+      const basename = path
+        .basename(spritePath)
         .replace('_', '-')
         .replace('cherrim-sunny', 'cherrim-sunshine')
         .replace('east_sea', 'east')
         .replace('west_sea', 'west');
       const fullPath = path.resolve(path.join(__dirname, spritePath));
-      return axios.get(URL(basename), {
-        responseType: 'arraybuffer',
-      }).then((res) => {
-        fs.writeFileSync(fullPath, res.data);
-      });
+      return axios
+        .get(URL(basename), {
+          responseType: 'arraybuffer',
+        })
+        .then((res) => {
+          fs.writeFileSync(fullPath, res.data);
+        });
     });
   }, Promise.resolve());
 

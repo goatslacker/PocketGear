@@ -22,7 +22,7 @@ const CP_VALUES = {
   max_hp: 250, // 414
 };
 
-const allPokemon = dex.getAllPokemon().map(pokemon => {
+const allPokemon = dex.getAllPokemon().map((pokemon) => {
   return Object.assign({}, pokemon, {
     types: [ucFirst(pokemon.type1), ucFirst(pokemon.type2 || '')].filter(
       Boolean
@@ -57,7 +57,7 @@ function getPokemonByID(id) {
     return pokeFastCache[id];
   }
 
-  const pokemon = allPokemon.find(poke => poke.id === id);
+  const pokemon = allPokemon.find((poke) => poke.id === id);
   pokeFastCache[id] = pokemon;
   return pokemon;
 }

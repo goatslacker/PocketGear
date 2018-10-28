@@ -23,7 +23,7 @@ function getProfile(pokemon, state) {
     key: `${moveset.quick}/${moveset.charge}`,
     quick: moveset.quick,
     charge: moveset.charge,
-    results: moveset.results.map(x => {
+    results: moveset.results.map((x) => {
       const pokemon = store.getPokemonByID(x.id);
       const [quick, charge] = x.stats[0].moves;
 
@@ -54,7 +54,7 @@ function goToBattle(pokemon, navigation) {
 }
 
 function getResults(pokemon) {
-  return state => {
+  return (state) => {
     const { results } = getProfile(pokemon, state);
     return results;
   };

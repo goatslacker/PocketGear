@@ -7,19 +7,11 @@
     "start": "scripts/run.js react-native-scripts start",
     "android": "scripts/run.js react-native-scripts android",
     "ios": "scripts/run.js react-native-scripts ios",
-    "lint": "eslint .",
-    "flow": "flow",
-    "pretty": "prettier --write 'src/**/*.js'",
-    "test": "jest",
-    "coverage": "cat ./coverage/lcov.info | coveralls"
+    "test": "jest"
   },
   "jest": {
     "preset": "jest-expo",
     "collectCoverage": true
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5"
   },
   "dependencies": {
     "expo": "^29.0.0",
@@ -40,19 +32,9 @@
     "babel-preset-expo": "^4.0.0",
     "babel-preset-react-native": "^4.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^4.11.0",
-    "eslint-config-prettier": "^2.7.0",
-    "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-flowtype": "^2.39.1",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-prettier": "^2.3.1",
-    "eslint-plugin-react": "^7.4.0",
-    "eslint-plugin-react-native": "^3.1.0",
-    "flow-bin": "~0.53.0",
     "jest": "^21.2.1",
     "jest-expo": "^29.0.0",
     "node-cleanup": "^2.1.2",
-    "prettier": "^1.8.2",
     "react-native-scripts": "^1.7.0",
     "react-test-renderer": "16.0.0-beta.5"
   }

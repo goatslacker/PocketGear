@@ -3,8 +3,6 @@
 import dex from 'pokemagic/dex';
 import addTMCombinations from 'pokemagic/lib/addTMCombinations';
 
-import type { Pokemon } from '../types';
-
 function normalizeLegacy(legacy) {
   if (legacy === 1) return 1;
   if (legacy === 2 || legacy === 0) return 0;
@@ -22,7 +20,7 @@ function dpse(a, b) {
   return dpsA * epsA > dpsB * epsB ? -1 : 1;
 }
 
-export default function getQuickAttacks(pokemon: Pokemon) {
+export default function getQuickAttacks(pokemon) {
   const quickMoves = addTMCombinations(pokemon).map(({ A, legacy }) => {
     const move = dex.findMove(A);
     move.legacy = normalizeLegacy(legacy, A);

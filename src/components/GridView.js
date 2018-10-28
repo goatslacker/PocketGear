@@ -81,7 +81,7 @@ export default class GridView extends PureComponent<Props, State> {
         spacing,
       margin: spacing / 2,
     };
-    return data.map(tile => ({
+    return data.map((tile) => ({
       tile,
       style,
     }));

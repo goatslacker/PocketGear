@@ -101,7 +101,9 @@ export default class PokemonListCard extends PureComponent<Props, void> {
           />
         </TouchableItem>
         <View style={[styles.col]}>
-          <Text style={styles.title}>{title || formatMove(pokemon.form || pokemon.name)}</Text>
+          <Text style={styles.title}>
+            {title || formatMove(pokemon.form || pokemon.name)}
+          </Text>
           <Text style={styles.subtitle}>{subtitle || types}</Text>
           {children && children(this.props)}
         </View>

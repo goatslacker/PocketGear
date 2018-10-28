@@ -66,11 +66,11 @@ const styles = StyleSheet.create({
 });
 
 function bestDPS(results) {
-  return Math.max.apply(Math.max, results.map(x => x[3]));
+  return Math.max.apply(Math.max, results.map((x) => x[3]));
 }
 
 function bestTDO(results) {
-  return Math.max.apply(Math.max, results.map(x => x[4]));
+  return Math.max.apply(Math.max, results.map((x) => x[4]));
 }
 
 function getCardProps(rowData) {
@@ -167,19 +167,19 @@ export default class PokemonBattle extends PureComponent {
             quickMove={quickMove}
             chargeMove={chargeMove}
             navigation={navigation}
-            onSelectQuickMove={quickMove => this.setState({ quickMove })}
-            onSelectChargeMove={chargeMove => this.setState({ chargeMove })}
+            onSelectQuickMove={(quickMove) => this.setState({ quickMove })}
+            onSelectChargeMove={(chargeMove) => this.setState({ chargeMove })}
           />
         </View>
         <View style={styles.options}>
           <View style={styles.weather}>
             <WeatherPicker
-              onWeatherChanged={weather => this.setState({ weather })}
+              onWeatherChanged={(weather) => this.setState({ weather })}
               weather={weather}
             />
           </View>
           <View style={styles.toggles}>
-            {toggles.map(toggle => (
+            {toggles.map((toggle) => (
               <FilterToggle
                 key={toggle.name}
                 active={toggle.active}

@@ -147,7 +147,7 @@ export default class Arena extends PureComponent {
     return (
       <ScrollView
         {...this.props}
-        ref={scrollView => (this.scrollView = scrollView)}
+        ref={(scrollView) => (this.scrollView = scrollView)}
         style={[styles.container, this.props.style]}
       >
         <Appbar navigation={this.props.navigation} close>
@@ -157,8 +157,8 @@ export default class Arena extends PureComponent {
         {!this.state.results && (
           <BattleSimulatorOptions
             navigation={this.props.navigation}
-            onBattle={state => this.runBattleSimulator(state)}
-            onChange={options => this.updateOptionsState(options)}
+            onBattle={(state) => this.runBattleSimulator(state)}
+            onChange={(options) => this.updateOptionsState(options)}
             {...this.state.options}
           />
         )}

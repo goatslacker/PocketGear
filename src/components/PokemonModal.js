@@ -17,7 +17,7 @@ export default class PokemonModal extends PureComponent {
     return (
       <PokemonChooser
         navigation={navigation}
-        onChosen={one => this.theChosen(one)}
+        onChosen={(one) => this.theChosen(one)}
       />
     );
   }

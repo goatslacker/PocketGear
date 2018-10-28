@@ -164,7 +164,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
               {formatMove(pokemon.name)}
             </Text>
             <View style={styles.types}>
-              {pokemon.types.map(type => (
+              {pokemon.types.map((type) => (
                 <PokemonTypeLabel key={type} type={type} />
               ))}
             </View>
@@ -213,7 +213,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
               <View style={[styles.row, styles.item]}>
                 <Text style={[styles.text, styles.label]}>Strong against</Text>
                 <View style={styles.wrap}>
-                  {strongAgainst.map(type => (
+                  {strongAgainst.map((type) => (
                     <PokemonTypeLabel key={type} type={type} />
                   ))}
                 </View>
@@ -223,7 +223,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
               <View style={[styles.row, styles.item]}>
                 <Text style={[styles.text, styles.label]}>Resistant to</Text>
                 <View style={styles.wrap}>
-                  {resistantTo.map(type => (
+                  {resistantTo.map((type) => (
                     <PokemonTypeLabel key={type} type={type} />
                   ))}
                 </View>
@@ -233,7 +233,7 @@ export default class PokemonDetails extends PureComponent<Props, void> {
               <View style={[styles.row, styles.item]}>
                 <Text style={[styles.text, styles.label]}>Weak against</Text>
                 <View style={styles.wrap}>
-                  {weakAgainst.map(type => (
+                  {weakAgainst.map((type) => (
                     <PokemonTypeLabel key={type} type={type} />
                   ))}
                 </View>

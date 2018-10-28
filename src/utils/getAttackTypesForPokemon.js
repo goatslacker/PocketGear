@@ -12,8 +12,8 @@ export default function getAttackTypesForPokemon(
 
   const types = quickAttacks
     .concat(specialAttacks)
-    .filter(attack => attack.power) // ignore attacks with 0 power, e.g.- Splash
-    .map(attack => attack.type)
+    .filter((attack) => attack.power) // ignore attacks with 0 power, e.g.- Splash
+    .map((attack) => attack.type)
     .filter((type, i, self) => self.indexOf(type) === i);
 
   return types;

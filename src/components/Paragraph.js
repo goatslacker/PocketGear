@@ -13,12 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {
-  style?: any,
-  children?: any,
-};
-
-export default function Paragraph(props: Props) {
+export default function Paragraph(props) {
   return (
     <Text {...props} style={[styles.paragraph, props.style]}>
       {props.children}

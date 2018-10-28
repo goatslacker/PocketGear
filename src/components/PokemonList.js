@@ -47,7 +47,7 @@ export default class PokemonList extends PureComponent<Props, void> {
         pokemon={rowData}
         {...extraProps}
         navigation={this.props.navigation}
-        onPress={pokemon => this.handlePress(pokemon, rowData)}
+        onPress={(pokemon) => this.handlePress(pokemon, rowData)}
       >
         {this.props.children}
       </PokemonListCard>

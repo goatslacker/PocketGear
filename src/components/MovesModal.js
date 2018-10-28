@@ -63,7 +63,7 @@ export default class MovesModal extends PureComponent {
           <Image style={styles.image} source={sprite} />
         </View>
         <View>
-          {attacks.map(move => {
+          {attacks.map((move) => {
             return (
               <TouchableItem
                 key={move.Name}

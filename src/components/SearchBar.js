@@ -109,13 +109,13 @@ const styles = StyleSheet.create({
 });
 
 type Props<T> = {
-  onChangeText: string => void,
+  onChangeText: (string) => void,
   onFocus?: Function,
   onBlur?: Function,
   placeholder: string,
   value: string,
   toggles: Array<T>,
-  onChangeToggle: T => void,
+  onChangeToggle: (T) => void,
   style?: any,
 };
 
@@ -184,7 +184,7 @@ export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
           >
             <Animated.View style={styles.separator} />
             <Animated.View style={styles.toolbar}>
-              {this.props.toggles.map(toggle => (
+              {this.props.toggles.map((toggle) => (
                 <FilterToggle
                   key={toggle.name}
                   active={toggle.active}

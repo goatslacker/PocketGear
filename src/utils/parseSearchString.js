@@ -11,7 +11,7 @@ function r(str) {
 }
 
 function splitAndParse(query) {
-  return query.split(sep).map(text => {
+  return query.split(sep).map((text) => {
     if (text === 'evolve') {
       return { special: 'evolve' };
     }
@@ -72,13 +72,13 @@ function splitAndParse(query) {
 
 export default function parseSearchString(searchString) {
   const searches = searchString.split(and);
-  const ast = searches.map(query => splitAndParse(query));
+  const ast = searches.map((query) => splitAndParse(query));
 
-  return f => {
+  return (f) => {
     // The first layer of the ast is an & query so all must match
-    return ast.every(res => {
+    return ast.every((res) => {
       // Second layer matches any query provided
-      return res.some(obj => {
+      return res.some((obj) => {
         return f(obj);
       });
     });
