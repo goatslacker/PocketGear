@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props<T> = {
   onChangeText: (string) => void,
   onFocus?: Function,
@@ -118,9 +119,9 @@ type Props<T> = {
   onChangeToggle: (T) => void,
   style?: any,
 };
+*/
 
-// TODO implement POGO search algos
-export default class SearchBar<T: *> extends PureComponent<Props<T>, State> {
+export default class SearchBar extends PureComponent {
   static HEIGHT = Platform.OS === 'ios' ? 64 : 56;
 
   _handleClearPress = () => {

@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   data: Array<any>,
   spacing: number,
@@ -29,14 +30,15 @@ type State = {
   dataSource: ListView.DataSource,
   containerWidth: number,
 };
+*/
 
-export default class GridView extends PureComponent<Props, State> {
+export default class GridView extends PureComponent {
   static defaultProps = {
     getNumberOfColumns: () => 1,
     spacing: 0,
   };
 
-  state: State = {
+  state = {
     dataSource: new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     }),

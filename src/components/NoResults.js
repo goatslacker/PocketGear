@@ -25,12 +25,14 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   source: any,
   label: string,
 };
+*/
 
-export default class NoResults extends PureComponent<Props, void> {
+export default class NoResults extends PureComponent {
   render() {
     const { source, label } = this.props;
     return (

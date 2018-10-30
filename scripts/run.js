@@ -3,7 +3,7 @@
 /* @flow */
 /* eslint-disable import/no-commonjs */
 
-const child_process = require('child_process');
+const { execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const cleanup = require('node-cleanup');
@@ -26,6 +26,6 @@ fs.writeFileSync(
   )
 );
 
-child_process.execSync(`${process.argv.slice(2).join(' ')} --reset-cache`, {
+execSync(`${process.argv.slice(2).join(' ')} --reset-cache`, {
   stdio: [0, 1, 2],
 });

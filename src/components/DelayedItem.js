@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props<T> = T & {
   component: React.ComponentType<T>,
 };
@@ -17,8 +18,9 @@ type Props<T> = T & {
 type State = {
   loading: boolean,
 };
+*/
 
-export default class DelayedItem<T: *> extends PureComponent<Props<T>, State> {
+export default class DelayedItem extends PureComponent {
   state: State = {
     loading: true,
   };

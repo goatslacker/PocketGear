@@ -1,11 +1,8 @@
-/* @flow */
-
 import React, { PureComponent } from 'react';
 import TouchableItem from './TouchableItem';
 import formatMove from '../utils/formatMove';
 import store from '../store';
 import throttle from 'lodash/throttle';
-import type { Pokemon } from '../types';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -49,6 +46,7 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   height?: number,
   navigation: Object,
@@ -59,8 +57,9 @@ type Props = {
   title?: string,
   toptext?: string,
 };
+*/
 
-export default class PokemonListCard extends PureComponent<Props, void> {
+export default class PokemonListCard extends PureComponent {
   _handlePress = throttle(() => {
     if (this.props.onPress) {
       this.props.onPress(this.props.pokemon);

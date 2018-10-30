@@ -1,11 +1,6 @@
-/* @flow */
-
 import store from '../store';
-import type { Pokemon, PokemonType } from '../types';
 
-export default function getWeakAgainstTypes(
-  pokemon: Pokemon
-): Array<PokemonType> {
+export default function getWeakAgainstTypes(pokemon) {
   const { types } = pokemon;
   const typeChart = store.getTypeChart();
 

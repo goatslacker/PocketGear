@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   style?: any,
 };
+*/
 
-export default function More(props: Props) {
+export default function More(props) {
   return (
     <TouchableItem {...props} style={[styles.card, styles.center, props.style]}>
       <View style={styles.center}>

@@ -16,13 +16,15 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   ratio: number,
   fillColor?: string,
   style?: any,
 };
+*/
 
-export default class ProgressBar extends PureComponent<Props, void> {
+export default class ProgressBar extends PureComponent {
   static defaultProps = {
     fillColor: '#FB6B6F',
   };

@@ -37,13 +37,15 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   style?: any,
   children?: any,
   navigation: Object,
 };
+*/
 
-export default class Appbar extends PureComponent<Props, void> {
+export default class Appbar extends PureComponent {
   _handleGoBack = () => {
     this.props.navigation.goBack(null);
   };

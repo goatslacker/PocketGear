@@ -10,6 +10,7 @@ import {
 
 const LOLLIPOP = 21;
 
+/*
 type Props = {
   delayPressIn: number,
   pressColor: string,
@@ -17,8 +18,9 @@ type Props = {
   children?: React.Element<any>,
   style?: any,
 };
+*/
 
-export default class TouchableItem extends PureComponent<Props, void> {
+export default class TouchableItem extends PureComponent {
   static defaultProps = {
     delayPressIn: 0,
     pressColor: 'rgba(0, 0, 0, .16)',

@@ -1,13 +1,10 @@
-/* @flow */
-
-import typeChart from './data/type_chart.json';
-import colors from './colors.json';
-import sprites from './sprites';
-import type { Pokemon, PokemonID, PokemonType, TypeChart } from './types';
-
 import dex from 'pokemagic/dex';
 import getHP from 'pokemagic/lib/getHP';
 import getMaxCP from 'pokemagic/lib/getMaxCP';
+
+import colors from './colors.json';
+import sprites from './sprites';
+import typeChart from './data/type_chart.json';
 import ucFirst from './utils/ucFirst';
 
 const CP_VALUES = {
@@ -30,19 +27,19 @@ const allPokemon = dex.getAllPokemon().map((pokemon) => {
   });
 });
 
-function getPokemons(): Array<Pokemon> {
+function getPokemons() {
   return allPokemon;
 }
 
-function getTypeChart(): Array<TypeChart> {
+function getTypeChart() {
   return typeChart;
 }
 
-function getSprite(id: PokemonID): any {
+function getSprite(id) {
   return sprites[id];
 }
 
-function getColor(type: PokemonType): string {
+function getColor(type) {
   return colors[type.toLowerCase()];
 }
 

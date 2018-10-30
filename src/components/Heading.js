@@ -13,10 +13,12 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   style?: any,
   children?: any,
 };
+*/
 
 const levels = [null, 1, 1.25, 1.5, 2, 4];
 
@@ -34,7 +36,7 @@ function getLevelStyles(level) {
   };
 }
 
-export default function Heading(props: Props) {
+export default function Heading(props) {
   return (
     <Text
       {...props}

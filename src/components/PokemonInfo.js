@@ -1,5 +1,3 @@
-/* @flow */
-
 import find from 'lodash/find';
 import memoize from 'lodash/memoize';
 import React, { PureComponent } from 'react';
@@ -11,7 +9,6 @@ import PokemonDetails from './PokemonDetails';
 import PokemonMatches from './PokemonMatches';
 import PokemonBattle from './PokemonBattle';
 import store from '../store';
-import type { PokemonID, Pokemon } from '../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,10 +42,12 @@ const styles = StyleSheet.create({
   },
 });
 
+/*
 type Props = {
   navigation: Object,
   style?: any,
 };
+*/
 
 const InfoTabs = TabNavigator(
   {
@@ -83,10 +82,10 @@ const InfoTabs = TabNavigator(
   }
 );
 
-class PokemonInfo extends PureComponent<Props, void> {
+class PokemonInfo extends PureComponent {
   static router = InfoTabs.router;
 
-  _getPokemon: (id: PokemonID) => Pokemon = memoize((id: PokemonID) => {
+  _getPokemon: (id) => Pokemon = memoize((id) => {
     const pokemons = store.getPokemons();
     const pokemon = find(pokemons, { id });
     return pokemon;

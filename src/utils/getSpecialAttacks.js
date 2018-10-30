@@ -1,9 +1,5 @@
-/* @flow */
-
 import dex from 'pokemagic/dex';
 import addTMCombinations from 'pokemagic/lib/addTMCombinations';
-
-import type { Pokemon } from '../types';
 
 function getDPSxDPE(pokemon, m) {
   const power = m.Power || 0;
@@ -20,7 +16,7 @@ function normalizeLegacy(legacy) {
   return legacy;
 }
 
-export default function getSpecialAttacks(pokemon: Pokemon) {
+export default function getSpecialAttacks(pokemon) {
   const chargeMoves = addTMCombinations(pokemon).map(({ A, B, legacy }) => {
     const move = dex.findMove(B);
     move.legacy = normalizeLegacy(legacy, A);

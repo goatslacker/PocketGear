@@ -1,12 +1,7 @@
-/* @flow */
-
 import getQuickAttacks from './getQuickAttacks';
 import getSpecialAttacks from './getSpecialAttacks';
-import type { Pokemon, PokemonType } from '../types';
 
-export default function getAttackTypesForPokemon(
-  pokemon: Pokemon
-): Array<PokemonType> {
+export default function getAttackTypesForPokemon(pokemon) {
   const quickAttacks = getQuickAttacks(pokemon);
   const specialAttacks = getSpecialAttacks(pokemon);
 

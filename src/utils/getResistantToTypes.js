@@ -1,9 +1,6 @@
-/* @flow */
-
 import store from '../store';
-import type { Pokemon } from '../types';
 
-export default function getResistantToTypes(pokemon: Pokemon) {
+export default function getResistantToTypes(pokemon) {
   const { types } = pokemon;
   const typeChart = store.getTypeChart();
 
