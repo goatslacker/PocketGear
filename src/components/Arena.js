@@ -49,7 +49,6 @@ export default class Arena extends PureComponent {
         defRaidTier: 5, // TODO get a default raid level if we have one
 
         dodge: true,
-        isPvP: false,
         isRaid: isLegendary(defender.pokemon.name),
         weather: props.navigation.state.params.weather || 'EXTREME',
       },
@@ -119,7 +118,6 @@ export default class Arena extends PureComponent {
 
       const options = {
         atkDodgeStrategy: state.dodge ? 'charge' : null,
-        pvp: state.isPvP,
         raid: state.isRaid,
         raidTier: state.defRaidTier,
         weather: state.weather,

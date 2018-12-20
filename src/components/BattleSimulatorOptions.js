@@ -105,7 +105,6 @@ export default class BattleSimulatorOptions extends PureComponent {
       defLVL,
       defQuick,
       dodge,
-      isPvP,
       isRaid,
       weather,
     } = this.props;
@@ -126,25 +125,15 @@ export default class BattleSimulatorOptions extends PureComponent {
         iv: toHex(defIVA, defIVD, defIVS),
       },
       dodge,
-      isPvP,
       isRaid,
       weather,
     });
   }
 
-  toggleRaidPvP(props) {
+  toggleRaid(props) {
     if (props.isRaid === true) {
       this.props.onChange({
-        isPvP: false,
         isRaid: true,
-      });
-      return;
-    }
-
-    if (props.isPvP === true) {
-      this.props.onChange({
-        isPvP: true,
-        isRaid: false,
       });
       return;
     }
@@ -347,10 +336,8 @@ export default class BattleSimulatorOptions extends PureComponent {
             <Heading>PvP</Heading>
 
             <Switch
-              value={this.props.isPvP}
-              onValueChange={() =>
-                this.toggleRaidPvP({ isPvP: !this.props.isPvP })
-              }
+              disabled={true}
+              value={false}
             />
           </View>
 
@@ -360,7 +347,7 @@ export default class BattleSimulatorOptions extends PureComponent {
             <Switch
               value={this.props.isRaid}
               onValueChange={() =>
-                this.toggleRaidPvP({ isRaid: !this.props.isRaid })
+                this.toggleRaid({ isRaid: !this.props.isRaid })
               }
             />
           </View>
